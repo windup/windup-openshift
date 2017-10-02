@@ -18,6 +18,8 @@ cat /opt/eap/bin/openshift-launch.sh.orig |grep -v standalone.sh | grep -v jboss
 echo 'source ${JBOSS_HOME}/bin/inject.sh' >> /opt/eap/bin/openshift-launch.sh
 
 # Add updated "standalone.sh"
-echo 'exec $JBOSS_HOME/bin/standalone.sh -c standalone-openshift.xml -bmanagement 127.0.0.1 $JBOSS_HA_ARGS ${JBOSS_MESSAGING_ARGS}' >> /opt/eap/bin/openshift-launch.sh
+echo 'exec $JBOSS_HOME/bin/standalone.sh -Dkeycloak.migration.action=import \
+    -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=${JBOSS_HOME}/standalone/configuration/import-realm.json \
+    -Dkeycloak.migration.strategy=IGNORE_EXISTING -c standalone-openshift.xml -bmanagement 127.0.0.1 $JBOSS_HA_ARGS ${JBOSS_MESSAGING_ARGS}' >> /opt/eap/bin/openshift-launch.sh
 
 JBOSS_MODULES_SYSTEM_PKGS=org.jboss.byteman ./openshift-launch.sh "$@"

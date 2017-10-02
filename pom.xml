@@ -6,7 +6,8 @@
     <version>4.1.0-SNAPSHOT</version>
 
     <properties>
-        <fabric8.version>3.5.28</fabric8.version>
+        <version.fabric8>3.5.28</version.fabric8>
+        <version.keycloak>2.5.5.Final</version.keycloak>
     </properties>
 
     <build>
@@ -14,7 +15,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>fabric8-maven-plugin</artifactId>
-                <version>${fabric8.version}</version>
+                <version>${version.fabric8}</version>
                 <configuration>
                     <mode>kubernetes</mode>
                     <buildStrategy>docker</buildStrategy>
@@ -47,10 +48,26 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-keycloak-tool</artifactId>
-                                    <version>4.0.0-SNAPSHOT</version>
-                                    <outputDirectory>${project.build.directory}/keycloak-tool</outputDirectory>
+                                    <version>4.1.0-SNAPSHOT</version>
+                                    <outputDirectory>${project.build.directory}/tools/keycloak-tool</outputDirectory>
                                     <destFileName>keycloak-tool.jar</destFileName>
                                     <overWrite>true</overWrite>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.keycloak</groupId>
+                                    <artifactId>keycloak-server-overlay</artifactId>
+                                    <version>${version.keycloak}</version>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/tools/keycloak-server-overlay/</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.keycloak</groupId>
+                                    <artifactId>keycloak-wildfly-adapter-dist</artifactId>
+                                    <version>${version.keycloak}</version>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/tools/keycloak-client-overlay/</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>${project.groupId}</groupId>

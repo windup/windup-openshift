@@ -11,8 +11,12 @@
     <!-- Add distribution files -->
     <fileSets>
         <fileSet>
-            <directory>${project.build.directory}/keycloak-tool</directory>
-            <outputDirectory>opt/eap/bin/launch</outputDirectory>
+            <directory>${project.build.directory}/tools/</directory>
+            <outputDirectory>opt/tools</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/classes/sso/</directory>
+            <outputDirectory>opt/eap/standalone/configuration/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/scripts</directory>
