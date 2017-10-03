@@ -1,0 +1,5 @@
+embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
+
+/subsystem=datasources/data-source=WindupServicesDS:add(jndi-name="java:jboss/datasources/WindupServicesDS", connection-url="jdbc:h2:${jboss.server.data.dir}/h2/windup-web", driver-name="h2", max-pool-size=30, user-name=sa, password=sa)
+
+stop-embedded-server

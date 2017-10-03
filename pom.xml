@@ -1,97 +1,57 @@
-<project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jboss.windup.web</groupId>
-    <artifactId>windup-web-openshift</artifactId>
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>22</version>
+        <relativePath />
+    </parent>
+
+    <groupId>org.jboss.windup</groupId>
+    <artifactId>windup-openshift-parent</artifactId>
     <version>4.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Windup OpenShift - Parent</name>
+    <description>OpenShift image generation for Windup</description>
+
 
     <properties>
         <version.fabric8>3.5.28</version.fabric8>
         <version.keycloak>2.5.5.Final</version.keycloak>
+
+        <windup.web.scm.connection>scm:git:https://github.com/windup/windup-openshift.git</windup.web.scm.connection>
+        <windup.web.developer.connection>scm:git:git@github.com:windup/windup-openshift.git</windup.web.developer.connection>
+        <windup.web.scm.url>http://github.com/windup/windup-openshift</windup.web.scm.url>
     </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-maven-plugin</artifactId>
-                <version>${version.fabric8}</version>
-                <configuration>
-                    <mode>kubernetes</mode>
-                    <buildStrategy>docker</buildStrategy>
-                    <images>
-                        <image>
-                            <name>%a:%v</name>
-                            <build>
-                                <from>registry.access.redhat.com/jboss-eap-7/eap70-openshift</from>
-                                <cmd>/opt/eap/bin/webapp-launch.sh</cmd>
-                                <assembly>
-                                    <targetDir>/</targetDir>
-                                    <descriptor>assembly/assembly.xml</descriptor>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.jboss.windup.web</groupId>
-                                    <artifactId>windup-keycloak-tool</artifactId>
-                                    <version>4.1.0-SNAPSHOT</version>
-                                    <outputDirectory>${project.build.directory}/tools/keycloak-tool</outputDirectory>
-                                    <destFileName>keycloak-tool.jar</destFileName>
-                                    <overWrite>true</overWrite>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.keycloak</groupId>
-                                    <artifactId>keycloak-server-overlay</artifactId>
-                                    <version>${version.keycloak}</version>
-                                    <type>zip</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/tools/keycloak-server-overlay/</outputDirectory>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.keycloak</groupId>
-                                    <artifactId>keycloak-wildfly-adapter-dist</artifactId>
-                                    <version>${version.keycloak}</version>
-                                    <type>zip</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/tools/keycloak-client-overlay/</outputDirectory>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>windup-web-services</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>war</type>
-                                    <overWrite>true</overWrite>
-                                    <destFileName>api.war</destFileName>
-                                    <outputDirectory>${project.build.directory}/wars/</outputDirectory>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>windup-web-ui</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>war</type>
-                                    <overWrite>true</overWrite>
-                                    <destFileName>rhamt-web.war</destFileName>
-                                    <outputDirectory>${project.build.directory}/wars/</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <scm>
+        <tag>master</tag>
+        <connection>${windup.web.scm.connection}</connection>
+        <developerConnection>${windup.web.developer.connection}</developerConnection>
+        <url>${windup.web.scm.url}</url>
+    </scm>
+
+    <issueManagement>
+        <system>JBoss Jira</system>
+        <url>https://issues.jboss.org/browse/WINDUP</url>
+    </issueManagement>
+    <mailingLists>
+        <mailingList>
+            <name>Windup Usage and Rules Development</name>
+            <post>windup-users@lists.jboss.org</post>
+            <archive>http://lists.jboss.org/pipermail/windup-users/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Windup Core Development</name>
+            <post>windup-dev@lists.jboss.org</post>
+            <archive>http://lists.jboss.org/pipermail/windup-dev/</archive>
+        </mailingList>
+    </mailingLists>
+
+    <modules>
+        <module>web</module>
+    </modules>
 </project>

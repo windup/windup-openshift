@@ -1,7 +1,5 @@
 embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
 
-/subsystem=datasources/data-source=WindupServicesDS:add(jndi-name="java:jboss/datasources/WindupServicesDS", connection-url="jdbc:h2:${jboss.server.data.dir}/h2/windup-web", driver-name="h2", max-pool-size=30, user-name=sa, password=sa)
-
 jms-queue add --queue-address=executorQueue --entries=queues/executorQueue
 jms-queue add --queue-address=statusUpdateQueue --entries=queues/statusUpdateQueue
 jms-queue add --queue-address=packageDiscoveryQueue --entries=queues/packageDiscoveryQueue
@@ -10,9 +8,8 @@ jms-topic add --topic-address=executorCancellation --entries=topics/executorCanc
 /subsystem=keycloak:remove
 /subsystem=keycloak:add
 
-/system-property=keycloak.realm.public.key:add(value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhlI4WQ3tbIFE71M0HAO3TfvJFxH0P16wdOSzc/Fr9l8/tOn8cN5sgkGpnyEWcawgv2z4nouUkpV92/vo9fadKr3KVUMVaE3EaR3BmsC0Ct6TY7mYD+sz/yGoSWqwmGYocEJRIXAuMCX3jCu6CKMSV+1qjpcyYqzRaVWTB/EV76Sx+CSh9rEMLl8mE6owxNWQck03KgvWCA70l/LAu1M1bWy1aozoUKiTryX0nTxbHbj4qg3vvHC6igYndJ4zLr30QlCVn1iQ1jXC1MQUJ+Mwc8yZlkhaoAfDS1iM9I8NUcpcQAIn2baD8/aBrS1F9woYYRvo0vFH5N0+Rw4xjgSDlQIDAQAB")
-/system-property=keycloak.server.url:add(value="http://localhost:8080/auth")
-
+/system-property=keycloak.realm.public.key:add(value="${env.SSO_PUBLIC_KEY}")
+/system-property=keycloak.server.url:add(value="${env.SSO_URL}")
 
 /subsystem=keycloak/secure-deployment=api.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="EXTERNAL", resource=rhamt-web, public-client=true)
 /subsystem=keycloak/secure-deployment=rhamt-web.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="EXTERNAL", resource=rhamt-web, public-client=true)
