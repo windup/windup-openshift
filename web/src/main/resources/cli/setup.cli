@@ -16,9 +16,9 @@ jms-topic add --topic-address=executorCancellation --entries=topics/executorCanc
 
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-post-size, value=943718400)
 
-/subsystem=undertow/configuration=handler/file=windup-web-redirect:add
-/subsystem=undertow/configuration=handler/file=windup-web-redirect:write-attribute(name=path,value=${jboss.home.dir}/windup-web-redirect)
-/subsystem=undertow/server=default-server/host=default-host/location=\//:write-attribute(name=handler,value=windup-web-redirect)
+/subsystem=undertow/configuration=handler/file=root-redirect:add
+/subsystem=undertow/configuration=handler/file=root-redirect:write-attribute(name=path,value=${jboss.home.dir}/root-redirect)
+/subsystem=undertow/server=default-server/host=default-host/location=\//:write-attribute(name=handler,value=root-redirect)
 
 # Logging
 /subsystem=logging/logger=org.jboss.windup:add(level=INFO, use-parent-handlers=false, handlers=[])
