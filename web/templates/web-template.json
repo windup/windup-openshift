@@ -123,6 +123,7 @@
             "displayName": "PostgreSQL Maximum number of connections",
             "description": "The maximum number of client connections allowed. This also sets the maximum number of prepared transactions.",
             "name": "POSTGRESQL_MAX_CONNECTIONS",
+            "value": "200",
             "required": false
         },
         {
