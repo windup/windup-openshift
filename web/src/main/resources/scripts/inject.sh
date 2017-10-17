@@ -40,12 +40,5 @@ then
     ${JBOSS_HOME}/bin/jboss-cli.sh --file=${JBOSS_HOME}/standalone/configuration/db_h2.cli
 fi
 
-# If not the master, configure the Slave file
-if [ "true" == "$IS_MASTER" ]
-then
-    echo "Setting up as a master node"
-    ${JBOSS_HOME}/bin/jboss-cli.sh --file=${JBOSS_HOME}/standalone/configuration/master.cli
-else
-    echo "Setting up as a slave node"
-    ${JBOSS_HOME}/bin/jboss-cli.sh --file=${JBOSS_HOME}/standalone/configuration/slave.cli
-fi
+echo "Setting up as a master node"
+${JBOSS_HOME}/bin/jboss-cli.sh --file=${JBOSS_HOME}/standalone/configuration/master.cli

@@ -84,7 +84,7 @@
             "displayName": "Database Volume Capacity",
             "description": "Size of persistent storage for database volume.",
             "name": "VOLUME_CAPACITY",
-            "value": "512Mi",
+            "value": "10G",
             "required": true
         },
         {
@@ -439,6 +439,10 @@
                                     "requests": {
                                         "cpu": "${REQUESTED_CPU}",
                                         "memory": "${REQUESTED_MEMORY}"
+                                    },
+                                    "limits": {
+                                        "cpu": "${REQUESTED_CPU}",
+                                        "memory": "${REQUESTED_MEMORY}"
                                     }
                                 },
                                 "volumeMounts": [
@@ -726,28 +730,23 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}-executor",
-                                "image": "docker.io/jsightler/windup-web-openshift",
+                                "image": "docker.io/jsightler/windup-web-openshift-messaging-executor",
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "requests": {
                                         "cpu": "${REQUESTED_CPU}",
                                         "memory": "${REQUESTED_MEMORY}"
+                                    },
+                                    "limits": {
+                                        "cpu": "${REQUESTED_CPU}",
+                                        "memory": "${REQUESTED_MEMORY}"
                                     }
                                 },
-                                "volumeMounts": [
-                                    {
-                                        "name": "${APPLICATION_NAME}-executor-rhamt-web-pvol",
-                                        "mountPath": "/opt/eap/standalone/data",
-                                        "readOnly": false
-                                    }
-                                ],
                                 "lifecycle": {
                                     "preStop": {
                                         "exec": {
                                             "command": [
-                                                "/opt/eap/bin/jboss-cli.sh",
-                                                "-c",
-                                                ":shutdown(timeout=60)"
+                                                "/opt/rhamt-cli/bin/stop.sh"
                                             ]
                                         }
                                     }
@@ -757,7 +756,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/eap/bin/livenessProbe.sh"
+                                            "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
                                     }
                                 },
@@ -766,26 +765,11 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/eap/bin/readinessProbe.sh"
+                                            "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
                                     }
                                 },
                                 "ports": [
-                                    {
-                                        "name": "jolokia",
-                                        "containerPort": 8778,
-                                        "protocol": "TCP"
-                                    },
-                                    {
-                                        "name": "http",
-                                        "containerPort": 8080,
-                                        "protocol": "TCP"
-                                    },
-                                    {
-                                        "name": "ping",
-                                        "containerPort": 8888,
-                                        "protocol": "TCP"
-                                    }
                                 ],
                                 "env": [
                                     {
@@ -793,191 +777,22 @@
                                         "value": "false"
                                     },
                                     {
-                                        "name": "DB_SERVICE_PREFIX_MAPPING",
-                                        "value": "${APPLICATION_NAME}-postgresql=DB"
+                                        "name": "MESSAGING_USER",
+                                        "value": "jms-user"
                                     },
                                     {
-                                        "name": "DB_JNDI",
-                                        "value": "${DB_JNDI}"
+                                        "name": "MESSAGING_PASSWORD",
+                                        "value": "gthudfal"
                                     },
                                     {
-                                        "name": "DB_USERNAME",
-                                        "value": "${DB_USERNAME}"
-                                    },
-                                    {
-                                        "name": "DB_PASSWORD",
-                                        "value": "${DB_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "DB_DATABASE",
-                                        "value": "${DB_DATABASE}"
-                                    },
-                                    {
-                                        "name": "TX_DATABASE_PREFIX_MAPPING",
-                                        "value": "${APPLICATION_NAME}-postgresql=DB"
-                                    },
-                                    {
-                                        "name": "DB_MIN_POOL_SIZE",
-                                        "value": "${DB_MIN_POOL_SIZE}"
-                                    },
-                                    {
-                                        "name": "DB_MAX_POOL_SIZE",
-                                        "value": "${DB_MAX_POOL_SIZE}"
-                                    },
-                                    {
-                                        "name": "DB_TX_ISOLATION",
-                                        "value": "${DB_TX_ISOLATION}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_KUBE_PING_LABELS",
-                                        "value": "application=${APPLICATION_NAME}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_KUBE_PING_NAMESPACE",
-                                        "valueFrom": {
-                                            "fieldRef": {
-                                                "fieldPath": "metadata.namespace"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "HTTPS_KEYSTORE_DIR",
-                                        "value": "/etc/eap-secret-volume"
-                                    },
-                                    {
-                                        "name": "MQ_CLUSTER_PASSWORD",
-                                        "value": "${MQ_CLUSTER_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "MQ_QUEUES",
-                                        "value": "${MQ_QUEUES}"
-                                    },
-                                    {
-                                        "name": "MQ_TOPICS",
-                                        "value": "${MQ_TOPICS}"
-                                    },
-                                    {
-                                        "name": "JGROUPS_ENCRYPT_SECRET",
-                                        "value": "${JGROUPS_ENCRYPT_SECRET}"
-                                    },
-                                    {
-                                        "name": "JGROUPS_ENCRYPT_KEYSTORE_DIR",
-                                        "value": "/etc/jgroups-encrypt-secret-volume"
-                                    },
-                                    {
-                                        "name": "JGROUPS_ENCRYPT_KEYSTORE",
-                                        "value": "${JGROUPS_ENCRYPT_KEYSTORE}"
-                                    },
-                                    {
-                                        "name": "JGROUPS_ENCRYPT_NAME",
-                                        "value": "${JGROUPS_ENCRYPT_NAME}"
-                                    },
-                                    {
-                                        "name": "JGROUPS_ENCRYPT_PASSWORD",
-                                        "value": "${JGROUPS_ENCRYPT_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "JGROUPS_CLUSTER_PASSWORD",
-                                        "value": "${JGROUPS_CLUSTER_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "AUTO_DEPLOY_EXPLODED",
-                                        "value": "${AUTO_DEPLOY_EXPLODED}"
-                                    },
-                                    {
-                                        "name": "DEFAULT_JOB_REPOSITORY",
-                                        "value": "${APPLICATION_NAME}-postgresql"
-                                    },
-                                    {
-                                        "name": "TIMER_SERVICE_DATA_STORE",
-                                        "value": "${APPLICATION_NAME}-postgresql"
-                                    },
-                                    {
-                                        "name": "SSO_URL",
-                                        "value": "${SSO_URL}"
-                                    },
-                                    {
-                                        "name": "SSO_SERVICE_URL",
-                                        "value": "${SSO_SERVICE_URL}"
-                                    },
-                                    {
-                                        "name": "SSO_REALM",
-                                        "value": "${SSO_REALM}"
-                                    },
-                                    {
-                                        "name": "SSO_USERNAME",
-                                        "value": "${SSO_USERNAME}"
-                                    },
-                                    {
-                                        "name": "SSO_PASSWORD",
-                                        "value": "${SSO_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "SSO_PUBLIC_KEY",
-                                        "value": "${SSO_PUBLIC_KEY}"
-                                    },
-                                    {
-                                        "name": "SSO_BEARER_ONLY",
-                                        "value": "${SSO_BEARER_ONLY}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE_SECRET",
-                                        "value": "${SSO_SAML_KEYSTORE_SECRET}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE",
-                                        "value": "${SSO_SAML_KEYSTORE}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE_DIR",
-                                        "value": "/etc/sso-saml-secret-volume"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_CERTIFICATE_NAME",
-                                        "value": "${SSO_SAML_CERTIFICATE_NAME}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE_PASSWORD",
-                                        "value": "${SSO_SAML_KEYSTORE_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "SSO_SECRET",
-                                        "value": "${SSO_SECRET}"
-                                    },
-                                    {
-                                        "name": "SSO_ENABLE_CORS",
-                                        "value": "${SSO_ENABLE_CORS}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_LOGOUT_PAGE",
-                                        "value": "${SSO_SAML_LOGOUT_PAGE}"
-                                    },
-                                    {
-                                        "name": "SSO_DISABLE_SSL_CERTIFICATE_VALIDATION",
-                                        "value": "${SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}"
-                                    },
-                                    {
-                                        "name": "SSO_TRUSTSTORE",
-                                        "value": "${SSO_TRUSTSTORE}"
-                                    },
-                                    {
-                                        "name": "SSO_TRUSTSTORE_DIR",
-                                        "value": "/etc/sso-secret-volume"
-                                    },
-                                    {
-                                        "name": "SSO_TRUSTSTORE_PASSWORD",
-                                        "value": "${SSO_TRUSTSTORE_PASSWORD}"
+                                        "name": "MESSAGING_HOST_VAR",
+                                        "value": "${APPLICATION_NAME}_SERVICE_HOST"
                                     }
                                 ]
                             }
                         ],
                         "volumes": [
-                            {
-                                "name": "${APPLICATION_NAME}-executor-rhamt-web-pvol",
-                                "persistentVolumeClaim": {
-                                    "claimName": "${APPLICATION_NAME}-executor-rhamt-web-claim"
-                                }
-                            }
+
                         ]
                     }
                 }

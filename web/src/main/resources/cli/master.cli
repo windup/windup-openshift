@@ -3,11 +3,4 @@ embed-server --std-out=echo --admin-only=true --server-config=standalone-openshi
 /subsystem=ejb3/mdb-delivery-group=dg_services:write-attribute(name=active, value=true)
 /subsystem=ejb3/mdb-delivery-group=dg_executors:write-attribute(name=active, value=false)
 
-/socket-binding-group=standard-sockets/socket-binding=activemq-5x:add(port=61616)
-/subsystem=messaging-activemq/server=default/remote-acceptor=activemq-5x-acceptor:add(socket-binding=activemq-5x)
-
-/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=remote-artemis:add(host=rhamt-web-console, port=61616)
-/subsystem=messaging-activemq/server=default/remote-connector=remote-artemis:add(socket-binding=remote-artemis)
-/subsystem=messaging-activemq/server=default/pooled-connection-factory=remote-artemis:add(connectors=[remote-artemis], entries=[java:/jms/remoteCF], user="jms-user", password="gthudfal")
-
 stop-embedded-server

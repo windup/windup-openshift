@@ -1,0 +1,244 @@
+#!/bin/bash
+
+# ----------------------------------------------------------------------------
+# Copyright 2012 Red Hat, Inc. and/or its affiliates.
+#
+# Licensed under the Eclipse Public License version 1.0, available at
+# http://www.eclipse.org/legal/epl-v10.html
+# ----------------------------------------------------------------------------
+
+
+
+# ----------------------------------------------------------------------
+# RHAMT Startup script
+#
+# Required Environment vars:
+# ------------------
+#   JAVA_HOME - location of a JRE home directory
+#
+# Optional Environment Variables
+# ------------------
+#   RHAMT_HOME - location of RHAMT's installed home dir
+#   RHAMT_OPTS - parameters passed to the Java VM when running RHAMT
+#   MAX_MEMORY - Maximum Java Heap (example: 2048m)
+#   MAX_METASPACE_SIZE - Maximum Metaspace size (example: 256m)
+#   RESERVED_CODE_CACHE_SIZE - Hotspot code cache size (example: 128m)
+# -----------------------------------------------------------------------
+ADDONS_DIR=()
+RHAMT_DEBUG_ARGS=()
+QUOTED_ARGS=()
+
+## Increase the open file limit if low, to what we need or at least to the hard limit.
+## Complain if the hard limit is lower than what we need.
+WE_NEED=1024
+MAX_HARD=$(ulimit -H -n);
+MAX_SOFT=$(ulimit -S -n);
+
+if [ $MAX_SOFT == 'unlimited' ] ; then MAX_SOFT=$WE_NEED; fi;
+if [ $MAX_HARD == 'unlimited' ] ; then MAX_HARD=$WE_NEED; fi;
+
+if [ $MAX_SOFT -lt $WE_NEED ] || [ $MAX_HARD -lt $WE_NEED ]  ; then
+
+  echo ""
+  echo "[WARNING] The limits ($MAX_SOFT/$MAX_HARD) for open files is too low and could make RHAMT unstable. Please increase them to at least $WE_NEED."
+  echo ""
+  echo "    {RHEL & Fedora} Limits are typically configured in /etc/security/limits.conf"
+  echo "     -> Follow instructions of https://access.redhat.com/solutions/60746"
+  echo ""
+  echo "    {MacOS} Limits are typically configured in /etc/launchd.conf or /etc/sysctl.conf."
+  echo "     -> Execute this script: https://gist.github.com/Maarc/d13b1e70f191d5b527a24d39dd3e2569 and restart your operating system."
+  echo ""
+
+fi
+
+
+## resolve links - $0 may be a link to RHAMT's home
+SCRIPT_HOME="$0"
+
+# need this for relative symlinks
+while [ -h "$PRG" ] ; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG="`dirname "$PRG"`/$link"
+  fi
+done
+
+SCRIPT_HOME=`dirname "$SCRIPT_HOME"`/..
+
+# make it fully qualified
+SCRIPT_HOME=`cd "$SCRIPT_HOME" && pwd`
+
+echo "Changing to script home: $SCRIPT_HOME"
+cd $SCRIPT_HOME
+
+while [ "$1" != "" ] ; do
+
+  if [ "$1" = "--debug" ] ; then
+    RHAMT_DEBUG_ARGS=( "-Xdebug" "-Xnoagent" "-Djava.compiler=NONE" "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000" )
+  fi
+
+  QUOTED_ARGS+=("$1")
+  shift
+done
+
+if [ -f /etc/rhamtrc ] ; then
+  . /etc/rhamtrc
+fi
+
+if [ -f "$HOME/.rhamtrc" ] ; then
+  . "$HOME/.rhamtrc"
+fi
+
+# OS specific support.  $var _must_ be set to either true or false.
+cygwin=false;
+darwin=false;
+mingw=false
+case "`uname`" in
+  CYGWIN*) cygwin=true ;;
+  MINGW*) mingw=true;;
+  Darwin*) darwin=true
+           ## Prevent "Too many open files" on Mac.
+           FILE_DESCRIPTOR_OPTS="-XX:-MaxFDLimit";
+           if [ -z "$JAVA_VERSION" ] ; then
+             JAVA_VERSION="1.7+"
+           fi
+           if [ -z "$JAVA_HOME" ] ; then
+             JAVA_HOME="`/usr/libexec/java_home --version $JAVA_VERSION`"
+           fi
+           ;;
+esac
+
+if [ -z "$JAVA_HOME" ] ; then
+  if [ -r /etc/gentoo-release ] ; then
+    JAVA_HOME=`java-config --jre-home`
+  fi
+fi
+
+if [ -n "$RHAMT_HOME" ] ; then
+    # Detect if this script is in a RHAMT directory
+    if [ ! -f "$SCRIPT_HOME/rhamt-cli-version.txt" ] ; then
+        # If it is, then use it as RHAMT_HOME
+        echo "Resetting RHAMT_HOME to $SCRIPT_HOME (from: $RHAMT_HOME)"
+
+        # Set it to blank and we will recalculate it later on
+        RHAMT_HOME="$SCRIPT_HOME"
+    fi
+fi
+
+if [ -z "$RHAMT_HOME" ] ; then
+  ## resolve links - $0 may be a link to RHAMT's home
+  PRG="$0"
+
+  # need this for relative symlinks
+  while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+      PRG="$link"
+    else
+      PRG="`dirname "$PRG"`/$link"
+    fi
+  done
+
+  RHAMT_HOME=`dirname "$PRG"`/..
+
+  # make it fully qualified
+  RHAMT_HOME=`cd "$RHAMT_HOME" && pwd`
+fi
+
+echo Using RHAMT at $RHAMT_HOME
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if $cygwin ; then
+  [ -n "$RHAMT_HOME" ] &&
+    RHAMT_HOME=`cygpath --unix "$RHAMT_HOME"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] &&
+    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+fi
+
+# For Migwn, ensure paths are in UNIX format before anything is touched
+if $mingw ; then
+  [ -n "$RHAMT_HOME" ] &&
+    RHAMT_HOME="`(cd "$RHAMT_HOME"; pwd)`"
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME="`(cd "$JAVA_HOME"; pwd)`"
+  # TODO classpath?
+fi
+
+if [ -z "$JAVACMD" ] ; then
+  if [ -n "$JAVA_HOME"  ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+      # IBM's JDK on AIX uses strange locations for the executables
+      JAVACMD="$JAVA_HOME/jre/sh/java"
+    else
+      JAVACMD="$JAVA_HOME/bin/java"
+    fi
+  else
+    JAVACMD="`which java`"
+  fi
+fi
+
+if [ ! -x "$JAVACMD" ] ; then
+  echo "Error: JAVA_HOME is not defined correctly."
+  echo "  We cannot execute $JAVACMD"
+  exit 1
+fi
+
+JAVAVER=`"$JAVACMD" -version 2>&1`
+case $JAVAVER in
+*1.[8-9]*) ;;
+*1.[1-7]*)
+	echo " Error: a Java 1.8 or higher JRE is required to run RHAMT; found [$JAVACMD -version == $JAVAVER]."
+	exit 1
+ ;;
+esac
+
+
+if [ -z "$JAVA_HOME" ] ; then
+  echo "Warning: JAVA_HOME environment variable is not set."
+fi
+
+RHAMT_MAIN_CLASS=org.jboss.windup.bootstrap.Bootstrap
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  [ -n "$RHAMT_HOME" ] &&
+    RHAMT_HOME=`cygpath --path --windows "$RHAMT_HOME"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+  [ -n "$HOME" ] &&
+    HOME=`cygpath --path --windows "$HOME"`
+fi
+
+#
+if [ -r "$RHAMT_HOME/addons/" ] ; then
+  ADDONS_DIR=("--immutableAddonDir" "$RHAMT_HOME/addons/")
+fi
+
+if [ -z "$MAX_METASPACE_SIZE" ] ; then
+  MAX_METASPACE_SIZE="256m"
+fi
+
+if [ -z "$RESERVED_CODE_CACHE_SIZE" ] ; then
+  RESERVED_CODE_CACHE_SIZE="128m"
+fi
+
+if [ -z "$RHAMT_OPTS" ] ; then
+  if [ -n "$MAX_MEMORY" ] ; then
+    RHAMT_OPTS="-Xmx$MAX_MEMORY -XX:MaxMetaspaceSize=$MAX_METASPACE_SIZE -XX:ReservedCodeCacheSize=$RESERVED_CODE_CACHE_SIZE"
+  else
+    RHAMT_OPTS="-XX:MaxMetaspaceSize=$MAX_METASPACE_SIZE -XX:ReservedCodeCacheSize=$RESERVED_CODE_CACHE_SIZE"
+  fi
+fi
+
+RHAMT_OPTS="$RHAMT_OPTS $FILE_DESCRIPTOR_OPTS";
+
+JAVA_TOOL_OPTIONS=""
+
+$JAVACMD "${RHAMT_DEBUG_ARGS[@]}" $RHAMT_OPTS -Dforge.standalone=true -Dforge.home=${RHAMT_HOME} -Dwindup.home=${RHAMT_HOME} \
+   -cp ${RHAMT_HOME}/lib/'*' $RHAMT_MAIN_CLASS "${QUOTED_ARGS[@]}" "${ADDONS_DIR[@]}"
