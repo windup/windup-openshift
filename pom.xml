@@ -53,6 +53,7 @@
 
     <modules>
         <module>web</module>
+        <module>messaging-executor</module>
         <module>cli</module>
     </modules>
 </project>
