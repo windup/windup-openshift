@@ -84,7 +84,7 @@
             "displayName": "Database Volume Capacity",
             "description": "Size of persistent storage for database volume.",
             "name": "VOLUME_CAPACITY",
-            "value": "512Mi",
+            "value": "10G",
             "required": true
         },
         {
@@ -439,6 +439,10 @@
                                     "requests": {
                                         "cpu": "${REQUESTED_CPU}",
                                         "memory": "${REQUESTED_MEMORY}"
+                                    },
+                                    "limits": {
+                                        "cpu": "${REQUESTED_CPU}",
+                                        "memory": "${REQUESTED_MEMORY}"
                                     }
                                 },
                                 "volumeMounts": [
@@ -496,8 +500,8 @@
                                 ],
                                 "env": [
                                     {
-                                        "name": "FQDN",
-                                        "value": "${HOSTNAME_HTTP}"
+                                        "name": "IS_MASTER",
+                                        "value": "true"
                                     },
                                     {
                                         "name": "DB_SERVICE_PREFIX_MAPPING",
@@ -694,6 +698,110 @@
             "kind": "DeploymentConfig",
             "apiVersion": "v1",
             "metadata": {
+                "name": "${APPLICATION_NAME}-executor",
+                "labels": {
+                    "application": "${APPLICATION_NAME}-executor"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "triggers": [
+
+                   {
+                       "type": "ConfigChange"
+                   }
+               ],
+                "replicas": 1,
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}-executor"
+                },
+                "template": {
+                    "metadata": {
+                        "name": "${APPLICATION_NAME}-executor",
+                        "labels": {
+                            "deploymentConfig": "${APPLICATION_NAME}-executor",
+                            "application": "${APPLICATION_NAME}-executor"
+                        }
+                    },
+                    "spec": {
+                        "terminationGracePeriodSeconds": 75,
+                        "containers": [
+                            {
+                                "name": "${APPLICATION_NAME}-executor",
+                                "image": "docker.io/jsightler/windup-web-openshift-messaging-executor",
+                                "imagePullPolicy": "Always",
+                                "resources": {
+                                    "requests": {
+                                        "cpu": "${REQUESTED_CPU}",
+                                        "memory": "${REQUESTED_MEMORY}"
+                                    },
+                                    "limits": {
+                                        "cpu": "${REQUESTED_CPU}",
+                                        "memory": "${REQUESTED_MEMORY}"
+                                    }
+                                },
+                                "lifecycle": {
+                                    "preStop": {
+                                        "exec": {
+                                            "command": [
+                                                "/opt/rhamt-cli/bin/stop.sh"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/bin/bash",
+                                            "-c",
+                                            "/opt/rhamt-cli/bin/livenessProbe.sh"
+                                        ]
+                                    }
+                                },
+                                "readinessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/bin/bash",
+                                            "-c",
+                                            "/opt/rhamt-cli/bin/livenessProbe.sh"
+                                        ]
+                                    }
+                                },
+                                "ports": [
+                                ],
+                                "env": [
+                                    {
+                                        "name": "IS_MASTER",
+                                        "value": "false"
+                                    },
+                                    {
+                                        "name": "MESSAGING_USER",
+                                        "value": "jms-user"
+                                    },
+                                    {
+                                        "name": "MESSAGING_PASSWORD",
+                                        "value": "gthudfal"
+                                    },
+                                    {
+                                        "name": "MESSAGING_HOST_VAR",
+                                        "value": "${APPLICATION_NAME}_SERVICE_HOST"
+                                    }
+                                ]
+                            }
+                        ],
+                        "volumes": [
+
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
                 "name": "${APPLICATION_NAME}-postgresql",
                 "labels": {
                     "application": "${APPLICATION_NAME}"
@@ -799,6 +907,30 @@
             "spec": {
                 "ports": [
                     {
+                        "port": 61616,
+                        "targetPort": 61616
+                    }
+                ],
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}"
+                }
+            },
+            "metadata": {
+                "name": "${APPLICATION_NAME}-amq",
+                "labels": {
+                    "application": "${APPLICATION_NAME}-amq"
+                },
+                "annotations": {
+                    "description": "Rhamt Master AMQ port."
+                }
+            }
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "spec": {
+                "ports": [
+                    {
                         "port": 5432,
                         "targetPort": 5432
                     }
@@ -844,6 +976,26 @@
                 "name": "${APPLICATION_NAME}-rhamt-web-claim",
                 "labels": {
                     "application": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "accessModes": [
+                    "ReadWriteOnce"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "${VOLUME_CAPACITY}"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "PersistentVolumeClaim",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-executor-rhamt-web-claim",
+                "labels": {
+                    "application": "${APPLICATION_NAME}-executor"
                 }
             },
             "spec": {

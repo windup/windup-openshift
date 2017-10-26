@@ -1,9 +1,12 @@
 embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
 
-jms-queue add --queue-address=executorQueue --entries=queues/executorQueue
-jms-queue add --queue-address=statusUpdateQueue --entries=queues/statusUpdateQueue
-jms-queue add --queue-address=packageDiscoveryQueue --entries=queues/packageDiscoveryQueue
-jms-topic add --topic-address=executorCancellation --entries=topics/executorCancellation
+/subsystem=ejb3/mdb-delivery-group=dg_executors:add()
+/subsystem=ejb3/mdb-delivery-group=dg_services:add()
+
+jms-queue add --queue-address=executorQueue --entries=[queues/executorQueue,java:jboss/exported/jms/queues/executorQueue]
+jms-queue add --queue-address=statusUpdateQueue --entries=[queues/statusUpdateQueue,java:jboss/exported/jms/queues/statusUpdateQueue]
+jms-queue add --queue-address=packageDiscoveryQueue --entries=[queues/packageDiscoveryQueue]
+jms-topic add --topic-address=executorCancellation --entries=[topics/executorCancellation,java:jboss/exported/jms/topics/executorCancellation]
 
 /subsystem=keycloak:remove
 /subsystem=keycloak:add
@@ -19,28 +22,5 @@ jms-topic add --topic-address=executorCancellation --entries=topics/executorCanc
 /subsystem=undertow/configuration=handler/file=root-redirect:add
 /subsystem=undertow/configuration=handler/file=root-redirect:write-attribute(name=path,value=${jboss.home.dir}/root-redirect)
 /subsystem=undertow/server=default-server/host=default-host/location=\//:write-attribute(name=handler,value=root-redirect)
-
-# Logging
-/subsystem=logging/logger=org.jboss.windup:add(level=INFO, use-parent-handlers=false, handlers=[])
-/subsystem=logging/logger=org.jboss.windup.web:add(level=INFO, use-parent-handlers=false, handlers=[CONSOLE])
-/subsystem=logging/logger=org.jboss.windup.web.services.WindupWebProgressMonitor:add(level=INFO, use-parent-handlers=false, handlers=[])
-
-## Reduce the Furnace loading warnings.
-/subsystem=logging/logger=org.jboss.forge.furnace.container.simple.impl.SimpleServiceRegistry/:add(level=SEVERE)
-## Validator complains about "ClassX declared a normal scope but does not implement javax.enterprise.inject.spi.PassivationCapable. ..."
-/subsystem=logging/logger=org.jboss.weld.Validator/:add(level=ERROR)
-## DEBUG Configuring component class: ...
-/subsystem=logging/logger=org.jboss.as.ee/:add(level=INFO)
-## MSC000004: Failure during stop of service jboss.deployment.unit."api.war".WeldStartService: org.jboss.forge.furnace.exception.ContainerException:
-## Could not get services of type [interface org.jboss.windup.web.addons.websupport.WindupWebServiceFactory] from addon [org.jboss.windup.web.addons:windup-web-support,4.0.0-SNAPSHOT +STARTED]
-/subsystem=logging/logger=org.jboss.msc.service.fail/:add(level=ERROR)
-## HHH000431: Unable to determine H2 database version, certain features may not work
-/subsystem=logging/logger=org.hibernate.dialect.H2Dialect/:add(level=ERROR)
-
-## Remove spurious Titan warnings
-/subsystem=logging/logger=com.thinkaurelius.titan.diskstorage.berkeleyje/:add(level=ERROR)
-
-/subsystem=logging/logger=org.jboss.weld.Bootstrap/:add(level=WARN)
-/subsystem=logging/logger=org.jboss.weld.Event/:add(level=WARN)
 
 stop-embedded-server

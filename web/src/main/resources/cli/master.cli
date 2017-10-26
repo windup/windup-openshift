@@ -1,0 +1,6 @@
+embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
+
+/subsystem=ejb3/mdb-delivery-group=dg_services:write-attribute(name=active, value=true)
+/subsystem=ejb3/mdb-delivery-group=dg_executors:write-attribute(name=active, value=false)
+
+stop-embedded-server
