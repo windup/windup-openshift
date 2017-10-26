@@ -13,6 +13,7 @@ jms-topic add --topic-address=executorCancellation --entries=[topics/executorCan
 
 /system-property=keycloak.realm.public.key:add(value="${env.SSO_PUBLIC_KEY}")
 /system-property=keycloak.server.url:add(value="${env.SSO_URL}")
+/system-property=messaging.serializer:add(value="amq.largemessage")
 
 /subsystem=keycloak/secure-deployment=api.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="EXTERNAL", resource=rhamt-web, public-client=true)
 /subsystem=keycloak/secure-deployment=rhamt-web.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="EXTERNAL", resource=rhamt-web, public-client=true)
