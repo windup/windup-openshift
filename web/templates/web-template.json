@@ -46,27 +46,6 @@
             "required": false
         },
         {
-            "displayName": "Git Repository URL",
-            "description": "Git source URI for application",
-            "name": "SOURCE_REPOSITORY_URL",
-            "value": "https://github.com/windup/windup-web-distribution",
-            "required": true
-        },
-        {
-            "displayName": "Git Reference",
-            "description": "Git branch/tag reference",
-            "name": "SOURCE_REPOSITORY_REF",
-            "value": "master",
-            "required": false
-        },
-        {
-            "displayName": "Context Directory",
-            "description": "Path within Git project to build; empty for root project directory.",
-            "name": "CONTEXT_DIR",
-            "value": "todolist/todolist-jdbc",
-            "required": false
-        },
-        {
             "displayName": "Database JNDI Name",
             "description": "Database JNDI name used by application to resolve the datasource, e.g. java:/jboss/datasources/postgresql",
             "name": "DB_JNDI",
@@ -84,7 +63,7 @@
             "displayName": "Database Volume Capacity",
             "description": "Size of persistent storage for database volume.",
             "name": "VOLUME_CAPACITY",
-            "value": "10G",
+            "value": "20G",
             "required": true
         },
         {
@@ -742,6 +721,13 @@
                                         "memory": "${REQUESTED_MEMORY}"
                                     }
                                 },
+                                "volumeMounts": [
+                                    {
+                                        "name": "${APPLICATION_NAME}-rhamt-web-pvol",
+                                        "mountPath": "/opt/eap/standalone/data",
+                                        "readOnly": false
+                                    }
+                                ],
                                 "lifecycle": {
                                     "preStop": {
                                         "exec": {
@@ -792,7 +778,12 @@
                             }
                         ],
                         "volumes": [
-
+                            {
+                                "name": "${APPLICATION_NAME}-rhamt-web-pvol",
+                                "persistentVolumeClaim": {
+                                    "claimName": "${APPLICATION_NAME}-rhamt-web-claim"
+                                }
+                            }
                         ]
                     }
                 }
@@ -980,27 +971,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "ReadWriteOnce"
-                ],
-                "resources": {
-                    "requests": {
-                        "storage": "${VOLUME_CAPACITY}"
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "PersistentVolumeClaim",
-            "metadata": {
-                "name": "${APPLICATION_NAME}-executor-rhamt-web-claim",
-                "labels": {
-                    "application": "${APPLICATION_NAME}-executor"
-                }
-            },
-            "spec": {
-                "accessModes": [
-                    "ReadWriteOnce"
+                    "ReadWriteMany"
                 ],
                 "resources": {
                     "requests": {
