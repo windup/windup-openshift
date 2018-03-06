@@ -13,10 +13,14 @@ jms-topic add --topic-address=executorCancellation --entries=[topics/executorCan
 
 /system-property=keycloak.realm.public.key:add(value="${env.SSO_PUBLIC_KEY}")
 /system-property=keycloak.server.url:add(value="${env.SSO_URL}")
-/system-property=messaging.serializer:add(value="shared.storage")
+#/system-property=keycloak.token.verify.host:add(value="${env.RHAMT_WEB_CONSOLE_SERVICE_HOST}")
+#/system-property=keycloak.token.verify.port:add(value="${env.RHAMT_WEB_CONSOLE_SERVICE_PORT}")
+/system-property=messaging.serializer:add(value="${env.MESSAGING_SERIALIZER}")
 
-/subsystem=keycloak/secure-deployment=api.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="EXTERNAL", resource=rhamt-web, public-client=true)
-/subsystem=keycloak/secure-deployment=rhamt-web.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="EXTERNAL", resource=rhamt-web, public-client=true)
+/system-property=keycloak.trust.all.ssl:add(value="true")
+
+/subsystem=keycloak/secure-deployment=api.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
+/subsystem=keycloak/secure-deployment=rhamt-web.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
 
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-post-size, value=943718400)
 

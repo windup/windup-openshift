@@ -8,6 +8,7 @@ JMS_HOST=${JMS_HOST^^}
 JMS_HOST=${JMS_HOST//-/_}
 JMS_HOST=${!JMS_HOST}
 
+SERIALIZER=${MESSAGING_SERIALIZER}
 DATA_DIR=/opt/eap/standalone/data
 PING_DIR=/opt/rhamt-cli/ping
 
@@ -18,7 +19,7 @@ export RHAMT_OPTS="${RHAMT_OPTS/-XX:MaxMetaspaceSize=100m/-XX:MaxMetaspaceSize=2
 
 echo "RHAMT_OPTS: $RHAMT_OPTS"
 
-/opt/rhamt-cli/bin/rhamt-cli -Dmessaging.serializer=shared.storage \
+/opt/rhamt-cli/bin/rhamt-cli -Dmessaging.serializer=${MESSAGING_SERIALIZER} \
     -Dwindup.data.dir=${DATA_DIR} \
     --messagingExecutor \
     --user ${JMS_USER} --password ${JMS_PASSWORD} --host ${JMS_HOST} \
@@ -26,4 +27,6 @@ echo "RHAMT_OPTS: $RHAMT_OPTS"
     --executorQueue jms/queues/executorQueue \
     --statusUpdateQueue jms/queues/statusUpdateQueue \
     --cancellationTopic jms/topics/executorCancellation \
-    --pingDir ${PING_DIR}
+    --pingDir ${PING_DIR} \
+     -Dwindup.result.get.url=http://${JMS_HOST}:8080/rhamt-web/api/windup/executions/get-execution-request-tar \
+     -Dwindup.result.post.url=http://${JMS_HOST}:8080/rhamt-web/api/windup/executions/post-results
