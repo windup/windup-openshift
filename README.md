@@ -16,7 +16,7 @@
    
 ## OpenShift image deployment
 
-1. copy the raw content of file https://github.com/mrizzi/windup-openshift/blob/master/web/templates/web-template.json [web-template.json](web/templates/web-template.json)
+1. copy the raw content of file [web-template.json](web/templates/web-template.json)
 1. paste it in the "Import YAML / JSON" wizard in your Openshift installation
 1. save and wait for the deployment to end
 
