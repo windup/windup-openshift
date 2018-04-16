@@ -1,4 +1,4 @@
-# windup-openshift
+# windup-openshift: Red Hat Application Migration Toolkit on OpenShift
 This project is useful if you want to try RHAMT on an OpenShift instance.  
 If you just want to test RHAMT using the [images](https://hub.docker.com/u/windup3/) we made available in the docker.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) part.  
 If you made some changes to RHAMT and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own docker images so that you're free to test your code.
