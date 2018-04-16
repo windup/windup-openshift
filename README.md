@@ -1,4 +1,8 @@
 # windup-openshift
+This project is useful if you want to try RHAMT on an OpenShift instance.  
+If you just want to test RHAMT using the [images](https://hub.docker.com/u/windup3/) we made available in the docker.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) part.  
+If you made some changes to RHAMT and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own docker images so that you're free to test your code.
+
 ## OpenShift image construction
 For building this project and creating Docker images you have to have a Docker instance running locally on your machine so that you can pull the built images.
 ### Install Docker for Fedora
@@ -31,11 +35,14 @@ There are two different ways for deploying RHAMT on OpenShift based upon if you 
 1. login to Openshift: `$ oc login`
 1. create the template: `$ oc create -f ./rhamt_template.json -n openshift`
 
-Now, if you go to OpenShift Web Console home page, you'll see the Red Hat Application Migration Toolkit (ref. `screenshot-0`) in the list of the available templates and so you can deploy it to a project just like any other template.
+Now, if you go to OpenShift Web Console home page, you'll see the Red Hat Application Migration Toolkit (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
 
 ![screenshot-0](https://user-images.githubusercontent.com/7288588/38804671-80e5af28-4173-11e8-979c-58dc84e2371f.png)
 *screenshot-0: in OpenShift Web Console (v3.7) `Browse Catalog` page you can see the `Red Hat Application Migration Toolkit 4.1` icon (4th row, 2nd column)*
 ### Import template in Openshift Web Console
 1. copy the raw content of file [web-template.json](web/templates/web-template.json)
-1. paste it in the "Import YAML / JSON" wizard in Openshift Web Console
+1. paste it in the "Import YAML / JSON" wizard in Openshift Web Console (ref. *screenshot-1*)
 1. save and wait for the deployment to end
+
+![screenshot-1](https://user-images.githubusercontent.com/7288588/38807819-273b0f1c-417e-11e8-96d2-c82b41ee59bf.png)
+*screenshot-1: in OpenShift Web Console (v3.7) `Import YAML / JSON` wizard you can paste template raw content*
