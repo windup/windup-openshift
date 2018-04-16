@@ -27,13 +27,18 @@ So sign up yourself to Docker Hub at https://hub.docker.com taking care that the
    1. `$ docker push <your_docker_id>/windup-web-openshift-messaging-executor`
 
 If you want you can also set the tag for the built images (e.g. if you are working on a specific branch and you want to create images tagged with the branch name), you just have to add the tag name to the `docker.name.windup.web` and `docker.name.windup.web.executor` system properties' values (i.e. from the above example `-Ddocker.name.windup.web=<your_docker_id>/windup-web-openshift:tag_value -Ddocker.name.windup.web.executor=<your_docker_id>/windup-web-openshift-messaging-executor:tag_value`)
+
+### Point to your images
+Now that your images are available on docker.io repository, you have to reference them in RHAMT template in order to use these images in the deployments.
+1. open [`./web/templates/web-template.json`](web/templates/web-template.json) in an IDE or text editor
+1. change all the `"image"` values to point to `docker.io/<your_docker_id>/` instead of `docker.io/windup3/`
    
 ## OpenShift template deployment
 There are two different ways for deploying RHAMT on OpenShift based upon if you have [`cluster-admin privileges`](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#roles): if you have those privileges you can go decide to follow [Template deployment in OpenShift catalog](#template-deployment-in-openshift-catalog) (because you can operate on the default `openshift` project) or [Import template in Openshift Web Console](#import-template-in-openshift-web-console) otherwise you can just go with the latter approach ([Import template in Openshift Web Console](#import-template-in-openshift-web-console))
 
 ### Template deployment in OpenShift catalog
 1. login to Openshift: `$ oc login`
-1. create the template: `$ oc create -f ./rhamt_template.json -n openshift`
+1. create the template: `$ oc create -f ./web/templates/web-template.json -n openshift`
 
 Now, if you go to OpenShift Web Console home page, you'll see the Red Hat Application Migration Toolkit (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
 
