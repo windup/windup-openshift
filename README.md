@@ -11,7 +11,7 @@ For building this project and creating Docker images you have to have a Docker i
 
 For any issue related to installation, you can refer to [Docker documentation](https://docs.docker.com/install/linux/docker-ce/fedora/).
 ### Install Docker for other OS
-[Install Docker](https://docs.docker.com/install/)
+For any other platform you can follow the detailed instructions provided in the guide [Install Docker](https://docs.docker.com/install/) guide from Docker.
 ### Create an account to Docker Hub
 You need an account on https://hub.docker.com in order to push your images and have them available in the [docker.io repository](https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#important-terms).  
 So sign up yourself to Docker Hub at https://hub.docker.com taking care that the Docker ID you choose will be the `<your_docker_id>` value in the next steps.
@@ -31,8 +31,10 @@ There are two different ways for deploying RHAMT on OpenShift based upon if you 
 1. login to Openshift: `$ oc login`
 1. create the template: `$ oc create -f ./rhamt_template.json -n openshift`
 
-Now, if you go to OpenShift Web Console home page, you'll see the Red Hat Application Migration Toolkit in the list of the available templates and so you can deploy it to a project just like any other template.
+Now, if you go to OpenShift Web Console home page, you'll see the Red Hat Application Migration Toolkit (ref. `screenshot-0`) in the list of the available templates and so you can deploy it to a project just like any other template.
 
+![screenshot-0](https://user-images.githubusercontent.com/7288588/38804671-80e5af28-4173-11e8-979c-58dc84e2371f.png)
+*screenshot-0: in OpenShift Web Console (v3.7) `Browse Catalog` page you can see the `Red Hat Application Migration Toolkit 4.1` icon (4th row, 2nd column)*
 ### Import template in Openshift Web Console
 1. copy the raw content of file [web-template.json](web/templates/web-template.json)
 1. paste it in the "Import YAML / JSON" wizard in Openshift Web Console
