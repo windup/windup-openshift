@@ -1,11 +1,13 @@
 # windup-openshift: Red Hat Application Migration Toolkit on OpenShift
 This project is useful if you want to try RHAMT on an OpenShift instance.  
-If you just want to test RHAMT using the [images](https://hub.docker.com/u/windup3/) we made available in the docker.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) part.  
-If you made some changes to RHAMT and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own docker images so that you're free to test your code.
+If you just want to test RHAMT using the [images](https://hub.docker.com/u/windup3/) we have made available in the docker.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) section.  
+If you have made some changes to RHAMT and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own docker images so that you're free to test your code.
 
 ## OpenShift image construction
-For building this project and creating Docker images you have to have a Docker instance running locally on your machine so that you can pull the built images.
-### Install Docker for Fedora
+### Install Docker
+For building this project and creating Docker images you have to have a Docker instance running locally on your machine so that you can pull the built images.  
+Next you'll find some basic instructions to install Docker based on your local OS.
+#### Install Docker for Fedora
 1. Install Docker: `$ sudo dnf install docker`
 1. Configure `docker` group (ref. [Manage Docker as a non-root user](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user)):
    1. `$ sudo groupadd docker`
@@ -14,8 +16,8 @@ For building this project and creating Docker images you have to have a Docker i
 1. Test Docker is working: `$ docker run hello-world`
 
 For any issue related to installation, you can refer to [Docker documentation](https://docs.docker.com/install/linux/docker-ce/fedora/).
-### Install Docker for other OS
-For any other platform you can follow the detailed instructions provided in the guide [Install Docker](https://docs.docker.com/install/) guide from Docker.
+#### Install Docker for other OS
+For any other platform you can follow the detailed instructions provided in the [Install Docker](https://docs.docker.com/install/) guide from Docker.
 ### Create an account to Docker Hub
 You need an account on https://hub.docker.com in order to push your images and have them available in the [docker.io repository](https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#important-terms).  
 So sign up yourself to Docker Hub at https://hub.docker.com taking care that the Docker ID you choose will be the `<your_docker_id>` value in the next steps.
@@ -34,7 +36,7 @@ Now that your images are available on docker.io repository, you have to referenc
 1. change all the `"image"` values to point to `docker.io/<your_docker_id>/` instead of `docker.io/windup3/`
    
 ## OpenShift template deployment
-There are two different ways for deploying RHAMT on OpenShift based upon if you have [`cluster-admin privileges`](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#roles): if you have those privileges you can go decide to follow [Template deployment in OpenShift catalog](#template-deployment-in-openshift-catalog) (because you can operate on the default `openshift` project) or [Import template in Openshift Web Console](#import-template-in-openshift-web-console) otherwise you can just go with the latter approach ([Import template in Openshift Web Console](#import-template-in-openshift-web-console))
+There are two different ways for deploying RHAMT on OpenShift based upon if you have [`cluster-admin privileges`](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#roles): if you have those privileges you can decide to follow [Template deployment in OpenShift catalog](#template-deployment-in-openshift-catalog) (because you can operate on the default `openshift` project) or [Import template in Openshift Web Console](#import-template-in-openshift-web-console) otherwise you can just go with the latter approach ([Import template in Openshift Web Console](#import-template-in-openshift-web-console))
 
 ### Template deployment in OpenShift catalog
 1. login to Openshift: `$ oc login`
