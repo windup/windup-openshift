@@ -758,7 +758,7 @@
                                 },
                                 "volumeMounts": [
                                     {
-                                        "name": "${APPLICATION_NAME}-rhamt-web-pvol",
+                                        "name": "${APPLICATION_NAME}-rhamt-web-executor-volume",
                                         "mountPath": "/opt/eap/standalone/data",
                                         "readOnly": false
                                     }
@@ -818,10 +818,8 @@
                         ],
                         "volumes": [
                             {
-                                "name": "${APPLICATION_NAME}-rhamt-web-pvol",
-                                "persistentVolumeClaim": {
-                                    "claimName": "${APPLICATION_NAME}-rhamt-web-executor-claim"
-                                }
+                                "name": "${APPLICATION_NAME}-rhamt-web-executor-volume",
+                                "emptyDir": {}
                             }
                         ]
                     }
@@ -1004,29 +1002,6 @@
             "kind": "PersistentVolumeClaim",
             "metadata": {
                 "name": "${APPLICATION_NAME}-rhamt-web-claim",
-                "labels": {
-                    "application": "${APPLICATION_NAME}"
-                }
-            },
-            "spec": {
-                "accessModes": [
-                    "ReadWriteOnce"
-                ],
-                "resources": {
-                    "requests": {
-                        "storage": "${VOLUME_CAPACITY}"
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "PersistentVolumeClaim",
-            "metadata": {
-                "name": "${APPLICATION_NAME}-rhamt-web-executor-claim",
-                "annotations": {
-                    "volume.beta.kubernetes.io/storage-class": "ceph-dyn-datahub"
-                },
                 "labels": {
                     "application": "${APPLICATION_NAME}"
                 }
