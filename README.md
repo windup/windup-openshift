@@ -53,3 +53,32 @@ Now, if you go to OpenShift Web Console home page, you'll see the Red Hat Applic
 
 ![screenshot-1](https://user-images.githubusercontent.com/7288588/38807819-273b0f1c-417e-11e8-96d2-c82b41ee59bf.png)
 *screenshot-1: in OpenShift Web Console (v3.7) `Import YAML / JSON` wizard you can paste template raw content*
+## Working with Red Hat Container Development Kit
+If you want to build locally your own images without the need to push them to the Docker repository, you can use Red Hat Container Development Kit (CDK).  
+"Red Hat Container Development Kit provides a pre-built Container Development Environment based on Red Hat Enterprise Linux to help you develop container-based applications quickly." (ref.  [Red Hat Container Development Kit documentation](https://developers.redhat.com/products/cdk/overview/)).  
+For installing CDK, please refer to the https://developers.redhat.com web site where you can find the [Hello World!](https://developers.redhat.com/products/cdk/hello-world/) guide.  
+Once you have a fully working CDK instance, you can follow the next steps:
+
+1. [_optional_]`$ systemctl stop docker` (do this only if you have Docker running on your machine)
+1. `$ minishift docker-env` to display the command you need to type into your shell in order to configure your Docker client since the command output will differ depending on OS and shell type
+1. execute the command from the step before
+1. `$ docker ps` to test that it's working fine and you can see in output a list of running containers
+1. `$ docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)` to log into the CDK OpenShift Docker registry
+1. `$ mvn clean install` to build the Docker images for this project
+1. `$ docker images` to have the list of the images so that you can check to have the built images `windup-web-openshift` and `windup-web-openshift-messaging-executor` and find their TAG value that should be equal the value of the `<version>` tag in the [pom.xml](./pom.xml) file (e.g. `4.1.0-SNAPSHOT`)
+1. `$ docker tag windup-web-openshift:4.1.0-SNAPSHOT $(minishift openshift registry)/$(oc project -q)/windup-web-openshift` to tag the image against the CDK OpenShift registry (please take care to use the right TAG value, `4.1.0-SNAPSHOT` in this example)
+1. `$ docker tag windup-web-openshift-messaging-executor:4.1.0-SNAPSHOT $(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor` to tag the image against the CDK OpenShift registry (please take care to use the right TAG value, `4.1.0-SNAPSHOT` in this example)
+1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift` to push the image to the registry to create an image stream 
+1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor` to push the image to the registry to create an image stream 
+1. now, before proceeding, you have to follow the above instructions about [OpenShift template deployment](#openshift-template-deployment)
+1. once you have successufully deployed, you can change the deployments to point to your local images.  
+Go to `Deployments` web page and:
+   1. choose `rhamt-web-console` deployment page
+   1. select `Actions` => `Edit` from the top right button
+   1. tick the `Deploy images from an image stream tag` box and select the values for the `Image Stream Tag` comboboxes selecting your project's name as `Namespace`, `windup-web-openshift` for `Image Stream` and `latest` for `Tag`
+   1. push the `Save` button at the bottom of the page
+   1. repeat these steps for `rhamt-web-console-executor` deployment using `windup-web-openshift-messaging-executor` as `Image Stream` combox value
+   
+Now your deployment are using the Docker images you have built locally on your machine and, whenever you update these images, new deployments will be triggered automatically.
+
+If you need more informations about how to interact with the CDK OpenShift Docker registry, please refer to the [Accessing the OpenShift Docker Registry](https://docs.openshift.org/latest/minishift/openshift/openshift-docker-registry.html) guide.
