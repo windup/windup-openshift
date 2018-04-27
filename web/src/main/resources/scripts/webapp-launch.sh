@@ -11,6 +11,9 @@ sed -i -e 's#-javaagent:$JBOSS_HOME/jolokia.jar=port=8778,protocol=https,caCert=
 # Remove the jboss logging package from system packages
 sed -i -e 's#JBOSS_MODULES_SYSTEM_PKGS="org.jboss.logmanager,jdk.nashorn.api"##g' /opt/eap/bin/launch/jboss_modules_system_pkgs.sh
 
+# This one works with the eap 7.1 image
+sed -i -e 's#JBOSS_MODULES_SYSTEM_PKGS="org.jboss.logmanager,jdk.nashorn.api,com.sun.crypto.provider"#JBOSS_MODULES_SYSTEM_PKGS="com.sun.crypto.provider"#g' /opt/eap/bin/launch/jboss_modules_system_pkgs.sh
+
 # Remove line containing "standalone.sh" - This is so that we can insert a new execution that runs a CLI script on startup
 cp /opt/eap/bin/openshift-launch.sh /opt/eap/bin/openshift-launch.sh.orig
 cat /opt/eap/bin/openshift-launch.sh.orig |grep -v standalone.sh | grep -v jboss_modules_system_pkgs > /opt/eap/bin/openshift-launch.sh
