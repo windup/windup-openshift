@@ -2,7 +2,7 @@
 This project is useful if you want to try RHAMT on an OpenShift instance.  
 If you just want to test RHAMT using the [images](https://hub.docker.com/u/windup3/) we have made available in the docker.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) section.  
 If you have made some changes to RHAMT and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own docker images so that you're free to test your code.  
-There's also the case that you don't have an OpenShift instance available and, in this scenario, Red Hat Container Development Kit can help you working locally on your machine with any need for an OpenShift instance to test your changes to the code. In this case please follow the instrcutions in the [Working with Red Hat Container Development Kit](#working-with-red-hat-container-development-kit) section.
+There's also the case that you don't have an OpenShift instance available and, in this scenario, Red Hat Container Development Kit can help you working locally on your machine with any need for an OpenShift instance to test your changes to the code. In this case please follow the instructions in the [Working with Red Hat Container Development Kit](#working-with-red-hat-container-development-kit) section.
 
 ## OpenShift image construction
 ### Install Docker
@@ -64,11 +64,9 @@ Once you have a fully working CDK instance, you can follow the next steps:
 1. `$ minishift docker-env` to display the command you need to type into your shell in order to configure your Docker client since the command output will differ depending on OS and shell type
 1. execute the command from the step before
 1. `$ docker ps` to test that it's working fine and you can see in output a list of running containers
+1. `$ oc login -u developer -p whatever` to login to CDK OpenShift (the `-p` password parameter can really be whatever value you want for the `developer` pre-built user in the CDK)
 1. `$ docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)` to log into the CDK OpenShift Docker registry
-1. `$ mvn clean install` to build the Docker images for this project
-1. `$ docker images` to have the list of the images so that you can check to have the built images `windup-web-openshift` and `windup-web-openshift-messaging-executor` and find their TAG value that should be equal the value of the `<version>` tag in the [pom.xml](./pom.xml) file (e.g. `4.1.0-SNAPSHOT`)
-1. `$ docker tag windup-web-openshift:4.1.0-SNAPSHOT $(minishift openshift registry)/$(oc project -q)/windup-web-openshift` to tag the image against the CDK OpenShift registry (please take care to use the right TAG value, `4.1.0-SNAPSHOT` in this example)
-1. `$ docker tag windup-web-openshift-messaging-executor:4.1.0-SNAPSHOT $(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor` to tag the image against the CDK OpenShift registry (please take care to use the right TAG value, `4.1.0-SNAPSHOT` in this example)
+1. `$ mvn clean install -Ddocker.name.windup.web=$(minishift openshift registry)/$(oc project -q)/windup-web-openshift:latest -Ddocker.name.windup.web.executor=$(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor:latest` to build the Docker images for this project with the right tags to push them to CDK OpenShift Docker registry
 1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift` to push the image to the registry to create an image stream 
 1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor` to push the image to the registry to create an image stream 
 1. now, before proceeding, you have to follow the above instructions about [OpenShift template deployment](#openshift-template-deployment)
@@ -77,11 +75,11 @@ Go to `Deployments` web page and:
    1. choose `rhamt-web-console` deployment page
    1. select `Actions` => `Edit` from the top right button (ref.)
    ![screenshot_action_edit](https://user-images.githubusercontent.com/7288588/39518963-2cfb1030-4e05-11e8-9c6b-a8d071d4fc3b.png)
-   1. tick the `Deploy images from an image stream tag` box and select the values for the `Image Stream Tag` comboboxes selecting your project's name as `Namespace`, `windup-web-openshift` for `Image Stream` and `latest` for `Tag`
+   1. check the `Deploy images from an image stream tag` box and select the values for the `Image Stream Tag` comboboxes selecting your project's name as `Namespace`, `windup-web-openshift` for `Image Stream` and `latest` for `Tag`
    ![screenshot_imagestream](https://user-images.githubusercontent.com/7288588/39518990-49f385fa-4e05-11e8-9a80-d04992f90f0c.png)
    1. push the `Save` button at the bottom of the page
    1. repeat these steps for `rhamt-web-console-executor` deployment using `windup-web-openshift-messaging-executor` as `Image Stream` combox value
    
-Now your deployments are using the Docker images you have built locally on your machine and, whenever you update these images, new deployments will be triggered automatically.
+Now your deployments are using the Docker images you have built locally on your machine and, whenever you update these images, new deployments will be triggered automatically when `docker push` command executes.
 
 If you need more informations about how to interact with the CDK OpenShift Docker registry, please refer to the [Accessing the OpenShift Docker Registry](https://docs.openshift.org/latest/minishift/openshift/openshift-docker-registry.html) guide.
