@@ -1024,9 +1024,6 @@
             "kind": "PersistentVolumeClaim",
             "metadata": {
                 "name": "${APPLICATION_NAME}-rhamt-web-executor-claim",
-                "annotations": {
-                    "volume.beta.kubernetes.io/storage-class": "ceph-dyn-datahub"
-                },
                 "labels": {
                     "application": "${APPLICATION_NAME}"
                 }
