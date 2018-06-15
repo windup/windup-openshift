@@ -55,5 +55,6 @@
         <module>web</module>
         <module>messaging-executor</module>
         <module>cli</module>
+        <module>templates</module>
     </modules>
 </project>
