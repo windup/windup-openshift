@@ -1,12 +1,14 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jboss.windup</groupId>
-  <artifactId>windup-web-openshift-messaging-executor</artifactId>
+  <artifactId>windup-openshift-parent</artifactId>
   <version>4.1.0.Alpha3</version>
+  <packaging>pom</packaging>
+  <name>Windup OpenShift - Parent</name>
   <description>OpenShift image generation for Windup</description>
-  <url>http://www.jboss.org/windup-openshift-parent/windup-web-openshift-messaging-executor</url>
+  <url>http://www.jboss.org/windup-openshift-parent</url>
   <organization>
     <name>JBoss by Red Hat</name>
     <url>http://www.jboss.org</url>
@@ -38,11 +40,17 @@
       <archive>http://lists.jboss.org/pipermail/windup-dev/</archive>
     </mailingList>
   </mailingLists>
+  <modules>
+    <module>web</module>
+    <module>messaging-executor</module>
+    <module>cli</module>
+    <module>templates</module>
+  </modules>
   <scm>
-    <connection>scm:git:https://github.com/windup/windup-openshift.git/windup-web-openshift-messaging-executor</connection>
-    <developerConnection>scm:git:git@github.com:windup/windup-openshift.git/windup-web-openshift-messaging-executor</developerConnection>
+    <connection>scm:git:https://github.com/windup/windup-openshift.git</connection>
+    <developerConnection>scm:git:git@github.com:windup/windup-openshift.git</developerConnection>
     <tag>master</tag>
-    <url>http://github.com/windup/windup-openshift/windup-web-openshift-messaging-executor</url>
+    <url>http://github.com/windup/windup-openshift</url>
   </scm>
   <issueManagement>
     <system>JBoss Jira</system>
@@ -67,8 +75,8 @@
     <version.compiler.plugin>3.6.0</version.compiler.plugin>
     <version.deploy.plugin>2.8.2</version.deploy.plugin>
     <version.injection.plugin>1.0.2</version.injection.plugin>
-    <maven.compiler.argument.source>1.8</maven.compiler.argument.source>
     <version.keycloak>2.5.5.Final</version.keycloak>
+    <maven.compiler.argument.source>1.8</maven.compiler.argument.source>
     <version.plugin.plugin>3.5</version.plugin.plugin>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sourceReleaseAssemblyDescriptor>source-release</sourceReleaseAssemblyDescriptor>
@@ -117,10 +125,9 @@
     <version.plexus.io>2.7.1</version.plexus.io>
     <maven.compiler.argument.target>1.8</maven.compiler.argument.target>
     <maven.compiler.testSource>1.8</maven.compiler.testSource>
-    <docker.name.windup.web.executor>%a:%v</docker.name.windup.web.executor>
     <version.javadoc.plugin>2.10.4</version.javadoc.plugin>
-    <version.source.plugin>3.0.1</version.source.plugin>
     <windup.web.scm.url>http://github.com/windup/windup-openshift</windup.web.scm.url>
+    <version.source.plugin>3.0.1</version.source.plugin>
     <version.surefire.plugin>2.19.1</version.surefire.plugin>
     <maven.compiler.argument.testSource>1.8</maven.compiler.argument.testSource>
     <version.rar.plugin>2.4</version.rar.plugin>
@@ -131,8 +138,8 @@
     <version.gpg.plugin>1.6</version.gpg.plugin>
     <version.license.plugin>1.10</version.license.plugin>
     <version.idlj.plugin>1.2.1</version.idlj.plugin>
-    <version.assembly.plugin>3.0.0</version.assembly.plugin>
     <version.help.plugin>2.2</version.help.plugin>
+    <version.assembly.plugin>3.0.0</version.assembly.plugin>
   </properties>
   <repositories>
     <repository>
@@ -183,7 +190,7 @@
   </pluginRepositories>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
-    <scriptSourceDirectory>/home/mrizzi/tmp_4_releases/tmp_release_4.1.0.Alpha3/windup-web/windup_web_tmp_dir/windup-openshift/messaging-executor/src/main/scripts</scriptSourceDirectory>
+    <scriptSourceDirectory>/home/mrizzi/tmp_4_releases/tmp_release_4.1.0.Alpha3/windup-web/windup_web_tmp_dir/windup-openshift/src/main/scripts</scriptSourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
     <outputDirectory>target/classes</outputDirectory>
     <testOutputDirectory>target/test-classes</testOutputDirectory>
@@ -198,67 +205,7 @@
       </testResource>
     </testResources>
     <directory>target</directory>
-    <finalName>windup-web-openshift-messaging-executor-4.1.0.Alpha3</finalName>
-    <plugins>
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>3.5.28</version>
-        <extensions>false</extensions>
-        <executions>
-          <execution>
-            <id>fabric8</id>
-            <phase>package</phase>
-            <goals>
-              <goal>build</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <mode>kubernetes</mode>
-          <buildStrategy>docker</buildStrategy>
-          <images>
-            <image>
-              <name>${docker.name.windup.web.executor}</name>
-              <build>
-                <from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</from>
-                <cmd>/opt/rhamt-cli/bin/openshift-launch.sh</cmd>
-                <assembly>
-                  <targetDir>/</targetDir>
-                  <descriptor>assembly/assembly.xml</descriptor>
-                </assembly>
-              </build>
-            </image>
-          </images>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
-        <extensions>false</extensions>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.jboss.windup.web</groupId>
-                  <artifactId>windup-web-executor</artifactId>
-                  <version>${project.version}</version>
-                  <outputDirectory>${project.build.directory}/rhamt-cli</outputDirectory>
-                  <overWrite>true</overWrite>
-                </artifactItem>
-              </artifactItems>
-              <excludes>**/logging.properties,**/rhamt-cli</excludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+    <finalName>windup-openshift-parent-4.1.0.Alpha3</finalName>
   </build>
   <reporting>
     <outputDirectory>target/site</outputDirectory>
