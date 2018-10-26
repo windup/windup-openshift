@@ -340,7 +340,7 @@
             "displayName": "Docker Images Tag",
             "description": "The value of the tag for the Docker imgaes to be used",
             "name": "DOCKER_IMAGES_TAG",
-            "value": "latest",
+            "value": "4.2.0.Final",
             "required": true
         }
     ],
