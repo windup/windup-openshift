@@ -20,7 +20,7 @@
 
     <properties>
         <version.fabric8>3.5.28</version.fabric8>
-        <version.keycloak>2.5.5.Final</version.keycloak>
+        <version.keycloak>4.6.0.Final</version.keycloak>
 
         <windup.web.scm.connection>scm:git:https://github.com/windup/windup-openshift.git</windup.web.scm.connection>
         <windup.web.developer.connection>scm:git:git@github.com:windup/windup-openshift.git</windup.web.developer.connection>
