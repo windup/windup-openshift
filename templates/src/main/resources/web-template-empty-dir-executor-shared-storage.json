@@ -43,7 +43,7 @@
             "displayName": "Serialization Method",
             "description": "The value determines the approach used for transferring data between the UI components and the analysis engine.",
             "name": "MESSAGING_SERIALIZER",
-            "value": "http.post.serializer",
+            "value": "shared.storage",
             "required": true
         },
         {
@@ -345,7 +345,7 @@
         },
         {
             "displayName": "Docker Images Tag",
-            "description": "The value of the tag for the Docker imgaes to be used",
+            "description": "The value of the tag for the Docker images to be used",
             "name": "DOCKER_IMAGES_TAG",
             "value": "latest",
             "required": true
@@ -471,6 +471,11 @@
                                 "volumeMounts": [
                                     {
                                         "name": "${APPLICATION_NAME}-rhamt-web-pvol",
+                                        "mountPath": "/opt/eap/standalone/data/windup",
+                                        "readOnly": false
+                                    },
+                                    {
+                                        "name": "${APPLICATION_NAME}-rhamt-web-pvol-data",
                                         "mountPath": "/opt/eap/standalone/data",
                                         "readOnly": false
                                     }
@@ -529,6 +534,10 @@
                                     {
                                         "name": "MESSAGING_SERIALIZER",
                                         "value": "${MESSAGING_SERIALIZER}"
+                                    },
+                                    {
+                                        "name": "GRAPH_BASE_OUTPUT_PATH",
+                                        "value": "/opt/eap/standalone/data/windup-graphs"
                                     },
                                     {
                                         "name": "DB_SERVICE_PREFIX_MAPPING",
@@ -715,6 +724,12 @@
                                 "persistentVolumeClaim": {
                                     "claimName": "${APPLICATION_NAME}-rhamt-web-claim"
                                 }
+                            },
+                            {
+                                "name": "${APPLICATION_NAME}-rhamt-web-pvol-data",
+                                "emptyDir": {
+
+                                }
                             }
                         ]
                     }
@@ -771,6 +786,11 @@
                                 "volumeMounts": [
                                     {
                                         "name": "${APPLICATION_NAME}-rhamt-web-pvol",
+                                        "mountPath": "/opt/eap/standalone/data/windup",
+                                        "readOnly": false
+                                    },
+                                    {
+                                        "name": "${APPLICATION_NAME}-rhamt-web-executor-volume",
                                         "mountPath": "/opt/eap/standalone/data",
                                         "readOnly": false
                                     }
@@ -811,6 +831,10 @@
                                         "value": "false"
                                     },
                                     {
+                                        "name": "GRAPH_BASE_OUTPUT_PATH",
+                                        "value": "/opt/eap/standalone/data/windup-graphs"
+                                    },
+                                    {
                                         "name": "MESSAGING_SERIALIZER",
                                         "value": "${MESSAGING_SERIALIZER}"
                                     },
@@ -833,7 +857,13 @@
                             {
                                 "name": "${APPLICATION_NAME}-rhamt-web-pvol",
                                 "persistentVolumeClaim": {
-                                    "claimName": "${APPLICATION_NAME}-rhamt-web-executor-claim"
+                                    "claimName": "${APPLICATION_NAME}-rhamt-web-claim"
+                                }
+                            },
+                            {
+                                "name": "${APPLICATION_NAME}-rhamt-web-executor-volume",
+                                "emptyDir": {
+
                                 }
                             }
                         ]
@@ -1023,27 +1053,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "ReadWriteOnce"
-                ],
-                "resources": {
-                    "requests": {
-                        "storage": "${VOLUME_CAPACITY}"
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "PersistentVolumeClaim",
-            "metadata": {
-                "name": "${APPLICATION_NAME}-rhamt-web-executor-claim",
-                "labels": {
-                    "application": "${APPLICATION_NAME}"
-                }
-            },
-            "spec": {
-                "accessModes": [
-                    "ReadWriteOnce"
+                    "ReadWriteMany"
                 ],
                 "resources": {
                     "requests": {
