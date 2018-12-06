@@ -39,16 +39,26 @@ Now that your images are available on docker.io repository, you have to referenc
 ## OpenShift template deployment
 There are two different ways for deploying RHAMT on OpenShift based upon if you have [`cluster-admin privileges`](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#roles): if you have those privileges you can decide to follow [Template deployment in OpenShift catalog](#template-deployment-in-openshift-catalog) (because you can operate on the default `openshift` project) or [Import template in Openshift Web Console](#import-template-in-openshift-web-console) otherwise you can just go with the latter approach ([Import template in Openshift Web Console](#import-template-in-openshift-web-console))
 
+### Choose the template
+There are different templates available to be imported in your OpenShift instance.
+The table below summarizes the different use cases for each template
+
+| Template | Requirements | Description |
+| --- | --- | --- |
+| [`web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) | OpenShift | The recommended template to deploy RHAMT on OCP<br>The analysis data between the `executor` pod and the `web console` one are sent using ReST web services |
+| [`web-template-empty-dir-executor-shared-storage.json`](templates/src/main/resources/web-template-empty-dir-executor-shared-storage.json) | OpenShift with `ReadWriteMany (RWX)` storage| This template deploys RHAMT on OCP using a shared storage between the `executor` pod and the `web console` one to share the analysis data |
+| [`web-template.json`](templates/src/main/resources/web-template.json) | OpenShift | This template (just like the `web-template-empty-dir-executor.json` one) deploys RHAMT on OCP so that analysis data between the `executor` pod and the `web console` one are sent using ReST web services but it requires more persistent volume resources since it adds a persistent volume also to the `executor` pod |
+
 ### Template deployment in OpenShift catalog
 1. login to Openshift: `$ oc login`
-1. create the template: `$ oc create -f ./templates/src/main/resources/web-template.json -n openshift`
+1. create the template: `$ oc create -f ./templates/src/main/resources/web-template-empty-dir-executor.json -n openshift`
 
 Now, if you go to OpenShift Web Console home page, you'll see the Red Hat Application Migration Toolkit (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
 
 ![screenshot-0](https://user-images.githubusercontent.com/7288588/38804671-80e5af28-4173-11e8-979c-58dc84e2371f.png)
 *screenshot-0: in OpenShift Web Console (v3.7) `Browse Catalog` page you can see the `Red Hat Application Migration Toolkit 4.1` icon (4th row, 2nd column)*
 ### Import template in Openshift Web Console
-1. copy the raw content of file [web-template.json](templates/src/main/resources//web-template.json)
+1. copy the raw content of file [web-template-empty-dir-executor.json](templates/src/main/resources/web-template-empty-dir-executor.json)
 1. paste it in the "Import YAML / JSON" wizard in Openshift Web Console (ref. *screenshot-1*)
 1. save and wait for the deployment to end
 
