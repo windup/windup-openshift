@@ -349,6 +349,13 @@
             "name": "DOCKER_IMAGES_TAG",
             "value": "latest",
             "required": true
+        },
+        {
+            "displayName": "Undertow max post size",
+            "description": "The maximum value of the size the an HTTP post request",
+            "name": "MAX_POST_SIZE",
+            "value": "4294967296",
+            "required": true
         }
     ],
     "objects": [
@@ -705,6 +712,14 @@
                                     {
                                         "name": "SSO_TRUSTSTORE_PASSWORD",
                                         "value": "${SSO_TRUSTSTORE_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "GC_MAX_METASPACE_SIZE",
+                                        "value": "512"
+                                    },
+                                    {
+                                        "name": "MAX_POST_SIZE",
+                                        "value": "${MAX_POST_SIZE}"
                                     }
                                 ]
                             }

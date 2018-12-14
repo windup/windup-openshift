@@ -22,7 +22,7 @@ jms-topic add --topic-address=executorCancellation --entries=[topics/executorCan
 /subsystem=keycloak/secure-deployment=api.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
 /subsystem=keycloak/secure-deployment=rhamt-web.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
 
-/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-post-size, value=943718400)
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-post-size, value="${env.MAX_POST_SIZE}")
 
 /subsystem=undertow/configuration=handler/file=root-redirect:add(path=${jboss.home.dir}/root-redirect)
 /subsystem=undertow/server=default-server/host=default-host/location=\//:write-attribute(name=handler,value=root-redirect)
