@@ -26,24 +26,44 @@
             "required": true
         },
         {
-            "displayName": "Requested CPU",
-            "description": "The number of CPU cores to request.",
-            "name": "REQUESTED_CPU",
+            "displayName": "Web Console Requested CPU",
+            "description": "The number of CPU cores to request for the Web Console.",
+            "name": "WEB_CONSOLE_REQUESTED_CPU",
             "value": "2",
             "required": true
         },
         {
-            "displayName": "Requested Memory",
-            "description": "The amount of memory to request (eg, 4Gi).",
-            "name": "REQUESTED_MEMORY",
+            "displayName": "Web Console Requested Memory",
+            "description": "The amount of memory to request (eg, 4Gi) for the Web Console.",
+            "name": "WEB_CONSOLE_REQUESTED_MEMORY",
             "value": "4Gi",
             "required": true
         },
         {
-            "displayName": "Serialization Method",
+            "displayName": "Executor Requested CPU",
+            "description": "The number of CPU cores to request for the Executor.",
+            "name": "EXECUTOR_REQUESTED_CPU",
+            "value": "2",
+            "required": true
+        },
+        {
+            "displayName": "Executor Requested Memory",
+            "description": "The amount of memory to request (eg, 4Gi) for the Executor.",
+            "name": "EXECUTOR_REQUESTED_MEMORY",
+            "value": "4Gi",
+            "required": true
+        },
+        {"displayName": "Serialization Method",
             "description": "The value determines the approach used for transferring data between the UI components and the analysis engine.",
             "name": "MESSAGING_SERIALIZER",
             "value": "shared.storage",
+            "required": true
+        },
+        {
+            "displayName": "RHAMT Volume Capacity",
+            "description": "Size of persistent storage for RHAMT volume.",
+            "name": "RHAMT_VOLUME_CAPACITY",
+            "value": "20G",
             "required": true
         },
         {
@@ -354,7 +374,7 @@
             "displayName": "Undertow max post size",
             "description": "The maximum value of the size the an HTTP post request",
             "name": "MAX_POST_SIZE",
-            "value": "10485760",
+            "value": "1073741824",
             "required": true
         }
     ],
@@ -467,12 +487,12 @@
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "requests": {
-                                        "cpu": "${REQUESTED_CPU}",
-                                        "memory": "${REQUESTED_MEMORY}"
+                                        "cpu": "${WEB_CONSOLE_REQUESTED_CPU}",
+                                        "memory": "${WEB_CONSOLE_REQUESTED_MEMORY}"
                                     },
                                     "limits": {
-                                        "cpu": "${REQUESTED_CPU}",
-                                        "memory": "${REQUESTED_MEMORY}"
+                                        "cpu": "${WEB_CONSOLE_REQUESTED_CPU}",
+                                        "memory": "${WEB_CONSOLE_REQUESTED_MEMORY}"
                                     }
                                 },
                                 "volumeMounts": [
@@ -790,12 +810,12 @@
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "requests": {
-                                        "cpu": "${REQUESTED_CPU}",
-                                        "memory": "${REQUESTED_MEMORY}"
+                                        "cpu": "${EXECUTOR_REQUESTED_CPU}",
+                                        "memory": "${EXECUTOR_REQUESTED_MEMORY}"
                                     },
                                     "limits": {
-                                        "cpu": "${REQUESTED_CPU}",
-                                        "memory": "${REQUESTED_MEMORY}"
+                                        "cpu": "${EXECUTOR_REQUESTED_CPU}",
+                                        "memory": "${EXECUTOR_REQUESTED_MEMORY}"
                                     }
                                 },
                                 "volumeMounts": [
@@ -1072,7 +1092,7 @@
                 ],
                 "resources": {
                     "requests": {
-                        "storage": "${VOLUME_CAPACITY}"
+                        "storage": "${RHAMT_VOLUME_CAPACITY}"
                     }
                 }
             }
