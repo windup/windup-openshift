@@ -33,7 +33,7 @@ If you want you can also set the tag for the built images (e.g. if you are worki
 
 ### Point to your images
 Now that your images are available on docker.io repository, you have to reference them in RHAMT template in order to use these images in the deployments.
-1. open [`./templates/src/main/resources/web-template.json`](templates/src/main/resources/web-template.json) in an IDE or text editor
+1. open [`./templates/src/main/resources/web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) in an IDE or text editor
 1. change all the `"image"` values to point to `docker.io/<your_docker_id>/` instead of `docker.io/windup3/`
    
 ## OpenShift template deployment
@@ -45,9 +45,8 @@ The table below summarizes the different use cases for each template
 
 | Template | Requirements | Description |
 | --- | --- | --- |
-| [`web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) | OpenShift | The recommended template to deploy RHAMT on OCP<br>The analysis data between the `executor` pod and the `web console` one are sent using ReST web services |
+| [`web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) | OpenShift | The recommended template to deploy RHAMT on OCP<br>The analysis data between the `executor` pod and the `web console` one are sent using REST web services |
 | [`web-template-empty-dir-executor-shared-storage.json`](templates/src/main/resources/web-template-empty-dir-executor-shared-storage.json) | OpenShift with `ReadWriteMany (RWX)` storage| This template deploys RHAMT on OCP using a shared storage between the `executor` pod and the `web console` one to share the analysis data |
-| [`web-template.json`](templates/src/main/resources/web-template.json) | OpenShift | This template (just like the `web-template-empty-dir-executor.json` one) deploys RHAMT on OCP so that analysis data between the `executor` pod and the `web console` one are sent using ReST web services but it requires more persistent volume resources since it adds a persistent volume also to the `executor` pod |
 
 ### Template deployment in OpenShift catalog
 1. login to Openshift: `$ oc login`
