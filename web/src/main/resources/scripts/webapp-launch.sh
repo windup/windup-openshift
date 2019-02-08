@@ -7,6 +7,7 @@ cd $DIR
 sed -i -e 's#-Xbootclasspath/p:${JBOSS_MODULES_JAR}:${JBOSS_LOGMANAGER_JAR}:${JBOSS_LOGMANAGER_EXT_JAR}##g' /opt/eap/bin/standalone.conf
 sed -i -e 's#-Djava.util.logging.manager=org.jboss.logmanager.LogManager##g' /opt/eap/bin/standalone.conf
 sed -i -e 's#-javaagent:$JBOSS_HOME/jolokia.jar=port=8778,protocol=https,caCert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt,clientPrincipal=cn=system:master-proxy,useSslClientAuthentication=true,extraClientCheck=true,host=0.0.0.0,discoveryEnabled=false##g' /opt/eap/bin/standalone.conf
+sed -i -e 's#MaxMetaspaceSize=256m#MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m#g' /opt/eap/bin/standalone.conf
 
 # Remove the jboss logging package from system packages
 sed -i -e 's#JBOSS_MODULES_SYSTEM_PKGS="org.jboss.logmanager,jdk.nashorn.api"##g' /opt/eap/bin/launch/jboss_modules_system_pkgs.sh

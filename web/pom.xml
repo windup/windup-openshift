@@ -32,6 +32,7 @@
                 <configuration>
                     <mode>kubernetes</mode>
                     <buildStrategy>docker</buildStrategy>
+                    <autoPull>always</autoPull>
                     <images>
                         <image>
                             <name>${docker.name.windup.web}</name>

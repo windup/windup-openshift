@@ -337,10 +337,24 @@
             "required": false
         },
         {
+            "displayName": "Docker Images User ID",
+            "description": "The value of the user name for the Docker images to be used",
+            "name": "DOCKER_IMAGES_USER",
+            "value": "windup3",
+            "required": true
+        },
+        {
             "displayName": "Docker Images Tag",
             "description": "The value of the tag for the Docker imgaes to be used",
             "name": "DOCKER_IMAGES_TAG",
             "value": "latest",
+            "required": true
+        },
+        {
+            "displayName": "Undertow max post size",
+            "description": "The maximum value of the size the an HTTP post request",
+            "name": "MAX_POST_SIZE",
+            "value": "4294967296",
             "required": true
         }
     ],
@@ -449,7 +463,7 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}",
-                                "image": "docker.io/windup3/windup-web-openshift:${DOCKER_IMAGES_TAG}",
+                                "image": "docker.io/${DOCKER_IMAGES_USER}/windup-web-openshift:${DOCKER_IMAGES_TAG}",
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "requests": {
@@ -698,6 +712,14 @@
                                     {
                                         "name": "SSO_TRUSTSTORE_PASSWORD",
                                         "value": "${SSO_TRUSTSTORE_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "GC_MAX_METASPACE_SIZE",
+                                        "value": "512"
+                                    },
+                                    {
+                                        "name": "MAX_POST_SIZE",
+                                        "value": "${MAX_POST_SIZE}"
                                     }
                                 ]
                             }
@@ -749,7 +771,7 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}-executor",
-                                "image": "docker.io/windup3/windup-web-openshift-messaging-executor:${DOCKER_IMAGES_TAG}",
+                                "image": "docker.io/${DOCKER_IMAGES_USER}/windup-web-openshift-messaging-executor:${DOCKER_IMAGES_TAG}",
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "requests": {
