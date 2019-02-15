@@ -11,7 +11,6 @@
 
     <properties>
         <version.fabric8>3.5.28</version.fabric8>
-        <version.keycloak>2.5.5.Final</version.keycloak>
         <docker.name.windup.web.executor>%a:%v</docker.name.windup.web.executor>
     </properties>
 

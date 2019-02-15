@@ -8,7 +8,6 @@ jms-queue add --queue-address=statusUpdateQueue --entries=[queues/statusUpdateQu
 jms-queue add --queue-address=packageDiscoveryQueue --entries=[queues/packageDiscoveryQueue]
 jms-topic add --topic-address=executorCancellation --entries=[topics/executorCancellation,java:jboss/exported/jms/topics/executorCancellation]
 
-/subsystem=keycloak:remove
 /subsystem=keycloak:add
 
 /system-property=keycloak.realm.public.key:add(value="${env.SSO_PUBLIC_KEY}")
@@ -20,7 +19,6 @@ jms-topic add --topic-address=executorCancellation --entries=[topics/executorCan
 /system-property=keycloak.trust.all.ssl:add(value="true")
 
 /subsystem=keycloak/secure-deployment=api.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
-/subsystem=keycloak/secure-deployment=rhamt-web.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
 
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-post-size, value="${env.MAX_POST_SIZE}")
 
