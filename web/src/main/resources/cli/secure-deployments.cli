@@ -1,0 +1,6 @@
+embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
+
+/subsystem=keycloak/secure-deployment=rhamt-web.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
+/subsystem=keycloak/secure-deployment=api.war:add(realm=rhamt, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=rhamt-web, public-client=true)
+
+stop-embedded-server
