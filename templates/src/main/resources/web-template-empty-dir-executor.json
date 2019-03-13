@@ -760,7 +760,7 @@
                             {
                                 "name": "${APPLICATION_NAME}-rhamt-web-pvol-data",
                                 "emptyDir": {
-
+                                    
                                 }
                             }
                         ]
