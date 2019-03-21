@@ -416,7 +416,8 @@
                     "application": "${APPLICATION_NAME}"
                 },
                 "annotations": {
-                    "description": "Route for application's http service."
+                    "description": "Route for application's http service.",
+                    "console.alpha.openshift.io/overview-app-route":"true"
                 }
             },
             "spec": {
