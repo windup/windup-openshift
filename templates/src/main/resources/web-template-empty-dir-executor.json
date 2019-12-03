@@ -1,6 +1,6 @@
 {
     "kind": "Template",
-    "apiVersion": "v1",
+    "apiVersion": "template.openshift.io/v1",
     "metadata": {
         "annotations": {
             "description": "RHAMT Web Console template",
@@ -408,7 +408,7 @@
         },
         {
             "kind": "Route",
-            "apiVersion": "v1",
+            "apiVersion": "route.openshift.io/v1",
             "id": "${APPLICATION_NAME}-http",
             "metadata": {
                 "name": "${APPLICATION_NAME}",
@@ -428,7 +428,7 @@
         },
         {
             "kind": "Route",
-            "apiVersion": "v1",
+            "apiVersion": "route.openshift.io/v1",
             "id": "${APPLICATION_NAME}-https",
             "metadata": {
                 "name": "secure-${APPLICATION_NAME}",
@@ -451,7 +451,7 @@
         },
         {
             "kind": "DeploymentConfig",
-            "apiVersion": "v1",
+            "apiVersion": "apps.openshift.io/v1",
             "metadata": {
                 "name": "${APPLICATION_NAME}",
                 "labels": {
@@ -760,7 +760,7 @@
                             {
                                 "name": "${APPLICATION_NAME}-rhamt-web-pvol-data",
                                 "emptyDir": {
-                                    
+
                                 }
                             }
                         ]
@@ -770,7 +770,7 @@
         },
         {
             "kind": "DeploymentConfig",
-            "apiVersion": "v1",
+            "apiVersion": "apps.openshift.io/v1",
             "metadata": {
                 "name": "${APPLICATION_NAME}-executor",
                 "labels": {
@@ -850,7 +850,7 @@
                                     }
                                 },
                                 "ports": [
-                                    
+
                                 ],
                                 "env": [
                                     {
@@ -880,7 +880,7 @@
                             {
                                 "name": "${APPLICATION_NAME}-rhamt-web-executor-volume",
                                 "emptyDir": {
-                                    
+
                                 }
                             }
                         ]
@@ -890,7 +890,7 @@
         },
         {
             "kind": "DeploymentConfig",
-            "apiVersion": "v1",
+            "apiVersion": "apps.openshift.io/v1",
             "metadata": {
                 "name": "${APPLICATION_NAME}-postgresql",
                 "labels": {
