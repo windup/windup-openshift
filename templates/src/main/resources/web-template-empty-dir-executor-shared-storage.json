@@ -368,7 +368,7 @@
             "displayName": "Docker Images Tag",
             "description": "The value of the tag for the Docker images to be used",
             "name": "DOCKER_IMAGES_TAG",
-            "value": "latest",
+            "value": "4.3.0.Beta1",
             "required": true
         },
         {
@@ -417,7 +417,7 @@
                 },
                 "annotations": {
                     "description": "Route for application's http service.",
-                    "console.alpha.openshift.io/overview-app-route":"true"
+                    "console.alpha.openshift.io/overview-app-route": "true"
                 }
             },
             "spec": {
