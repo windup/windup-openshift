@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 mkdir -p ${JBOSS_HOME}/standalone/log
 
+echo "Installing PostgreSQL driver"
+${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/configuration/db_postgresql.cli
+
 echo "Installing keycloak server"
 unzip -o -d ${JBOSS_HOME} /opt/tools/keycloak-server-overlay/keycloak-server-overlay-*.zip
 sed -i 's#embed-server --server-config=standalone.xml#embed-server --server-config=standalone-openshift.xml#g' ${JBOSS_HOME}/bin/keycloak-install.cli
