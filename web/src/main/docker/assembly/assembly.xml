@@ -32,7 +32,7 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/driver</directory>
-            <outputDirectory>deployments</outputDirectory>
+            <outputDirectory>opt/eap/extensions</outputDirectory>
             <fileMode>0777</fileMode>
         </fileSet>
     </fileSets>
