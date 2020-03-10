@@ -12,7 +12,7 @@ jms-topic add --topic-address=executorCancellation --entries=[topics/executorCan
 /subsystem=keycloak:add
 
 /system-property=keycloak.realm.public.key:add(value="${env.SSO_PUBLIC_KEY}")
-/system-property=keycloak.server.url:add(value="${env.SSO_URL}")
+/system-property=keycloak.server.url:add(value="${env.KC_SSO_URL}")
 #/system-property=keycloak.token.verify.host:add(value="${env.RHAMT_WEB_CONSOLE_SERVICE_HOST}")
 #/system-property=keycloak.token.verify.port:add(value="${env.RHAMT_WEB_CONSOLE_SERVICE_PORT}")
 /system-property=messaging.serializer:add(value="${env.MESSAGING_SERIALIZER}")

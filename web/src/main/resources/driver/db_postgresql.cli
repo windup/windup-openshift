@@ -4,7 +4,6 @@ module add --name=org.postgresql --resources=/opt/eap/extensions/postgresql-42.2
 
 batch
 /subsystem=datasources/jdbc-driver=org.postgresql:add(driver-name=org.postgresql, driver-module-name=org.postgresql, driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
-/subsystem=datasources/data-source=postgresql:add(driver-name=org.postgresql, jndi-name="java:/jdbc/PostgresDS", enabled=true, connection-url="jdbc:postgresql://localhost/test")
 run-batch
 
 stop-embedded-server

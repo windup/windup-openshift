@@ -3,6 +3,11 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
+echo "export JAVA_OPTS=-Djboss.modules.settings.xml.url=file://$GALLEON_MAVEN_SETTINGS_XML" >> /opt/eap/bin/launch/launch.sh
+echo 'echo "Installing PostgreSQL driver"' >> /opt/eap/bin/launch/launch.sh
+echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=/opt/eap/extensions/db_postgresql.cli" >> /opt/eap/bin/launch/launch.sh
+echo "unset JAVA_OPTS" >> /opt/eap/bin/launch/launch.sh
+
 # Inject our own changes to the launch script (remove the logging changes that break forge integration)
 sed -i -e 's#-Xbootclasspath/p:${JBOSS_MODULES_JAR}:${JBOSS_LOGMANAGER_JAR}:${JBOSS_JSON_JAR}:${JBOSS_JSON_API_JAR}:${WILDFLY_COMMON_JAR}##g' /opt/eap/bin/standalone.conf
 sed -i -e 's#-Djava.util.logging.manager=org.jboss.logmanager.LogManager##g' /opt/eap/bin/standalone.conf
