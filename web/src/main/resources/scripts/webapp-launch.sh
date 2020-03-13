@@ -3,6 +3,18 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
+sed -i '31 a <repository> \
+          <id>redhat-brewroot-repository</id> \
+          <url>https://download.devel.redhat.com/brewroot/repos/jb-eap-7.3-maven-build/latest/maven/</url> \
+          <releases> \
+            <enabled>true</enabled> \
+          </releases> \
+          <snapshots> \
+            <enabled>true</enabled> \
+          </snapshots> \
+        </repository>' /home/jboss/.m2/settings.xml
+sed -i -e 's#<!-- \#\#\# active profiles \#\#\# -->#<activeProfile>jboss-eap-repository</activeProfile>#g' /home/jboss/.m2/settings.xml
+
 echo "export JAVA_OPTS=-Djboss.modules.settings.xml.url=file://$GALLEON_MAVEN_SETTINGS_XML" >> /opt/eap/bin/launch/launch.sh
 echo 'echo "Installing PostgreSQL driver"' >> /opt/eap/bin/launch/launch.sh
 echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=/opt/eap/extensions/db_postgresql.cli" >> /opt/eap/bin/launch/launch.sh
@@ -22,13 +34,14 @@ sed -i -e 's#JBOSS_MODULES_SYSTEM_PKGS="org.jboss.logmanager,jdk.nashorn.api,com
 
 # Remove line containing "standalone.sh" - This is so that we can insert a new execution that runs a CLI script on startup
 cp /opt/eap/bin/openshift-launch.sh /opt/eap/bin/openshift-launch.sh.orig
-cat /opt/eap/bin/openshift-launch.sh.orig |grep -v standalone.sh | grep -v jboss_modules_system_pkgs > /opt/eap/bin/openshift-launch.sh
+cat /opt/eap/bin/openshift-launch.sh.orig | grep -v jboss_modules_system_pkgs > /opt/eap/bin/openshift-launch.sh
 
-echo 'source ${JBOSS_HOME}/bin/inject.sh' >> /opt/eap/bin/openshift-launch.sh
+sed -i -e 's#$JBOSS_HOME/bin/standalone.sh -c standalone-openshift.xml -bmanagement 0.0.0.0 -Djboss.server.data.dir="$instanceDir" -Dwildfly.statistics-enabled=true ${JAVA_PROXY_OPTIONS} ${JBOSS_HA_ARGS} ${JBOSS_MESSAGING_ARGS} &#executeEAPServer#g' /opt/eap/bin/openshift-launch.sh
+sed -i '2 a function executeEAPServer() {' /opt/eap/bin/openshift-launch.sh
+sed -i '3 a   source ${JBOSS_HOME}/bin/inject.sh ' /opt/eap/bin/openshift-launch.sh
+sed -i '4 a   exec $JBOSS_HOME/bin/standalone.sh -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=${JBOSS_HOME}/standalone/configuration/import-realm.json -Dkeycloak.migration.strategy=IGNORE_EXISTING -c standalone-openshift.xml -bmanagement 0.0.0.0 $JBOSS_HA_ARGS ${JBOSS_MESSAGING_ARGS}' /opt/eap/bin/openshift-launch.sh
+sed -i '5 a }' /opt/eap/bin/openshift-launch.sh
 
-# Add updated "standalone.sh"
-echo 'exec $JBOSS_HOME/bin/standalone.sh -Dkeycloak.migration.action=import \
-    -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=${JBOSS_HOME}/standalone/configuration/import-realm.json \
-    -Dkeycloak.migration.strategy=IGNORE_EXISTING -c standalone-openshift.xml -bmanagement 127.0.0.1 $JBOSS_HA_ARGS ${JBOSS_MESSAGING_ARGS}' >> /opt/eap/bin/openshift-launch.sh
+sed -i -e 's#org.jboss.as.standalone#-logmodule org.jboss.logmanager org.jboss.as.standalone#g' /opt/eap/bin/standalone.sh
 
-JBOSS_MODULES_SYSTEM_PKGS=org.jboss.byteman ./openshift-launch.sh "$@"
+/opt/eap/bin/openshift-launch.sh "$@"
