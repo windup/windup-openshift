@@ -527,7 +527,10 @@
                                             "-c",
                                             "/opt/eap/bin/livenessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 60,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -536,7 +539,10 @@
                                             "-c",
                                             "/opt/eap/bin/readinessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 60,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1
                                 },
                                 "ports": [
                                     {
@@ -839,7 +845,10 @@
                                             "-c",
                                             "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 60,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -848,7 +857,10 @@
                                             "-c",
                                             "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 60,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1
                                 },
                                 "ports": [
 
