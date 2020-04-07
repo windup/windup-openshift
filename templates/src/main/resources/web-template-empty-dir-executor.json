@@ -528,9 +528,10 @@
                                             "/opt/eap/bin/livenessProbe.sh"
                                         ]
                                     },
-                                    "initialDelaySeconds": 60,
+                                    "initialDelaySeconds": 120,
                                     "failureThreshold" : 3,
-                                    "successThreshold" : 1
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -540,9 +541,10 @@
                                             "/opt/eap/bin/readinessProbe.sh"
                                         ]
                                     },
-                                    "initialDelaySeconds": 60,
+                                    "initialDelaySeconds": 120,
                                     "failureThreshold" : 3,
-                                    "successThreshold" : 1
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "ports": [
                                     {
@@ -846,9 +848,10 @@
                                             "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
                                     },
-                                    "initialDelaySeconds": 60,
+                                    "initialDelaySeconds": 120,
                                     "failureThreshold" : 3,
-                                    "successThreshold" : 1
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -858,9 +861,10 @@
                                             "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
                                     },
-                                    "initialDelaySeconds": 60,
+                                    "initialDelaySeconds": 120,
                                     "failureThreshold" : 3,
-                                    "successThreshold" : 1
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "ports": [
 
