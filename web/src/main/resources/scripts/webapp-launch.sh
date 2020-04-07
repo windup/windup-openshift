@@ -18,7 +18,7 @@ echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=/opt/eap/extensions/d
 #echo "unset JAVA_OPTS" >> /opt/eap/bin/launch/launch.sh
 
 # Inject our own changes to the launch script (remove the logging changes that break forge integration)
-#sed -i -e 's#-Xbootclasspath/p:${JBOSS_MODULES_JAR}:${JBOSS_LOGMANAGER_JAR}:${JBOSS_JSON_JAR}:${JBOSS_JSON_API_JAR}:${WILDFLY_COMMON_JAR}##g' /opt/eap/bin/standalone.conf
+sed -i -e 's#-Xbootclasspath/p:${JBOSS_MODULES_JAR}:${JBOSS_LOGMANAGER_JAR}:${JBOSS_JSON_JAR}:${JBOSS_JSON_API_JAR}:${WILDFLY_COMMON_JAR}#-Xbootclasspath/p:${JBOSS_LOGMANAGER_JAR}:${JBOSS_JSON_JAR}:${WILDFLY_COMMON_JAR}#g' /opt/eap/bin/standalone.conf
 #sed -i -e 's#-Djava.util.logging.manager=org.jboss.logmanager.LogManager##g' /opt/eap/bin/standalone.conf
 sed -i -e 's#-javaagent:$JBOSS_HOME/jolokia.jar=port=8778,protocol=https,caCert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt,clientPrincipal=cn=system:master-proxy,useSslClientAuthentication=true,extraClientCheck=true,host=0.0.0.0,discoveryEnabled=false##g' /opt/eap/bin/standalone.conf
 sed -i -e 's#MaxMetaspaceSize=256m#MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m#g' /opt/eap/bin/standalone.conf
