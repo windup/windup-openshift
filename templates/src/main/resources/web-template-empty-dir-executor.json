@@ -1,6 +1,6 @@
 {
     "kind": "Template",
-    "apiVersion": "v1",
+    "apiVersion": "template.openshift.io/v1",
     "metadata": {
         "annotations": {
             "description": "RHAMT Web Console template",
@@ -408,8 +408,7 @@
         },
         {
             "kind": "Route",
-            "apiVersion": "v1",
-            "id": "${APPLICATION_NAME}-http",
+            "apiVersion": "route.openshift.io/v1",
             "metadata": {
                 "name": "${APPLICATION_NAME}",
                 "labels": {
@@ -429,8 +428,7 @@
         },
         {
             "kind": "Route",
-            "apiVersion": "v1",
-            "id": "${APPLICATION_NAME}-https",
+            "apiVersion": "route.openshift.io/v1",
             "metadata": {
                 "name": "secure-${APPLICATION_NAME}",
                 "labels": {
@@ -452,7 +450,7 @@
         },
         {
             "kind": "DeploymentConfig",
-            "apiVersion": "v1",
+            "apiVersion": "apps.openshift.io/v1",
             "metadata": {
                 "name": "${APPLICATION_NAME}",
                 "labels": {
@@ -527,7 +525,11 @@
                                             "-c",
                                             "/opt/eap/bin/livenessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 120,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -536,7 +538,11 @@
                                             "-c",
                                             "/opt/eap/bin/readinessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 120,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "ports": [
                                     {
@@ -761,7 +767,7 @@
                             {
                                 "name": "${APPLICATION_NAME}-rhamt-web-pvol-data",
                                 "emptyDir": {
-                                    
+
                                 }
                             }
                         ]
@@ -771,7 +777,7 @@
         },
         {
             "kind": "DeploymentConfig",
-            "apiVersion": "v1",
+            "apiVersion": "apps.openshift.io/v1",
             "metadata": {
                 "name": "${APPLICATION_NAME}-executor",
                 "labels": {
@@ -839,7 +845,11 @@
                                             "-c",
                                             "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 120,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -848,10 +858,14 @@
                                             "-c",
                                             "/opt/rhamt-cli/bin/livenessProbe.sh"
                                         ]
-                                    }
+                                    },
+                                    "initialDelaySeconds": 120,
+                                    "failureThreshold" : 3,
+                                    "successThreshold" : 1,
+                                    "timeoutSeconds" : 10
                                 },
                                 "ports": [
-                                    
+
                                 ],
                                 "env": [
                                     {
@@ -881,7 +895,7 @@
                             {
                                 "name": "${APPLICATION_NAME}-rhamt-web-executor-volume",
                                 "emptyDir": {
-                                    
+
                                 }
                             }
                         ]
@@ -891,7 +905,7 @@
         },
         {
             "kind": "DeploymentConfig",
-            "apiVersion": "v1",
+            "apiVersion": "apps.openshift.io/v1",
             "metadata": {
                 "name": "${APPLICATION_NAME}-postgresql",
                 "labels": {

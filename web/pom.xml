@@ -37,7 +37,7 @@
                         <image>
                             <name>${docker.name.windup.web}</name>
                             <build>
-                                <from>registry.access.redhat.com/jboss-eap-7/eap72-openshift:1.0-18</from>
+                                <from>registry.redhat.io/jboss-eap-7/eap73-openjdk8-openshift-rhel7</from>
                                 <cmd>/opt/eap/bin/webapp-launch.sh</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
@@ -62,7 +62,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-keycloak-tool</artifactId>
-                                    <version>5.1.0.Final</version>
+                                    <version>5.2.0.Final</version>
                                     <outputDirectory>${project.build.directory}/tools/keycloak-tool</outputDirectory>
                                     <destFileName>keycloak-tool.jar</destFileName>
                                     <overWrite>true</overWrite>
@@ -70,7 +70,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-web-keycloak-theme</artifactId>
-                                    <version>5.1.0.Final</version>
+                                    <version>5.2.0.Final</version>
                                     <outputDirectory>${project.build.directory}/tools/keycloak-theme</outputDirectory>
                                     <destFileName>keycloak-theme.jar</destFileName>
                                     <overWrite>true</overWrite>

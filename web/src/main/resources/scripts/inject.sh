@@ -10,10 +10,6 @@ ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/bin/keycloak-
 
 echo "Installing keycloak client adapters"
 unzip -o -d ${JBOSS_HOME} /opt/tools/keycloak-client-overlay/keycloak-wildfly-adapter-dist-*.zip
-sed -i 's#embed-server --server-config=${server.config:standalone.xml}#embed-server --server-config=standalone-openshift.xml#g' ${JBOSS_HOME}/bin/adapter-install-offline.cli
-
-echo "Running keycloak client adapter cli script"
-${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/bin/adapter-install-offline.cli
 
 echo "Running local CLI script for configuring logging, queues, and keycloak client realm"
 # Run our CLI script (logging and keycloak configuration)
