@@ -38,7 +38,7 @@
                             <name>${docker.name.windup.web.executor}</name>
                             <build>
                                 <from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</from>
-                                <cmd>/opt/rhamt-cli/bin/openshift-launch.sh</cmd>
+                                <cmd>/opt/mta-cli/bin/openshift-launch.sh</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
                                     <descriptor>assembly/assembly.xml</descriptor>
@@ -63,11 +63,11 @@
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-web-executor</artifactId>
                                     <version>${project.version}</version>
-                                    <outputDirectory>${project.build.directory}/rhamt-cli</outputDirectory>
+                                    <outputDirectory>${project.build.directory}/mta-cli</outputDirectory>
                                     <overWrite>true</overWrite>
                                 </artifactItem>
                             </artifactItems>
-                            <excludes>**/logging.properties,**/rhamt-cli</excludes>
+                            <excludes>**/logging.properties,**/mta-cli</excludes>
                         </configuration>
                     </execution>
                 </executions>

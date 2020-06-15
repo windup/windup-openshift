@@ -20,13 +20,13 @@ ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/co
 
 echo "Unzipping keycloak theme"
 unzip -o -d ${JBOSS_HOME} /opt/tools/keycloak-theme/keycloak-theme.jar
-cp ${JBOSS_HOME}/themes/rhamt/login/login_required.theme.properties ${JBOSS_HOME}/themes/rhamt/login/theme.properties
+cp ${JBOSS_HOME}/themes/mta/login/login_required.theme.properties ${JBOSS_HOME}/themes/mta/login/theme.properties
 
 echo "Setting up keycloak server admin username/password"
 ${JBOSS_HOME}/bin/add-user-keycloak.sh --realm master --user admin --password password
 
-echo "Setting up keycloak server rhamt default username/password"
-${JBOSS_HOME}/bin/add-user-keycloak.sh --realm rhamt --user rhamt --password password --roles user
+echo "Setting up keycloak server mta default username/password"
+${JBOSS_HOME}/bin/add-user-keycloak.sh --realm mta --user mta --password password --roles user
 
 echo "Setting up JMS Password"
 ${JBOSS_HOME}/bin/add-user.sh -r ApplicationRealm -u jms-user -p gthudfal -g guest \

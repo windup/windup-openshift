@@ -106,7 +106,7 @@
                                     <version>${project.version}</version>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
-                                    <destFileName>rhamt-web.war</destFileName>
+                                    <destFileName>mta-web.war</destFileName>
                                     <outputDirectory>${project.build.directory}/wars/</outputDirectory>
                                 </artifactItem>
                             </artifactItems>

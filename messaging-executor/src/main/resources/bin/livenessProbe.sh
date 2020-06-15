@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PING_DIR=/opt/rhamt-cli/ping
+PING_DIR=/opt/mta-cli/ping
 SUFFIX=`date +%s%N`
 PING_FILE=$PING_DIR/ping.$SUFFIX
 PONG_FILE=$PING_DIR/pong.$SUFFIX
