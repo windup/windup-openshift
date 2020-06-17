@@ -22,6 +22,16 @@ For any other platform you can follow the detailed instructions provided in the 
 ### Create an account to Docker Hub
 You need an account on https://hub.docker.com in order to push your images and have them available in the [docker.io repository](https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#important-terms).  
 So sign up yourself to Docker Hub at https://hub.docker.com taking care that the Docker ID you choose will be the `<your_docker_id>` value in the next steps.
+
+### Create a token on registry.redhat.io (only once)
+1. Login on https://access.redhat.com/login
+2. Go to [Registry Service accounts](https://access.redhat.com/terms-based-registry/)
+3. Create a New Service Account if you don't have one
+4. Click on the service account and go to "Docker Login" tab.
+5. Copy the bash command
+6. Paste that command in a shell window on your local machine and execute it
+7. Now your local Docker installation will have the credentials in ~/.docker/config.json
+
 ### Create Docker images
 1. Build this project: `$ mvn clean install -Ddocker.name.windup.web=<your_docker_id>/windup-web-openshift -Ddocker.name.windup.web.executor=<your_docker_id>/windup-web-openshift-messaging-executor`
 1. Push images to docker hub:
