@@ -10,16 +10,16 @@ JMS_HOST=${!JMS_HOST}
 
 SERIALIZER=${MESSAGING_SERIALIZER}
 DATA_DIR=/opt/eap/standalone/data
-PING_DIR=/opt/rhamt-cli/ping
+PING_DIR=/opt/mta-cli/ping
 
 echo "Starting executor with messaging server $JMS_HOST as user $JMS_USER"
 
-RHAMT_OPTS=`/opt/run-java/java-default-options`
-export RHAMT_OPTS="${RHAMT_OPTS/-XX:MaxMetaspaceSize=100m/-XX:MaxMetaspaceSize=256m}"
+MTA_OPTS=`/opt/run-java/java-default-options`
+export MTA_OPTS="${MTA_OPTS/-XX:MaxMetaspaceSize=100m/-XX:MaxMetaspaceSize=256m}"
 
-echo "RHAMT_OPTS: $RHAMT_OPTS"
+echo "MTA_OPTS: $MTA_OPTS"
 
-/opt/rhamt-cli/bin/rhamt-cli -Dmessaging.serializer=${MESSAGING_SERIALIZER} \
+/opt/mta-cli/bin/mta-cli -Dmessaging.serializer=${MESSAGING_SERIALIZER} \
     -Dwindup.data.dir=${DATA_DIR} \
     --messagingExecutor \
     --user ${JMS_USER} --password ${JMS_PASSWORD} --host ${JMS_HOST} \
@@ -28,5 +28,5 @@ echo "RHAMT_OPTS: $RHAMT_OPTS"
     --statusUpdateQueue jms/queues/statusUpdateQueue \
     --cancellationTopic jms/topics/executorCancellation \
     --pingDir ${PING_DIR} \
-     -Dwindup.result.get.url=http://${JMS_HOST}:8080/rhamt-web/api/windup/executions/get-execution-request-tar \
-     -Dwindup.result.post.url=http://${JMS_HOST}:8080/rhamt-web/api/windup/executions/post-results
+     -Dwindup.result.get.url=http://${JMS_HOST}:8080/mta-web/api/windup/executions/get-execution-request-tar \
+     -Dwindup.result.post.url=http://${JMS_HOST}:8080/mta-web/api/windup/executions/post-results
