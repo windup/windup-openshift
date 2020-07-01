@@ -1045,7 +1045,7 @@
                     "application": "${APPLICATION_NAME}-amq"
                 },
                 "annotations": {
-                    "description": "Rhamt Master AMQ port."
+                    "description": "MTA Master AMQ port."
                 }
             }
         },
