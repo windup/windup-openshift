@@ -368,7 +368,7 @@
             "displayName": "Docker Images Tag",
             "description": "The value of the tag for the Docker imgaes to be used",
             "name": "DOCKER_IMAGES_TAG",
-            "value": "latest",
+            "value": "5.0.0.Alpha1",
             "required": true
         },
         {
@@ -527,9 +527,9 @@
                                         ]
                                     },
                                     "initialDelaySeconds": 120,
-                                    "failureThreshold" : 3,
-                                    "successThreshold" : 1,
-                                    "timeoutSeconds" : 10
+                                    "failureThreshold": 3,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -540,9 +540,9 @@
                                         ]
                                     },
                                     "initialDelaySeconds": 120,
-                                    "failureThreshold" : 3,
-                                    "successThreshold" : 1,
-                                    "timeoutSeconds" : 10
+                                    "failureThreshold": 3,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
                                 },
                                 "ports": [
                                     {
@@ -767,7 +767,7 @@
                             {
                                 "name": "${APPLICATION_NAME}-mta-web-pvol-data",
                                 "emptyDir": {
-
+                                    
                                 }
                             }
                         ]
@@ -847,9 +847,9 @@
                                         ]
                                     },
                                     "initialDelaySeconds": 120,
-                                    "failureThreshold" : 3,
-                                    "successThreshold" : 1,
-                                    "timeoutSeconds" : 10
+                                    "failureThreshold": 3,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
                                 },
                                 "readinessProbe": {
                                     "exec": {
@@ -860,12 +860,12 @@
                                         ]
                                     },
                                     "initialDelaySeconds": 120,
-                                    "failureThreshold" : 3,
-                                    "successThreshold" : 1,
-                                    "timeoutSeconds" : 10
+                                    "failureThreshold": 3,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
                                 },
                                 "ports": [
-
+                                    
                                 ],
                                 "env": [
                                     {
@@ -895,7 +895,7 @@
                             {
                                 "name": "${APPLICATION_NAME}-mta-web-executor-volume",
                                 "emptyDir": {
-
+                                    
                                 }
                             }
                         ]
