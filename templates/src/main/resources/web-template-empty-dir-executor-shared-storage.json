@@ -368,7 +368,7 @@
             "displayName": "Docker Images Tag",
             "description": "The value of the tag for the Docker images to be used",
             "name": "DOCKER_IMAGES_TAG",
-            "value": "5.1.0.Alpha1",
+            "value": "latest",
             "required": true
         },
         {
