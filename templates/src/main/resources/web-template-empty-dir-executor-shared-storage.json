@@ -358,15 +358,15 @@
             "required": false
         },
         {
-            "displayName": "Docker Images User ID",
-            "description": "The value of the user name for the Docker images to be used",
+            "displayName": "Quay Images User ID",
+            "description": "The value of the user name for the images from Quay to be used",
             "name": "DOCKER_IMAGES_USER",
-            "value": "windup3",
+            "value": "windupeng",
             "required": true
         },
         {
-            "displayName": "Docker Images Tag",
-            "description": "The value of the tag for the Docker images to be used",
+            "displayName": "Quay Images Tag",
+            "description": "The value of the tag for the images from Quay to be used",
             "name": "DOCKER_IMAGES_TAG",
             "value": "latest",
             "required": true
@@ -483,7 +483,7 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}",
-                                "image": "docker.io/${DOCKER_IMAGES_USER}/windup-web-openshift:${DOCKER_IMAGES_TAG}",
+                                "image": "quay.io/${DOCKER_IMAGES_USER}/windup-web-openshift:${DOCKER_IMAGES_TAG}",
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "requests": {
@@ -814,7 +814,7 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}-executor",
-                                "image": "docker.io/${DOCKER_IMAGES_USER}/windup-web-openshift-messaging-executor:${DOCKER_IMAGES_TAG}",
+                                "image": "quay.io/${DOCKER_IMAGES_USER}/windup-web-openshift-messaging-executor:${DOCKER_IMAGES_TAG}",
                                 "imagePullPolicy": "Always",
                                 "resources": {
                                     "requests": {

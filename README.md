@@ -1,7 +1,7 @@
 # windup-openshift: Migration Toolkit for Applications on OpenShift
 This project is useful if you want to try MTA on an OpenShift instance.  
-If you just want to test MTA using the [images](https://hub.docker.com/u/windup3/) we have made available in the docker.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) section.  
-If you have made some changes to MTA and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own docker images so that you're free to test your code.  
+If you just want to test MTA using the [images](https://quay.io/organization/windupeng) we have made available in the quay.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) section.  
+If you have made some changes to MTA and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own container images so that you're free to test your code.  
 There's also the case that you don't have an OpenShift instance available and, in this scenario, Red Hat Container Development Kit can help you working locally on your machine with any need for an OpenShift instance to test your changes to the code. In this case please follow the instructions in the [Working with Red Hat Container Development Kit](#working-with-red-hat-container-development-kit) section.
 
 ## OpenShift image construction
@@ -19,9 +19,9 @@ Next you'll find some basic instructions to install Docker based on your local O
 For any issue related to installation, you can refer to [Docker documentation](https://docs.docker.com/install/linux/docker-ce/fedora/).
 #### Install Docker for other OS
 For any other platform you can follow the detailed instructions provided in the [Install Docker](https://docs.docker.com/install/) guide from Docker.
-### Create an account to Docker Hub
-You need an account on https://hub.docker.com in order to push your images and have them available in the [docker.io repository](https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#important-terms).  
-So sign up yourself to Docker Hub at https://hub.docker.com taking care that the Docker ID you choose will be the `<your_docker_id>` value in the next steps.
+### Create an account for Quay.io
+You need an account on https://quay.io/ in order to push your images and have them available for deployment from the OCP templates.  
+So sign up yourself to Quay.io at https://quay.io/signin/ taking care that the Quay username you choose will be the `<your_quay_id>` value in the next steps.
 
 ### Create a token on registry.redhat.io (only once)
 1. Login on https://access.redhat.com/login
@@ -33,18 +33,18 @@ So sign up yourself to Docker Hub at https://hub.docker.com taking care that the
 7. Now your local Docker installation will have the credentials in ~/.docker/config.json
 
 ### Create Docker images
-1. Build this project: `$ mvn clean install -Ddocker.name.windup.web=<your_docker_id>/windup-web-openshift -Ddocker.name.windup.web.executor=<your_docker_id>/windup-web-openshift-messaging-executor`
+1. Build this project: `$ mvn clean install -Ddocker.name.windup.web=<your_quay_id>/windup-web-openshift -Ddocker.name.windup.web.executor=<your_quay_id>/windup-web-openshift-messaging-executor`
 1. Push images to docker hub:
    1. `$ docker login`
-   1. `$ docker push <your_docker_id>/windup-web-openshift`
-   1. `$ docker push <your_docker_id>/windup-web-openshift-messaging-executor`
+   1. `$ docker push <your_quay_id>/windup-web-openshift`
+   1. `$ docker push <your_quay_id>/windup-web-openshift-messaging-executor`
 
-If you want you can also set the tag for the built images (e.g. if you are working on a specific branch and you want to create images tagged with the branch name), you just have to add the tag name to the `docker.name.windup.web` and `docker.name.windup.web.executor` system properties' values (i.e. from the above example `-Ddocker.name.windup.web=<your_docker_id>/windup-web-openshift:tag_value -Ddocker.name.windup.web.executor=<your_docker_id>/windup-web-openshift-messaging-executor:tag_value`)
+If you want you can also set the tag for the built images (e.g. if you are working on a specific branch and you want to create images tagged with the branch name), you just have to add the tag name to the `docker.name.windup.web` and `docker.name.windup.web.executor` system properties' values (i.e. from the above example `-Ddocker.name.windup.web=<your_quay_id>/windup-web-openshift:tag_value -Ddocker.name.windup.web.executor=<your_quay_id>/windup-web-openshift-messaging-executor:tag_value`)
 
 ### Point to your images
-Now that your images are available on docker.io repository, you have to reference them in MTA template in order to use these images in the deployments.
+Now that your images are available on Quay.io repository, you have to reference them in MTA template in order to use these images in the deployments.
 1. open [`./templates/src/main/resources/web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) in an IDE or text editor
-1. change all the `"image"` values to point to `docker.io/<your_docker_id>/` instead of `docker.io/windup3/`
+1. change all the `"image"` values to point to `quay.io/<your_quay_id>/` instead of `quay.io/windupeng/`
    
 ## OpenShift template deployment
 There are two different ways for deploying MTA on OpenShift based upon if you have [`cluster-admin privileges`](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#roles): if you have those privileges you can decide to follow [Template deployment in OpenShift catalog](#template-deployment-in-openshift-catalog) (because you can operate on the default `openshift` project) or [Import template in Openshift Web Console](#import-template-in-openshift-web-console) otherwise you can just go with the latter approach ([Import template in Openshift Web Console](#import-template-in-openshift-web-console))
