@@ -1,7 +1,7 @@
 embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
 
-/subsystem=keycloak/secure-deployment=mta-web.war:add(realm=mta, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=mta-web, public-client=true)
-/subsystem=keycloak/secure-deployment=mta-ui.war:add(realm=mta, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=mta-web, public-client=true)
-/subsystem=keycloak/secure-deployment=api.war:add(realm=mta, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=mta-web, public-client=true)
+/subsystem=keycloak/secure-deployment=mta-web.war:add(realm=mta, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=mta-web, public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
+/subsystem=keycloak/secure-deployment=mta-ui.war:add(realm=mta, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=mta-web, public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
+/subsystem=keycloak/secure-deployment=api.war:add(realm=mta, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=mta-web, public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
 
 stop-embedded-server
