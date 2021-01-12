@@ -368,7 +368,7 @@
             "displayName": "Quay Images Tag",
             "description": "The value of the tag for the images from Quay to be used",
             "name": "DOCKER_IMAGES_TAG",
-            "value": "5.1.1.Alpha1",
+            "value": "latest",
             "required": true
         },
         {
