@@ -28,5 +28,5 @@ echo "MTA_OPTS: $MTA_OPTS"
     --statusUpdateQueue jms/queues/statusUpdateQueue \
     --cancellationTopic jms/topics/executorCancellation \
     --pingDir ${PING_DIR} \
-     -Dwindup.result.get.url=http://${JMS_HOST}:8080/mta-web/api/windup/executions/get-execution-request-tar \
-     -Dwindup.result.post.url=http://${JMS_HOST}:8080/mta-web/api/windup/executions/post-results
+     -Dwindup.result.get.url=http://${JMS_HOST}:8080/mta-ui/api/windup/executions/get-execution-request-tar \
+     -Dwindup.result.post.url=http://${JMS_HOST}:8080/mta-ui/api/windup/executions/post-results
