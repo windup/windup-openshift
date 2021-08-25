@@ -26,7 +26,7 @@ echo "Setting up keycloak server admin username/password"
 ${JBOSS_HOME}/bin/add-user-keycloak.sh --realm master --user admin --password password
 
 echo "Setting up keycloak server mta default username/password"
-${JBOSS_HOME}/bin/add-user-keycloak.sh --realm mta --user mta --password password --roles user
+${JBOSS_HOME}/bin/add-user-keycloak.sh --realm mta --user tackle --password password --roles user
 
 echo "Setting up JMS Password"
 ${JBOSS_HOME}/bin/add-user.sh -r ApplicationRealm -u jms-user -p gthudfal -g guest \

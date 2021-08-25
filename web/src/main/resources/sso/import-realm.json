@@ -1,7 +1,7 @@
 {
   "id" : "mta",
   "realm" : "mta",
-  "displayName" : "Migration Toolkit for Applications Web Console",
+  "displayName" : "Tackle Analysis Web Console",
   "notBefore" : 0,
   "revokeRefreshToken" : false,
   "accessTokenLifespan" : 300,
@@ -613,7 +613,7 @@
   }, {
     "id" : "739a78cd-ab8d-427a-93f7-4af38f0eab31",
     "clientId" : "mta-web",
-    "name" : "Migration Toolkit for Applications Web Console",
+    "name" : "Tackle Analysis Web Console",
     "adminUrl" : "",
     "surrogateAuthRequired" : false,
     "enabled" : true,
