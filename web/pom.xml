@@ -102,15 +102,6 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
-                                    <artifactId>windup-web-ui</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>war</type>
-                                    <overWrite>true</overWrite>
-                                    <destFileName>mta-web.war</destFileName>
-                                    <outputDirectory>${project.build.directory}/wars/</outputDirectory>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-web-ui-pf4</artifactId>
                                     <version>${project.version}</version>
                                     <type>war</type>
