@@ -68,4 +68,51 @@
         <module>cli</module>
         <module>templates</module>
     </modules>
+
+    <profiles>
+        <profile>
+          <id>podman</id>
+          <activation>
+            <property>
+              <name>!env.DOCKER_HOST</name>
+            </property>
+          </activation>
+          <build>
+            <plugins>
+              <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-maven-plugin</artifactId>
+                <version>${version.fabric8}</version>
+                <configuration>
+                    <dockerHost>unix:///run/user/1000/podman/podman.sock</dockerHost>
+                </configuration>
+              </plugin>
+              <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                  <execution>
+                    <id>start-async-podman-service</id>
+                    <phase>generate-test-resources</phase>
+                    <goals>
+                      <goal>exec</goal>
+                    </goals>
+                    <configuration>
+                      <executable>podman</executable>
+                      <arguments>
+                        <argument>system</argument>
+                        <argument>service</argument>
+                        <argument>-t</argument>
+                        <argument>0</argument>
+                      </arguments>
+                      <async>true</async>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
+            </plugins>
+          </build>
+        </profile>
+    </profiles>
 </project>
