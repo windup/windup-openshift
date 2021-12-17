@@ -79,6 +79,10 @@
             <file>
               <missing>/var/run/docker.sock</missing>
             </file>
+            <os>
+                <name>linux</name>
+                <family>unix</family>
+            </os>
           </activation>
           <build>
             <plugins>
