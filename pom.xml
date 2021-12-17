@@ -76,6 +76,9 @@
             <property>
               <name>!env.DOCKER_HOST</name>
             </property>
+            <file>
+              <missing>/var/run/docker.sock</missing>
+            </file>
           </activation>
           <build>
             <plugins>
