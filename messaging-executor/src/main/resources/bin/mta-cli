@@ -240,5 +240,5 @@ MTA_OPTS="$MTA_OPTS $FILE_DESCRIPTOR_OPTS";
 
 JAVA_TOOL_OPTIONS=""
 
-$JAVACMD "${MTA_DEBUG_ARGS[@]}" $MTA_OPTS -Dforge.standalone=true -Dforge.home=${MTA_HOME} -Dwindup.home=${MTA_HOME} \
+$JAVACMD "${MTA_DEBUG_ARGS[@]}" $MTA_OPTS -Dforge.standalone=true -Dforge.home=${MTA_HOME} -Dwindup.home=${MTA_HOME} -Djboss.modules.system.pkgs=sun.reflect \
    -cp ${MTA_HOME}/lib/'*' $MTA_MAIN_CLASS "${QUOTED_ARGS[@]}" "${ADDONS_DIR[@]}"
