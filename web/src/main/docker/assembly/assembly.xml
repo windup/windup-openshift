@@ -9,10 +9,10 @@
             <directory>${project.build.directory}/tools/</directory>
             <outputDirectory>opt/tools</outputDirectory>
         </fileSet>
-<!--        <fileSet>-->
-<!--            <directory>${project.build.directory}/classes/sso/</directory>-->
-<!--            <outputDirectory>opt/eap/standalone/configuration/</outputDirectory>-->
-<!--        </fileSet>-->
+        <fileSet>
+            <directory>${project.build.directory}/classes/sso/</directory>
+            <outputDirectory>opt/eap/standalone/configuration/</outputDirectory>
+        </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/root-redirect</directory>
             <outputDirectory>opt/eap/root-redirect/</outputDirectory>
@@ -24,7 +24,7 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/cli</directory>
-            <outputDirectory>opt/eap/bin/configuration</outputDirectory>
+            <outputDirectory>opt/eap/standalone/configuration</outputDirectory>
         </fileSet>
 <!--        <fileSet>-->
 <!--            <directory>${project.build.directory}/wars</directory>-->
