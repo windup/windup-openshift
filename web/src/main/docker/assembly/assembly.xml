@@ -26,10 +26,10 @@
             <directory>${project.build.directory}/classes/cli</directory>
             <outputDirectory>opt/eap/standalone/configuration</outputDirectory>
         </fileSet>
-<!--        <fileSet>-->
-<!--            <directory>${project.build.directory}/wars</directory>-->
-<!--            <outputDirectory>deployments</outputDirectory>-->
-<!--        </fileSet>-->
+        <fileSet>
+            <directory>${project.build.directory}/wars</directory>
+            <outputDirectory>deployments</outputDirectory>
+        </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/driver</directory>
             <outputDirectory>opt/eap/driver</outputDirectory>
