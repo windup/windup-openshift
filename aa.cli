@@ -1,0 +1,202 @@
+/subsystem=ee/service=default-bindings:write-attribute(name=jms-connection-factory, value="java:jboss/DefaultJMSConnectionFactory")
+    if (outcome == success) of /subsystem=messaging-activemq/server=default:read-resource
+      echo An embedded messaging broker is added by default, to disable configuring an embedded messaging broker set the DISABLE_EMBEDDED_JMS_BROKER environment variable to true. Fix your configuration to not contain a default server configured on messaging-activemq subsystem for this to happen. >> ${error_file}
+      exit
+    end-if
+    batch
+      /subsystem=messaging-activemq/server=default:add(journal-pool-files=10, statistics-enabled="${wildfly.messaging-activemq.statistics-enabled:${wildfly.statistics-enabled:false}}")
+      /subsystem=messaging-activemq/server=default/http-connector=http-connector:add(socket-binding=http-messaging, endpoint=http-acceptor)
+      /subsystem=messaging-activemq/server=default/http-connector=http-connector-throughput:add(socket-binding=http-messaging, endpoint=http-acceptor-throughput, params={"batch-delay"="50"})
+      /subsystem=messaging-activemq/server=default/http-acceptor=http-acceptor:add(http-listener=default)
+      /subsystem=messaging-activemq/server=default/http-acceptor=http-acceptor-throughput:add(http-listener=default, params={batch-delay=50,direct-deliver=false})
+      /subsystem=messaging-activemq/server=default/in-vm-connector=in-vm:add(server-id=0, params={"buffer-pooling"="false"})
+      /subsystem=messaging-activemq/server=default/in-vm-acceptor=in-vm:add(server-id=0, params={"buffer-pooling"="false"})
+      /subsystem=messaging-activemq/server=default/jms-queue=ExpiryQueue:add(entries=["java:/jms/queue/ExpiryQueue"])
+      /subsystem=messaging-activemq/server=default/jms-queue=DLQ:add(entries=["java:/jms/queue/DLQ"])
+      /subsystem=messaging-activemq/server=default/connection-factory=InVmConnectionFactory:add(connectors=["in-vm"], entries=["java:/ConnectionFactory"])
+      /subsystem=messaging-activemq/server=default/connection-factory=RemoteConnectionFactory:add(connectors=["http-connector"], entries=["java:jboss/exported/jms/RemoteConnectionFactory"], reconnect-attempts=-1)
+      /subsystem=messaging-activemq/server=default/security-setting=#:add()
+      /subsystem=messaging-activemq/server=default/security-setting=#/role=guest:add(delete-non-durable-queue=true, create-non-durable-queue=true, consume=true, send=true)
+      /subsystem=messaging-activemq/server=default/address-setting=#:add(dead-letter-address=jms.queue.DLQ, expiry-address=jms.queue.ExpiryQueue, max-size-bytes=10485760L, page-size-bytes=2097152, message-counter-history-day-limit=10, redistribution-delay=1000L)
+      /subsystem=messaging-activemq/server=default/pooled-connection-factory=activemq-ra:add(transaction=xa, connectors=["in-vm"], entries=["java:/JmsXA java:jboss/DefaultJMSConnectionFactory"])
+    run-batch
+        if (outcome == success) of /socket-binding-group=standard-sockets/socket-binding=messaging:read-resource
+          echo An embedded messaging broker is added by default, to disable configuring an embedded messaging broker set the DISABLE_EMBEDDED_JMS_BROKER environment variable to true. Fix your configuration to not contain a socket-binding named 'messaging' for this to happen. >> ${error_file}
+          exit
+        end-if
+        if (outcome == success) of /socket-binding-group=standard-sockets/socket-binding=messaging-throughput:read-resource
+          echo An embedded messaging broker is added by default, to disable configuring an embedded messaging broker set the DISABLE_EMBEDDED_JMS_BROKER environment variable to true. Fix your configuration to not contain a socket-binding named 'messaging-throughput' for this to happen. >> ${error_file}
+          exit
+        end-if
+        /socket-binding-group=standard-sockets/socket-binding=messaging:add(port=5445)
+        /socket-binding-group=standard-sockets/socket-binding=messaging-throughput:add(port=5455)
+    if (outcome != success) of /subsystem=datasources:read-resource
+      echo You have set environment variables to configure the datasource 'mta_web_console_postgresql-DB'. Fix your configuration to contain a datasources subsystem for this to happen. >> ${error_file}
+      exit
+    end-if
+    if (outcome == success) of /subsystem=datasources/xa-data-source=mta_web_console_postgresql-DB:read-resource
+      echo You have set environment variables to configure the datasource 'mta_web_console_postgresql-DB'. However, your base configuration already contains a datasource with that name. >> ${error_file}
+      exit
+    end-if
+    if (outcome == success) of /subsystem=datasources/data-source=mta_web_console_postgresql-DB:read-resource
+      echo You have set environment variables to configure the datasource 'mta_web_console_postgresql-DB'. However, your base configuration already contains a datasource with that name. >> ${error_file}
+      exit
+    end-if
+    batch
+    /subsystem=datasources/xa-data-source=mta_web_console_postgresql-DB:add(jndi-name="java:jboss/datasources/WindupServicesDS", valid-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker", enabled="true", use-java-context="true", user-name="user4U3", validate-on-match="true", driver-name="postgresql", password="QX1ISN3a", statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}", background-validation="false", exception-sorter-class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter")
+
+        /subsystem=datasources/xa-data-source=mta_web_console_postgresql-DB/xa-datasource-properties=DatabaseName:add(value="mta")
+
+        /subsystem=datasources/xa-data-source=mta_web_console_postgresql-DB/xa-datasource-properties=ServerName:add(value="172.30.150.234")
+
+        /subsystem=datasources/xa-data-source=mta_web_console_postgresql-DB/xa-datasource-properties=PortNumber:add(value="5432")
+
+    run-batch
+
+    if (outcome != success) of /subsystem=ee/service=default-bindings:read-resource
+      /subsystem=ee/service=default-bindings:add
+    end-if
+
+        /subsystem=ee/service=default-bindings:write-attribute(name=datasource, value=java:jboss/datasources/WindupServicesDS)
+
+      if (outcome != success) of /subsystem=batch-jberet:read-resource
+        echo You have set the DEFAULT_JOB_REPOSITORY environment variables to configure a default-job-repository pointing to the 'mta-web-console-postgresql' datasource. Fix your configuration to contain a batch-jberet subsystem for this to happen. >> ${error_file}
+        exit
+      end-if
+      if (outcome == success) of /subsystem=batch-jberet/jdbc-job-repository=mta_web_console_postgresql-DB:read-resource
+        batch
+        /subsystem=batch-jberet/jdbc-job-repository=mta_web_console_postgresql-DB:remove
+        /subsystem=batch-jberet/jdbc-job-repository=mta_web_console_postgresql-DB:add(data-source=mta_web_console_postgresql-DB)
+        run-batch
+      else
+        /subsystem=batch-jberet/jdbc-job-repository=mta_web_console_postgresql-DB:add(data-source=mta_web_console_postgresql-DB)
+      end-if
+
+      if (outcome == success) of /subsystem=batch-jberet:read-resource
+        /subsystem=batch-jberet:write-attribute(name=default-job-repository, value=mta_web_console_postgresql-DB)
+      end-if
+
+    if (outcome != success) of /subsystem=datasources:read-resource
+      echo You have set environment variables to configure the datasource 'mta_web_console_postgresqlObjectStorePool'. Fix your configuration to contain a datasources subsystem for this to happen. >> ${error_file}
+      exit
+    end-if
+    if (outcome == success) of /subsystem=datasources/data-source=mta_web_console_postgresqlObjectStorePool:read-resource
+      echo You have set environment variables to configure the datasource 'mta_web_console_postgresqlObjectStorePool'. However, your base configuration already contains a datasource with that name. >> ${error_file}
+      exit
+    end-if
+    if (outcome == success) of /subsystem=datasources/xa-data-source=mta_web_console_postgresqlObjectStorePool:read-resource
+      echo You have set environment variables to configure the datasource 'mta_web_console_postgresqlObjectStorePool'. However, your base configuration already contains a datasource with that name. >> ${error_file}
+      exit
+    end-if
+    batch
+    /subsystem=datasources/data-source=mta_web_console_postgresqlObjectStorePool:add(jndi-name="java:jboss/datasources/WindupServicesDSObjectStore", enabled="true", use-java-context="true", user-name="user4U3", driver-name="postgresql", connection-url="jdbc:postgresql://172.30.150.234:5432/mta", password="QX1ISN3a", statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}", jta="false")
+
+    run-batch
+
+      if (outcome != success) of /subsystem=transactions:read-resource
+        echo You have set environment variables to configure a jdbc transactional logstore. Fix your configuration to contain a transactions subsystem for this to happen. >> ${error_file}
+        exit
+      end-if
+      if (result.use-jdbc-store == true && (result.jdbc-store-datasource != "java:jboss/datasources/WindupServicesDSObjectStore" || result.jdbc-action-store-table-prefix != "ostawebconsole298ddcn" || result.jdbc-communication-store-table-prefix != "ostawebconsole298ddcn" || result.jdbc-state-store-table-prefix != "ostawebconsole298ddcn")) of /subsystem=transactions:query(select=["use-jdbc-store", "jdbc-store-datasource", "jdbc-action-store-table-prefix", "jdbc-communication-store-table-prefix", "jdbc-state-store-table-prefix"])
+        echo You have set environment variables to configure a jdbc logstore in the transactions subsystem which conflict with the values that already exist in the base configuration. Fix your configuration. >> ${error_file}
+        exit
+      end-if
+      batch
+      /subsystem=transactions:write-attribute(name=use-jdbc-store, value=true)
+      /subsystem=transactions:write-attribute(name=jdbc-store-datasource, value=java:jboss/datasources/WindupServicesDSObjectStore)
+      /subsystem=transactions:write-attribute(name=jdbc-action-store-table-prefix, value=ostawebconsole298ddcn)
+      /subsystem=transactions:write-attribute(name=jdbc-communication-store-table-prefix, value=ostawebconsole298ddcn)
+      /subsystem=transactions:write-attribute(name=jdbc-state-store-table-prefix, value=ostawebconsole298ddcn)
+      run-batch
+
+        if (outcome == success && result != undefined) of /core-service=management/management-interface=http-interface:read-attribute(name=http-authentication-factory)
+          /core-service=management/management-interface=http-interface:write-attribute(name=http-authentication-factory)
+        end-if
+      if (outcome != success) of /subsystem=jgroups:read-resource
+            echo You have set JGROUPS_CLUSTER_PASSWORD environment variable to configure JGroups authentication protocol. Fix your configuration to contain JGgroups subsystem for this to happen. >> ${error_file}
+            quit
+      end-if
+
+    if (outcome == success) of /subsystem=jgroups/stack="tcp"/protocol="AUTH":read-resource
+        echo Cannot configure jgroups 'AUTH' protocol under 'tcp' stack. This protocol is already configured. >> ${error_file}
+        quit
+    end-if
+    if (outcome != success) of /subsystem=jgroups/stack="tcp"/protocol="AUTH":read-resource
+        batch
+            /subsystem=jgroups/stack=tcp/protocol=AUTH:add(add-index=7)
+            /subsystem=jgroups/stack=tcp/protocol=AUTH/token=digest:add(algorithm=SHA-512, shared-secret-reference={clear-text=w5SvTmGf})
+       run-batch
+    end-if
+    if (outcome == success) of /subsystem=jgroups/stack="udp"/protocol="AUTH":read-resource
+        echo Cannot configure jgroups 'AUTH' protocol under 'udp' stack. This protocol is already configured. >> ${error_file}
+        quit
+    end-if
+    if (outcome != success) of /subsystem=jgroups/stack="udp"/protocol="AUTH":read-resource
+        batch
+            /subsystem=jgroups/stack=udp/protocol=AUTH:add(add-index=7)
+            /subsystem=jgroups/stack=udp/protocol=AUTH/token=digest:add(algorithm=SHA-512, shared-secret-reference={clear-text=w5SvTmGf})
+       run-batch
+    end-if
+
+    if (outcome == success) of /subsystem=jgroups/stack="tcp"/protocol="kubernetes.KUBE_PING":read-resource
+        echo Cannot configure jgroups 'kubernetes.KUBE_PING' protocol under 'tcp' stack. This protocol is already configured. >> ${error_file}
+        quit
+    end-if
+    if (outcome != success) of /subsystem=jgroups/stack="tcp"/protocol="kubernetes.KUBE_PING":read-resource
+        batch
+            /subsystem=jgroups/stack=tcp/protocol=kubernetes.KUBE_PING:add(add-index=0)
+       run-batch
+    end-if
+    if (outcome == success) of /subsystem=jgroups/stack="udp"/protocol="kubernetes.KUBE_PING":read-resource
+        echo Cannot configure jgroups 'kubernetes.KUBE_PING' protocol under 'udp' stack. This protocol is already configured. >> ${error_file}
+        quit
+    end-if
+    if (outcome != success) of /subsystem=jgroups/stack="udp"/protocol="kubernetes.KUBE_PING":read-resource
+        batch
+            /subsystem=jgroups/stack=udp/protocol=kubernetes.KUBE_PING:add(add-index=0)
+       run-batch
+    end-if
+
+              if (outcome != success) of /extension=org.keycloak.keycloak-adapter-subsystem:read-resource
+        /extension=org.keycloak.keycloak-adapter-subsystem:add()
+      else
+        echo org.keycloak.keycloak-adapter-subsystem extension already added >> ${warning_file}
+      end-if
+              /subsystem=keycloak:add
+
+embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
+/subsystem=keycloak/secure-deployment=mta-ui.war:add(realm=mta, realm-public-key="${env.SSO_PUBLIC_KEY}", auth-server-url="${env.SSO_URL}", ssl-required="NONE", resource=mta-web, public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
+/subsystem=keycloak/secure-deployment=api.war:add(realm=mta, realm-public-key="${env.SSO_PUBLIC_KEY}", auth-server-url="${env.SSO_URL}", ssl-required="NONE", resource=mta-web, public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
+stop-embedded-server
+            if (outcome != success) of /subsystem=security/security-domain=keycloak:read-resource
+          /subsystem=security/security-domain=keycloak:add
+          /subsystem=security/security-domain=keycloak/authentication=classic:add(login-modules=[{code=org.keycloak.adapters.jboss.KeycloakLoginModule, flag=required}])
+        else
+          echo You have set environment variables to configure the keycloak security domain. However, your base configuration already contains a security domain with that name. >> ${error_file}
+          quit
+        end-if
+    for scannerName in /subsystem=deployment-scanner:read-children-names(child-type=scanner)
+      if (result != undefined && result != false) of /subsystem=deployment-scanner/scanner=$scannerName:read-attribute(name=auto-deploy-exploded, include-defaults=false)
+        echo You have set environment variables to set auto-deploy-exploded for the deployment scanner but your configuration already contains a conflicting value. Fix your configuration. >> ${error_file}
+        exit
+      else
+        /subsystem=deployment-scanner/scanner=$scannerName:write-attribute(name=auto-deploy-exploded, value=false)
+      end-if
+    done
+      if (outcome != success) of /subsystem=ejb3/service=timer-service:read-resource
+        batch
+        /subsystem=ejb3/service=timer-service:add(thread-pool-name=default, default-data-store=mta_web_console_postgresql-DB_ds)
+
+      /subsystem=ejb3/service=timer-service/database-data-store=mta_web_console_postgresql-DB_ds:add(datasource-jndi-name=java:jboss/datasources/WindupServicesDS, database=postgresql, partition=mta_web_console_postgresql-DB_part, refresh-interval=-1)
+        run-batch
+      end-if
+      if (outcome != success) of /subsystem=ejb3/service=timer-service/database-data-store=mta_web_console_postgresql-DB_ds:read-resource
+
+      /subsystem=ejb3/service=timer-service/database-data-store=mta_web_console_postgresql-DB_ds:add(datasource-jndi-name=java:jboss/datasources/WindupServicesDS, database=postgresql, partition=mta_web_console_postgresql-DB_part, refresh-interval=-1)
+      end-if
+      if (result.allow-execution != true || result.database != "postgresql" || result.datasource-jndi-name != "java:jboss/datasources/WindupServicesDS" || result.partition != "mta_web_console_postgresql-DB_part" || result.refresh-interval != -1)  of /subsystem=ejb3/service=timer-service/database-data-store=test_mysql-TEST_ds:query(select=["allow-execution", "database", "datasource-jndi-name", "partition", "refresh-interval"])
+        echo You have set environment variables to configure a timer service database-data-store in the ejb3 subsystem which conflict with the values that already exist in the base configuration. Fix your configuration. >> ${error_file}
+        exit
+      end-if
+
+      /subsystem=ejb3/service=timer-service:write-attribute(name=default-data-store, value=mta_web_console_postgresql-DB_ds)

@@ -1,9 +1,9 @@
 embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
 
-module add --name=org.postgresql --resources=/opt/eap/extensions/postgresql-42.2.5.jar --dependencies=javax.api,javax.transaction.api
+module add --name=org.postgresql --resources=/extensions/postgresql-42.2.5.jar --dependencies=javax.api,javax.transaction.api
 
 batch
-/subsystem=datasources/jdbc-driver=postgresql:add(driver-name="postgresql", driver-module-name=org.postgresql, driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-name="postgresql", driver-module-name=org.postgresql, driver-class-name=org.postgresql.Driver, driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
 run-batch
 
 stop-embedded-server

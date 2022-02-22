@@ -9,10 +9,10 @@
             <directory>${project.build.directory}/tools/</directory>
             <outputDirectory>opt/tools</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>${project.build.directory}/classes/sso/</directory>
-            <outputDirectory>opt/eap/standalone/configuration/</outputDirectory>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>${project.build.directory}/classes/sso/</directory>-->
+<!--            <outputDirectory>opt/eap/standalone/configuration/</outputDirectory>-->
+<!--        </fileSet>-->
         <fileSet>
             <directory>${project.build.directory}/classes/root-redirect</directory>
             <outputDirectory>opt/eap/root-redirect/</outputDirectory>
@@ -24,14 +24,19 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/cli</directory>
-            <outputDirectory>opt/eap/standalone/configuration</outputDirectory>
+            <outputDirectory>opt/eap/bin/configuration</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>${project.build.directory}/wars</directory>
-            <outputDirectory>deployments</outputDirectory>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>${project.build.directory}/wars</directory>-->
+<!--            <outputDirectory>deployments</outputDirectory>-->
+<!--        </fileSet>-->
         <fileSet>
             <directory>${project.build.directory}/classes/driver</directory>
+            <outputDirectory>extensions</outputDirectory>
+            <fileMode>0777</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/classes/extensions</directory>
             <outputDirectory>opt/eap/extensions</outputDirectory>
             <fileMode>0777</fileMode>
         </fileSet>

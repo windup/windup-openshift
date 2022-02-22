@@ -3,13 +3,13 @@ embed-server --std-out=echo --admin-only=true --server-config=standalone-openshi
 /subsystem=ejb3/mdb-delivery-group=dg_executors:add()
 /subsystem=ejb3/mdb-delivery-group=dg_services:add()
 
-jms-queue add --queue-address=executorQueue --entries=[queues/executorQueue,java:jboss/exported/jms/queues/executorQueue]
-jms-queue add --queue-address=statusUpdateQueue --entries=[queues/statusUpdateQueue,java:jboss/exported/jms/queues/statusUpdateQueue]
-jms-queue add --queue-address=packageDiscoveryQueue --entries=[queues/packageDiscoveryQueue]
-jms-topic add --topic-address=executorCancellation --entries=[topics/executorCancellation,java:jboss/exported/jms/topics/executorCancellation]
+#jms-queue add --queue-address=executorQueue --entries=[queues/executorQueue,java:jboss/exported/jms/queues/executorQueue]
+#jms-queue add --queue-address=statusUpdateQueue --entries=[queues/statusUpdateQueue,java:jboss/exported/jms/queues/statusUpdateQueue]
+#jms-queue add --queue-address=packageDiscoveryQueue --entries=[queues/packageDiscoveryQueue]
+#jms-topic add --topic-address=executorCancellation --entries=[topics/executorCancellation,java:jboss/exported/jms/topics/executorCancellation]
 
-/subsystem=keycloak:remove
-/subsystem=keycloak:add
+#/subsystem=keycloak:remove
+#/subsystem=keycloak:add
 
 /system-property=keycloak.realm.public.key:add(value="${env.SSO_PUBLIC_KEY}")
 /system-property=keycloak.server.url:add(value="${env.SSO_URL}")
