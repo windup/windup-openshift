@@ -32,7 +32,7 @@
 <!--        </fileSet>-->
         <fileSet>
             <directory>${project.build.directory}/classes/driver</directory>
-            <outputDirectory>extensions</outputDirectory>
+            <outputDirectory>opt/eap/driver</outputDirectory>
             <fileMode>0777</fileMode>
         </fileSet>
         <fileSet>

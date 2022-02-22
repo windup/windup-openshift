@@ -9,7 +9,9 @@ cd $DIR
 #export MAVEN_SETTINGS_PATH="$GALLEON_MAVEN_SETTINGS_XML"
 
 echo 'echo "Installing PostgreSQL driver"' >> /opt/eap/bin/launch/launch.sh
-echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=/extensions/db_postgresql.cli" >> /opt/eap/bin/launch/launch.sh
+echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/driver/db_postgresql.cli" >> /opt/eap/bin/launch/launch.sh
+
+echo 'echo "Installing Required Configuration"' >> /opt/eap/bin/launch/launch.sh
 echo "source ${JBOSS_HOME}/bin/inject.sh" >> /opt/eap/bin/launch/launch.sh
 
 # Inject our own changes to the launch script (remove the logging changes that break forge integration)
