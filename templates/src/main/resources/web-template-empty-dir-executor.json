@@ -306,6 +306,10 @@
                                     {
                                         "name": "MAX_POST_SIZE",
                                         "value": "${MAX_POST_SIZE}"
+                                    },
+                                    {
+                                        "name": "SSO_FORCE_LEGACY_SECURITY",
+                                        "value": "false"
                                     }
                                 ],
                                 "image": "quay.io/${DOCKER_IMAGES_USER}/windup-web-openshift:${DOCKER_IMAGES_TAG}",
