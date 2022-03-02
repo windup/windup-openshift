@@ -32,6 +32,11 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/driver</directory>
+            <outputDirectory>opt/eap/driver</outputDirectory>
+            <fileMode>0777</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/classes/extensions</directory>
             <outputDirectory>opt/eap/extensions</outputDirectory>
             <fileMode>0777</fileMode>
         </fileSet>

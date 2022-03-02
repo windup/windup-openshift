@@ -720,6 +720,10 @@
                                     {
                                         "name": "MAX_POST_SIZE",
                                         "value": "${MAX_POST_SIZE}"
+                                    },
+                                    {
+                                        "name": "SSO_FORCE_LEGACY_SECURITY",
+                                        "value": "false"
                                     }
                                 ]
                             }

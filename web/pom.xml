@@ -37,7 +37,7 @@
                         <image>
                             <name>${docker.name.windup.web}</name>
                             <build>
-                                <from>registry.redhat.io/jboss-eap-7/eap73-openjdk8-openshift-rhel7:7.3.0-13</from>
+                                <from>registry.redhat.io/jboss-eap-7/eap74-openjdk11-openshift-rhel8:7.4.3-2</from>
                                 <cmd>/opt/eap/bin/webapp-launch.sh</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
@@ -62,7 +62,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-keycloak-tool</artifactId>
-                                    <version>5.4.0.Final</version>
+                                    <version>5.5.0.Final</version>
                                     <outputDirectory>${project.build.directory}/tools/keycloak-tool</outputDirectory>
                                     <destFileName>keycloak-tool.jar</destFileName>
                                     <overWrite>true</overWrite>

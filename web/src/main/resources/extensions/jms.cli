@@ -1,0 +1,8 @@
+embed-server --std-out=echo  --server-config=standalone-openshift.xml
+
+jms-queue add --queue-address=executorQueue --entries=[queues/executorQueue,java:jboss/exported/jms/queues/executorQueue]
+jms-queue add --queue-address=statusUpdateQueue --entries=[queues/statusUpdateQueue,java:jboss/exported/jms/queues/statusUpdateQueue]
+jms-queue add --queue-address=packageDiscoveryQueue --entries=[queues/packageDiscoveryQueue]
+jms-topic add --topic-address=executorCancellation --entries=[topics/executorCancellation,java:jboss/exported/jms/topics/executorCancellation]
+
+quit
