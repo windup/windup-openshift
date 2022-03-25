@@ -62,7 +62,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-keycloak-tool</artifactId>
-                                    <version>5.6.0.Final</version>
+                                    <version>5.7.0.Final</version>
                                     <outputDirectory>${project.build.directory}/tools/keycloak-tool</outputDirectory>
                                     <destFileName>keycloak-tool.jar</destFileName>
                                     <overWrite>true</overWrite>
