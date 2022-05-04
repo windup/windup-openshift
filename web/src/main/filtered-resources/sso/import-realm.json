@@ -852,7 +852,7 @@
     "contentSecurityPolicy" : "frame-src 'self'"
   },
   "smtpServer" : { },
-  "loginTheme" : "mta",
+  "loginTheme" : "${product-name}",
   "eventsEnabled" : false,
   "eventsListeners" : [ "jboss-logging" ],
   "enabledEventTypes" : [ ],

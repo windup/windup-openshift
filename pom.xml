@@ -121,5 +121,29 @@
             </plugins>
           </build>
         </profile>
+
+        <profile>
+            <id>mta</id>
+            <activation>
+                <property>
+                    <name>!downstream</name>
+                </property>
+            </activation>
+            <properties>
+                <product-name>mta</product-name>
+            </properties>
+        </profile>
+        <profile>
+            <id>tackle</id>
+            <activation>
+                <property>
+                    <name>downstream</name>
+                    <value>tackle</value>
+                </property>
+            </activation>
+            <properties>
+                <product-name>tackle</product-name>
+            </properties>
+        </profile>
     </profiles>
 </project>
