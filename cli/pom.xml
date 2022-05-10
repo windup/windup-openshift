@@ -39,7 +39,7 @@
                             <name>${docker.name.windup.cli}</name>
                             <build>
                                 <from>registry.access.redhat.com/ubi8/openjdk-11:1.11</from>
-                                <cmd>/opt/migrationtoolkit/bin/${product-name}-cli</cmd>
+                                <cmd>/opt/migrationtoolkit/bin/mta-cli</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
                                     <descriptor>assembly/assembly.xml</descriptor>
