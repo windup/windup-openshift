@@ -37,7 +37,7 @@
                         <image>
                             <name>${docker.name.windup.web.executor}</name>
                             <build>
-                                <from>registry.access.redhat.com/ubi8/openjdk-11:1.11</from>
+                                <from>registry.access.redhat.com/ubi8/openjdk-11:latest</from>
                                 <cmd>/opt/mta-cli/bin/openshift-launch.sh</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
