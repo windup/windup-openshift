@@ -37,7 +37,7 @@
                         <image>
                             <name>${docker.name.windup.web}</name>
                             <build>
-                                <from>registry.redhat.io/jboss-eap-7/eap74-openjdk11-openshift-rhel8:latest</from>
+                                <from>registry.redhat.io/jboss-eap-7/eap74-openjdk11-openshift-rhel8:7.4.4</from>
                                 <cmd>/opt/eap/bin/webapp-launch.sh</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
