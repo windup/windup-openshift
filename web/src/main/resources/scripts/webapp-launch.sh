@@ -16,7 +16,7 @@ echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/driver/
 echo 'echo "Installing Required Configuration"' >> ${JBOSS_HOME}/bin/launch/launch.sh
 echo "source ${JBOSS_HOME}/bin/inject.sh" >> ${JBOSS_HOME}/bin/launch/launch.sh
 
-if [ ! -f "${JBOSS_HOME}/standalone/configuration/standalone-openshift.xml";] then
+if [ ! -f "${JBOSS_HOME}/standalone/configuration/standalone-openshift.xml" ]; then
   ln -s ${JBOSS_HOME}/standalone/configuration/standalone.xml ${JBOSS_HOME}/standalone/configuration/standalone-openshift.xml
 fi
 
