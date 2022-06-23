@@ -11,20 +11,20 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/sso/</directory>
-            <outputDirectory>opt/eap/standalone/configuration/</outputDirectory>
+            <outputDirectory>${jboss.home}/standalone/configuration/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/root-redirect</directory>
-            <outputDirectory>opt/eap/root-redirect/</outputDirectory>
+            <outputDirectory>${jboss.home}/root-redirect/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/scripts</directory>
-            <outputDirectory>opt/eap/bin/</outputDirectory>
+            <outputDirectory>${jboss.home}/bin/</outputDirectory>
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/cli</directory>
-            <outputDirectory>opt/eap/standalone/configuration</outputDirectory>
+            <outputDirectory>${jboss.home}/standalone/configuration</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/wars</directory>
@@ -32,12 +32,12 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/driver</directory>
-            <outputDirectory>opt/eap/driver</outputDirectory>
+            <outputDirectory>${jboss.home}/driver</outputDirectory>
             <fileMode>0777</fileMode>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/extensions</directory>
-            <outputDirectory>opt/eap/extensions</outputDirectory>
+            <outputDirectory>${jboss.home}/extensions</outputDirectory>
             <fileMode>0777</fileMode>
         </fileSet>
     </fileSets>

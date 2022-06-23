@@ -12,6 +12,9 @@
     <properties>
         <version.fabric8>3.5.28</version.fabric8>
         <docker.name.windup.web>%a:%v</docker.name.windup.web>
+
+        <jboss.base.image>quay.io/wildfly/wildfly-centos7:23.0</jboss.base.image>
+        <jboss.home>/opt/wildfly</jboss.home>
     </properties>
 
     <build>
@@ -37,8 +40,8 @@
                         <image>
                             <name>${docker.name.windup.web}</name>
                             <build>
-                                <from>registry.redhat.io/jboss-eap-7/eap74-openjdk11-openshift-rhel8:7.4.4</from>
-                                <cmd>/opt/eap/bin/webapp-launch.sh</cmd>
+                                <from>${jboss.base.image}</from>
+                                <cmd>${jboss.home}/bin/webapp-launch.sh</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
                                     <descriptor>assembly/assembly.xml</descriptor>

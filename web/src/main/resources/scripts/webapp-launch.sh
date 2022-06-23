@@ -10,10 +10,14 @@ export JAVA_OPTS="$JAVA_OPTS -Dkeycloak.migration.action=import -Dkeycloak.migra
 
 export MAVEN_SETTINGS_PATH="$GALLEON_MAVEN_SETTINGS_XML"
 
-echo 'echo "Installing PostgreSQL driver"' >> /opt/eap/bin/launch/launch.sh
-echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/driver/db_postgresql.cli" >> /opt/eap/bin/launch/launch.sh
+echo 'echo "Installing PostgreSQL driver"' >> ${JBOSS_HOME}/bin/launch/launch.sh
+echo "${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/driver/db_postgresql.cli" >> ${JBOSS_HOME}/bin/launch/launch.sh
 
-echo 'echo "Installing Required Configuration"' >> /opt/eap/bin/launch/launch.sh
-echo "source ${JBOSS_HOME}/bin/inject.sh" >> /opt/eap/bin/launch/launch.sh
+echo 'echo "Installing Required Configuration"' >> ${JBOSS_HOME}/bin/launch/launch.sh
+echo "source ${JBOSS_HOME}/bin/inject.sh" >> ${JBOSS_HOME}/bin/launch/launch.sh
 
-/opt/eap/bin/openshift-launch.sh "$@"
+if [ ! -f "${JBOSS_HOME}/standalone/configuration/standalone-openshift.xml";] then
+  ln -s ${JBOSS_HOME}/standalone/configuration/standalone.xml ${JBOSS_HOME}/standalone/configuration/standalone-openshift.xml
+fi
+
+${JBOSS_HOME}/bin/openshift-launch.sh "$@"
