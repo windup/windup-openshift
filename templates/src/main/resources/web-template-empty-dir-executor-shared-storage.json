@@ -334,7 +334,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/eap/bin/livenessProbe.sh"
+                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands=ls | grep 'server-state=running'"
                                         ]
                                     },
                                     "failureThreshold": 3,
@@ -365,7 +365,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/eap/bin/readinessProbe.sh"
+                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='ls deployment' | grep 'mta-ui.war'"
                                         ]
                                     },
                                     "failureThreshold": 3,
