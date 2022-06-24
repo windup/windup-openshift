@@ -40,10 +40,5 @@
             <outputDirectory>${jboss.home}/extensions</outputDirectory>
             <fileMode>0777</fileMode>
         </fileSet>
-        <fileSet>
-            <directory>${project.build.directory}/classes/configuration</directory>
-            <outputDirectory>${jboss.home}/standalone/configuration</outputDirectory>
-            <fileMode>0777</fileMode>
-        </fileSet>
     </fileSets>
 </assembly>

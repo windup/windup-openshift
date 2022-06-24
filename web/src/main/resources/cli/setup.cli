@@ -1,5 +1,8 @@
 embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
 
+/subsystem=ejb3:write-attribute(name="default-mdb-instance-pool", value="mdb-strict-max-pool")
+/subsystem=ejb3:write-attribute(name="default-resource-adapter-name", value="${ejb.resource-adapter-name:activemq-ra.rar}")
+
 /subsystem=ejb3/mdb-delivery-group=dg_executors:add()
 /subsystem=ejb3/mdb-delivery-group=dg_services:add()
 
