@@ -365,7 +365,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='ls deployment' | grep 'mta-ui.war'"
+                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='ls deployment' | grep 'api.war'"
                                         ]
                                     },
                                     "failureThreshold": 3,
