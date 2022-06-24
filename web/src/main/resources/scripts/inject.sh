@@ -44,3 +44,7 @@ fi
 echo "Setting up as a master node"
 ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/configuration/master.cli
 
+if [ -d "${JBOSS_HOME}/modules/system/layers/openshift/" ]; then
+  echo "Configuring keycloak and openshift layers"
+  sed -i -e 's#layers=keycloak#layers=keycloak,openshift#g' /opt/eap/modules/layers.conf
+fi
