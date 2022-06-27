@@ -9,7 +9,7 @@ JMS_HOST=${JMS_HOST//-/_}
 JMS_HOST=${!JMS_HOST}
 
 SERIALIZER=${MESSAGING_SERIALIZER}
-DATA_DIR=/opt/eap/standalone/data
+DATA_DIR=/opt/wildfly/standalone/data
 PING_DIR=/opt/mta-cli/ping
 
 echo "Starting executor with messaging server $JMS_HOST as user $JMS_USER"

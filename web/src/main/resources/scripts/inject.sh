@@ -46,5 +46,5 @@ ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/co
 
 if [ -d "${JBOSS_HOME}/modules/system/layers/openshift/" ]; then
   echo "Configuring keycloak and openshift layers"
-  sed -i -e 's#layers=keycloak#layers=keycloak,openshift#g' /opt/eap/modules/layers.conf
+  sed -i -e 's#layers=keycloak#layers=keycloak,openshift#g' ${JBOSS_HOME}/modules/layers.conf
 fi
