@@ -486,7 +486,7 @@
                                     "preStop": {
                                         "exec": {
                                             "command": [
-                                                "/opt/wildfly/bin/jboss-cli.sh",
+                                                "${JBOSS_HOME}/bin/jboss-cli.sh",
                                                 "-c",
                                                 ":shutdown(timeout=60)"
                                             ]
