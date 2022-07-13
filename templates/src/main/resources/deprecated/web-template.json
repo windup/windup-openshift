@@ -3,17 +3,17 @@
     "apiVersion": "v1",
     "metadata": {
         "annotations": {
-            "description": "MTA Web Console template",
+            "description": "WINDUP Web Console template",
             "iconClass": "icon-jboss",
             "tags": "eap,postgresql,javaee,java,database,jboss,xpaas",
             "version": "1.3.2",
             "openshift.io/display-name": "Migration Toolkit for Applications"
         },
-        "name": "mta-web-console"
+        "name": "windup-web-console"
     },
     "labels": {
-        "app": "mta-web-console",
-        "template": "mta-web-console",
+        "app": "windup-web-console",
+        "template": "windup-web-console",
         "xpaas": "1.3.2"
     },
     "message": "Migration Toolkit for Applications server has been installed. The username/password for accessing the PostgreSQL database \"${DB_DATABASE}\" is ${DB_USERNAME}/${DB_PASSWORD}. Please be sure to create the \"${JGROUPS_ENCRYPT_SECRET}\" containing the ${JGROUPS_ENCRYPT_KEYSTORE} file used for securing JGroups communications.",
@@ -22,7 +22,7 @@
             "displayName": "Application Name",
             "description": "The name for the application.",
             "name": "APPLICATION_NAME",
-            "value": "mta-web-console",
+            "value": "windup-web-console",
             "required": true
         },
         {
@@ -64,7 +64,7 @@
             "displayName": "Database Name",
             "description": "Database name",
             "name": "DB_DATABASE",
-            "value": "mta",
+            "value": "windup",
             "required": true
         },
         {
@@ -227,7 +227,7 @@
             "displayName": "SSO Realm",
             "description": "The SSO realm to which the application client(s) should be associated (e.g. demo).",
             "name": "SSO_REALM",
-            "value": "mta",
+            "value": "windup",
             "required": true
         },
         {
@@ -477,7 +477,7 @@
                                 },
                                 "volumeMounts": [
                                     {
-                                        "name": "${APPLICATION_NAME}-mta-web-pvol",
+                                        "name": "${APPLICATION_NAME}-windup-web-pvol",
                                         "mountPath": "/opt/eap/standalone/data",
                                         "readOnly": false
                                     }
@@ -730,9 +730,9 @@
                         ],
                         "volumes": [
                             {
-                                "name": "${APPLICATION_NAME}-mta-web-pvol",
+                                "name": "${APPLICATION_NAME}-windup-web-pvol",
                                 "persistentVolumeClaim": {
-                                    "claimName": "${APPLICATION_NAME}-mta-web-claim"
+                                    "claimName": "${APPLICATION_NAME}-windup-web-claim"
                                 }
                             }
                         ]
@@ -789,7 +789,7 @@
                                 },
                                 "volumeMounts": [
                                     {
-                                        "name": "${APPLICATION_NAME}-mta-web-pvol",
+                                        "name": "${APPLICATION_NAME}-windup-web-pvol",
                                         "mountPath": "/opt/eap/standalone/data",
                                         "readOnly": false
                                     }
@@ -798,7 +798,7 @@
                                     "preStop": {
                                         "exec": {
                                             "command": [
-                                                "/opt/mta-cli/bin/stop.sh"
+                                                "/opt/windup-cli/bin/stop.sh"
                                             ]
                                         }
                                     }
@@ -808,7 +808,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/mta-cli/bin/livenessProbe.sh"
+                                            "/opt/windup-cli/bin/livenessProbe.sh"
                                         ]
                                     }
                                 },
@@ -817,7 +817,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/mta-cli/bin/livenessProbe.sh"
+                                            "/opt/windup-cli/bin/livenessProbe.sh"
                                         ]
                                     }
                                 },
@@ -850,9 +850,9 @@
                         ],
                         "volumes": [
                             {
-                                "name": "${APPLICATION_NAME}-mta-web-pvol",
+                                "name": "${APPLICATION_NAME}-windup-web-pvol",
                                 "persistentVolumeClaim": {
-                                    "claimName": "${APPLICATION_NAME}-mta-web-executor-claim"
+                                    "claimName": "${APPLICATION_NAME}-windup-web-executor-claim"
                                 }
                             }
                         ]
@@ -983,7 +983,7 @@
                     "application": "${APPLICATION_NAME}-amq"
                 },
                 "annotations": {
-                    "description": "MTA Master AMQ port."
+                    "description": "WINDUP Master AMQ port."
                 }
             }
         },
@@ -1035,7 +1035,7 @@
             "apiVersion": "v1",
             "kind": "PersistentVolumeClaim",
             "metadata": {
-                "name": "${APPLICATION_NAME}-mta-web-claim",
+                "name": "${APPLICATION_NAME}-windup-web-claim",
                 "labels": {
                     "application": "${APPLICATION_NAME}"
                 }
@@ -1055,7 +1055,7 @@
             "apiVersion": "v1",
             "kind": "PersistentVolumeClaim",
             "metadata": {
-                "name": "${APPLICATION_NAME}-mta-web-executor-claim",
+                "name": "${APPLICATION_NAME}-windup-web-executor-claim",
                 "labels": {
                     "application": "${APPLICATION_NAME}"
                 }

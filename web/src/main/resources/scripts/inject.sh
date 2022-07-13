@@ -26,13 +26,11 @@ do
   cp ${JBOSS_HOME}/themes/$theme/login/login_required.theme.properties ${JBOSS_HOME}/themes/$theme/login/theme.properties
 done
 
-cp ${JBOSS_HOME}/themes/mta/login/login_required.theme.properties ${JBOSS_HOME}/themes/mta/login/theme.properties
-
 echo "Setting up keycloak server admin username/password"
 ${JBOSS_HOME}/bin/add-user-keycloak.sh --realm master --user admin --password password
 
-echo "Setting up keycloak server mta default username/password"
-${JBOSS_HOME}/bin/add-user-keycloak.sh --realm mta --user migration --password password --roles user
+echo "Setting up keycloak server windup default username/password"
+${JBOSS_HOME}/bin/add-user-keycloak.sh --realm windup --user migration --password password --roles user
 
 echo "Setting up JMS Password"
 ${JBOSS_HOME}/bin/add-user.sh -r ApplicationRealm -u jms-user -p gthudfal -g guest \

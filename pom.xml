@@ -123,10 +123,22 @@
         </profile>
 
         <profile>
-            <id>mta</id>
+            <id>windup</id>
             <activation>
                 <property>
                     <name>!downstream</name>
+                </property>
+            </activation>
+            <properties>
+                <product-name>windup</product-name>
+            </properties>
+        </profile>
+        <profile>
+            <id>mta</id>
+            <activation>
+                <property>
+                    <name>downstream</name>
+                    <value>mta</value>
                 </property>
             </activation>
             <properties>
