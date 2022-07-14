@@ -6,7 +6,7 @@
     <!-- Add distribution files -->
     <fileSets>
         <fileSet>
-            <directory>${project.build.directory}/mta-cli/mta-cli-${version.windup.cli}/</directory>
+            <directory>${project.build.directory}/mta-cli/${product-name}-cli-${version.windup.cli}/</directory>
             <outputDirectory>opt/migrationtoolkit/</outputDirectory>
         </fileSet>
     </fileSets>
