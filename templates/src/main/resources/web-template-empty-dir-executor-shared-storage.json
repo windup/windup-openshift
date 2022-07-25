@@ -228,28 +228,20 @@
                                         "value": "${APPLICATION_NAME}-postgresql"
                                     },
                                     {
-                                        "name": "SSO_URL",
-                                        "value": "${SSO_URL}"
-                                    },
-                                    {
-                                        "name": "SSO_SERVICE_URL",
-                                        "value": "${SSO_SERVICE_URL}"
+                                        "name": "SSO_AUTH_SERVER_URL",
+                                        "value": "${SSO_AUTH_SERVER_URL}"
                                     },
                                     {
                                         "name": "SSO_REALM",
                                         "value": "${SSO_REALM}"
                                     },
                                     {
-                                        "name": "SSO_USERNAME",
-                                        "value": "${SSO_USERNAME}"
+                                        "name": "SSO_SSL_REQUIRED",
+                                        "value": "${SSO_SSL_REQUIRED}"
                                     },
                                     {
-                                        "name": "SSO_PASSWORD",
-                                        "value": "${SSO_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "SSO_PUBLIC_KEY",
-                                        "value": "${SSO_PUBLIC_KEY}"
+                                        "name": "SSO_CLIENT_ID",
+                                        "value": "${SSO_CLIENT_ID}"
                                     },
                                     {
                                         "name": "SSO_BEARER_ONLY",
@@ -972,44 +964,30 @@
         {
             "description": "The URL for the SSO server (e.g. https://secure-sso-myproject.example.com/auth).  This is the URL through which the user will be redirected when a login or token is required by the application.",
             "displayName": "URL for SSO",
-            "name": "SSO_URL",
+            "name": "SSO_AUTH_SERVER_URL",
             "required": true,
-            "value": "/auth"
-        },
-        {
-            "description": "The URL for the internal SSO service, where secure-sso (the default) is the kubernetes service exposed by the SSO server.  This is used to create the application client(s) (see SSO_USERNAME).  This can also be the same as SSO_URL.",
-            "displayName": "URL for SSO (internal service)",
-            "name": "SSO_SERVICE_URL",
-            "required": false,
             "value": "/auth"
         },
         {
             "description": "The SSO realm to which the application client(s) should be associated (e.g. demo).",
             "displayName": "SSO Realm",
             "name": "SSO_REALM",
-            "required": true,
-            "value": "mta"
-        },
-        {
-            "description": "The username used to access the SSO service.  This is used to create the appliction client(s) within the specified SSO realm. This should match the SSO_SERVICE_USERNAME specified through one of the sso70-* templates.",
-            "displayName": "SSO Username",
-            "name": "SSO_USERNAME",
             "required": false,
             "value": ""
         },
         {
-            "description": "The password for the SSO service user.",
-            "displayName": "SSO Password",
-            "name": "SSO_PASSWORD",
+            "description": "The SSO SSL Required behaviour. E.g. EXTERNAL, NONE, ALL",
+            "displayName": "SSO SSL Required",
+            "name": "SSO_SSL_REQUIRED",
             "required": false,
-            "value": ""
+            "value": "EXTERNAL"
         },
         {
-            "description": "SSO Public Key. Public key is recommended to be passed into the template to avoid man-in-the-middle security vulnerability",
-            "displayName": "SSO Public Key",
-            "name": "SSO_PUBLIC_KEY",
+            "description": "The SSO Client Id.",
+            "displayName": "SSO Client ID",
+            "name": "SSO_CLIENT_ID",
             "required": false,
-            "value": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhlI4WQ3tbIFE71M0HAO3TfvJFxH0P16wdOSzc/Fr9l8/tOn8cN5sgkGpnyEWcawgv2z4nouUkpV92/vo9fadKr3KVUMVaE3EaR3BmsC0Ct6TY7mYD+sz/yGoSWqwmGYocEJRIXAuMCX3jCu6CKMSV+1qjpcyYqzRaVWTB/EV76Sx+CSh9rEMLl8mE6owxNWQck03KgvWCA70l/LAu1M1bWy1aozoUKiTryX0nTxbHbj4qg3vvHC6igYndJ4zLr30QlCVn1iQ1jXC1MQUJ+Mwc8yZlkhaoAfDS1iM9I8NUcpcQAIn2baD8/aBrS1F9woYYRvo0vFH5N0+Rw4xjgSDlQIDAQAB"
+            "value": ""
         },
         {
             "description": "SSO Client Access Type",
