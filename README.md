@@ -1,7 +1,7 @@
 # windup-openshift: Migration Toolkit for Applications on OpenShift
-This project is useful if you want to try MTA on an OpenShift instance.  
-If you just want to test MTA using the [images](https://quay.io/organization/windupeng) we have made available in the quay.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) section.  
-If you have made some changes to MTA and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own container images so that you're free to test your code.  
+This project is useful if you want to try WINDUP on an OpenShift instance.  
+If you just want to test WINDUP using the [images](https://quay.io/organization/windupeng) we have made available in the quay.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) section.  
+If you have made some changes to WINDUP and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own container images so that you're free to test your code.  
 There's also the case that you don't have an OpenShift instance available and, in this scenario, Red Hat Container Development Kit can help you working locally on your machine with any need for an OpenShift instance to test your changes to the code. In this case please follow the instructions in the [Working with Red Hat Container Development Kit](#working-with-red-hat-container-development-kit) section.
 
 ## OpenShift image construction
@@ -42,21 +42,21 @@ So sign up yourself to Quay.io at https://quay.io/signin/ taking care that the Q
 If you want you can also set the tag for the built images (e.g. if you are working on a specific branch and you want to create images tagged with the branch name), you just have to add the tag name to the `docker.name.windup.web` and `docker.name.windup.web.executor` system properties' values (i.e. from the above example `-Ddocker.name.windup.web=<your_quay_id>/windup-web-openshift:tag_value -Ddocker.name.windup.web.executor=<your_quay_id>/windup-web-openshift-messaging-executor:tag_value`)
 
 ### Point to your images
-Now that your images are available on Quay.io repository, you have to reference them in MTA template in order to use these images in the deployments.
+Now that your images are available on Quay.io repository, you have to reference them in WINDUP template in order to use these images in the deployments.
 1. open [`./templates/src/main/resources/web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) in an IDE or text editor
 1. change all the `"image"` values to point to `quay.io/<your_quay_id>/` instead of `quay.io/windupeng/`
    
 ## OpenShift template deployment
-There are two different ways for deploying MTA on OpenShift based upon if you have [`cluster-admin privileges`](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#roles): if you have those privileges you can decide to follow [Template deployment in OpenShift catalog](#template-deployment-in-openshift-catalog) (because you can operate on the default `openshift` project) or [Import template in Openshift Web Console](#import-template-in-openshift-web-console) otherwise you can just go with the latter approach ([Import template in Openshift Web Console](#import-template-in-openshift-web-console))
+There are two different ways for deploying WINDUP on OpenShift based upon if you have [`cluster-admin privileges`](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#roles): if you have those privileges you can decide to follow [Template deployment in OpenShift catalog](#template-deployment-in-openshift-catalog) (because you can operate on the default `openshift` project) or [Import template in Openshift Web Console](#import-template-in-openshift-web-console) otherwise you can just go with the latter approach ([Import template in Openshift Web Console](#import-template-in-openshift-web-console))
 
 ### Choose the template
 There are different templates available to be imported in your OpenShift instance.
 The table below summarizes the different use cases for each template
 
-| Template | Requirements | Description |
-| --- | --- | --- |
-| [`web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) | OpenShift | The recommended template to deploy MTA on OCP<br>The analysis data between the `executor` pod and the `web console` one are sent using REST web services |
-| [`web-template-empty-dir-executor-shared-storage.json`](templates/src/main/resources/web-template-empty-dir-executor-shared-storage.json) | OpenShift with `ReadWriteMany (RWX)` storage| This template deploys MTA on OCP using a shared storage between the `executor` pod and the `web console` one to share the analysis data |
+| Template | Requirements | Description                                                                                                                                                 |
+| --- | --- |-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`web-template-empty-dir-executor.json`](templates/src/main/resources/web-template-empty-dir-executor.json) | OpenShift | The recommended template to deploy WINDUP on OCP<br>The analysis data between the `executor` pod and the `web console` one are sent using REST web services |
+| [`web-template-empty-dir-executor-shared-storage.json`](templates/src/main/resources/web-template-empty-dir-executor-shared-storage.json) | OpenShift with `ReadWriteMany (RWX)` storage| This template deploys WINDUP on OCP using a shared storage between the `executor` pod and the `web console` one to share the analysis data                  |
 
 ### Template deployment in OpenShift catalog
 1. login to Openshift: `$ oc login`
@@ -91,13 +91,13 @@ Once you have a fully working CDK instance, you can follow the next steps:
 1. now, before proceeding, you have to follow the above instructions about [OpenShift template deployment](#openshift-template-deployment)
 1. once you have successufully deployed, you can change the deployments to point to your local images.  
 Go to `Deployments` web page and:
-   1. choose `mta-web-console` deployment page
+   1. choose `windup-web-console` deployment page
    1. select `Actions` => `Edit` from the top right button (ref.)
    ![screenshot_action_edit](https://user-images.githubusercontent.com/7288588/39518963-2cfb1030-4e05-11e8-9c6b-a8d071d4fc3b.png)
    1. check the `Deploy images from an image stream tag` box and select the values for the `Image Stream Tag` comboboxes selecting your project's name as `Namespace`, `windup-web-openshift` for `Image Stream` and `latest` for `Tag`
    ![screenshot_imagestream](https://user-images.githubusercontent.com/7288588/39518990-49f385fa-4e05-11e8-9a80-d04992f90f0c.png)
    1. push the `Save` button at the bottom of the page
-   1. repeat these steps for `mta-web-console-executor` deployment using `windup-web-openshift-messaging-executor` as `Image Stream` combox value
+   1. repeat these steps for `windup-web-console-executor` deployment using `windup-web-openshift-messaging-executor` as `Image Stream` combox value
    
 Now your deployments are using the Docker images you have built locally on your machine and, whenever you update these images, new deployments will be triggered automatically when `docker push` command executes.
 
