@@ -39,7 +39,7 @@
                             <name>${docker.name.windup.cli}</name>
                             <build>
                                 <from>registry.access.redhat.com/ubi8/openjdk-11:latest</from>
-                                <cmd>/opt/migrationtoolkit/bin/mta-cli</cmd>
+                                <cmd>/opt/migrationtoolkit/bin/windup-cli</cmd>
                                 <assembly>
                                     <targetDir>/</targetDir>
                                     <descriptor>assembly/assembly.xml</descriptor>
@@ -66,7 +66,7 @@
                                     <classifier>offline</classifier>
                                     <type>zip</type>
                                     <version>${version.windup.cli}</version>
-                                    <outputDirectory>${project.build.directory}/mta-cli</outputDirectory>
+                                    <outputDirectory>${project.build.directory}/windup-cli</outputDirectory>
                                     <overWrite>true</overWrite>
                                 </artifactItem>
                             </artifactItems>
