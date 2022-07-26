@@ -6,16 +6,16 @@
     <!-- Add distribution files -->
     <fileSets>
         <fileSet>
-            <directory>${project.build.directory}/mta-cli/</directory>
-            <outputDirectory>opt/mta-cli</outputDirectory>
+            <directory>${project.build.directory}/windup-cli/</directory>
+            <outputDirectory>opt/windup-cli</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/root/</directory>
-            <outputDirectory>opt/mta-cli/</outputDirectory>
+            <outputDirectory>opt/windup-cli/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/bin/</directory>
-            <outputDirectory>opt/mta-cli/bin</outputDirectory>
+            <outputDirectory>opt/windup-cli/bin</outputDirectory>
             <fileMode>0755</fileMode>
         </fileSet>
     </fileSets>

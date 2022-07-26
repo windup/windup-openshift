@@ -82,7 +82,7 @@
                                     <version>${project.version}</version>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
-                                    <destFileName>mta-ui.war</destFileName>
+                                    <destFileName>windup-ui.war</destFileName>
                                     <outputDirectory>${project.build.directory}/wars/</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
