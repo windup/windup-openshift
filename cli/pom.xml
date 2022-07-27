@@ -11,7 +11,7 @@
 
     <properties>
         <version.fabric8>3.5.28</version.fabric8>
-        <version.windup.cli>${project.version}</version.windup.cli>
+        <version.windup.cli>5.3.1-SNAPSHOT</version.windup.cli>
         <docker.name.windup.cli>%a:%v</docker.name.windup.cli>
     </properties>
 
