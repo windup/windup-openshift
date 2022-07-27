@@ -15,6 +15,20 @@
         <docker.name.windup.cli>%a:%v</docker.name.windup.cli>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <!-- Dependency declared just to let the building infrastructure to properly
+            reconcile the right value for the 'version.windup.cli' that otherwise won't be
+            identified if declared only in the 'maven-dependency-plugin' below -->
+            <groupId>org.jboss.windup</groupId>
+            <artifactId>${product-name}-cli</artifactId>
+            <classifier>offline</classifier>
+            <type>zip</type>
+            <version>${version.windup.cli}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
