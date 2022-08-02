@@ -55,8 +55,11 @@
                                 <assembly>
                                     <targetDir>/</targetDir>
                                     <descriptor>assembly/assembly.xml</descriptor>
-                                    <user>jboss:root:jboss</user>
+                                    <user>jboss:root:root</user>
                                 </assembly>
+                                <runCmds>
+                                    <run>chgrp -R 0 $JBOSS_HOME /opt/tools &#38;&#38; chmod -R g=u $JBOSS_HOME /opt/tools</run>
+                                </runCmds>
                             </build>
                         </image>
                     </images>
