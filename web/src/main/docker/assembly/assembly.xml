@@ -20,7 +20,7 @@
         <fileSet>
             <directory>${project.build.directory}/classes/scripts</directory>
             <outputDirectory>${jboss.home}/bin/</outputDirectory>
-            <fileMode>0755</fileMode>
+            <fileMode>0777</fileMode>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/cli</directory>
