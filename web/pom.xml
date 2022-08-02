@@ -58,7 +58,7 @@
                                     <user>jboss:root:root</user>
                                 </assembly>
                                 <runCmds>
-                                    <run>chown -R jboss:root $JBOSS_HOME &#38;&#38; chmod -R ug+rwX $JBOSS_HOME</run>
+                                    <run>chown -R jboss:root $JBOSS_HOME &#38;&#38; chmod -R 775 $JBOSS_HOME</run>
                                 </runCmds>
                                 <user>jboss</user>
                             </build>
