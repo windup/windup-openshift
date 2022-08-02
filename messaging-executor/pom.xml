@@ -42,7 +42,12 @@
                                 <assembly>
                                     <targetDir>/</targetDir>
                                     <descriptor>assembly/assembly.xml</descriptor>
+                                    <user>jboss:root:root</user>
                                 </assembly>
+                                <runCmds>
+                                    <run>chown -R jboss:root /opt/windup-cli/ &#38;&#38; chmod -R 777 /opt/windup-cli/</run>
+                                </runCmds>
+                                <user>jboss</user>
                             </build>
                         </image>
                     </images>
