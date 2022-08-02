@@ -8,23 +8,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          repository: windup/windup
+          path: windup
+      - uses: actions/checkout@v3
+        with:
+          repository: windup/windup-rulesets
+          path: windup-rulesets
+      - uses: actions/checkout@v3
+        with:
+          repository: windup/windup-distribution
+          path: windup-distribution
+      - uses: actions/checkout@v3
+        with:
+          repository: windup/windup-web
+          path: windup-web
+      - uses: actions/checkout@v3
+        with:
+          path: windup-openshift
+
       - uses: actions/setup-java@v3
         with:
           java-version: 11
           distribution: temurin
           cache: maven
 
+      - name: Build dependencies
+        run: |
+          mvn install -f windup -DskipTests -s windup-openshift/.github/settings.xml
+          mvn install -f windup-rulesets -DskipTests -s windup-openshift/.github/settings.xml
+          mvn install -f windup-distribution -DskipTests -s windup-openshift/.github/settings.xml
+          mvn install -f windup-web -DskipTests -s windup-openshift/.github/settings.xml
+
       - name: Extract branch name
+        working-directory: windup-openshift
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
-
       - name: Build container image
+        working-directory: windup-openshift
         run: |
           mvn -U -B package --file pom.xml -DskipTests \
           -Ddocker.name.windup.web=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/windup-web-openshift:${{ steps.extract_branch.outputs.branch }} \
           -Ddocker.name.windup.web.executor=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/windup-web-openshift-messaging-executor:${{ steps.extract_branch.outputs.branch }}
-
       - name: Login to ghcr.io
         uses: docker/login-action@v2
         with:
