@@ -58,8 +58,9 @@
                                     <user>jboss:root:root</user>
                                 </assembly>
                                 <runCmds>
-                                    <run>chgrp -R 0 $JBOSS_HOME /opt/tools &#38;&#38; chmod -R g=u $JBOSS_HOME /opt/tools</run>
+                                    <run>chown -R jboss:root $JBOSS_HOME &#38;&#38; chmod -R ug+rwX $JBOSS_HOME</run>
                                 </runCmds>
+                                <user>jboss</user>
                             </build>
                         </image>
                     </images>
