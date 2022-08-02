@@ -29,6 +29,7 @@
         <fileSet>
             <directory>${project.build.directory}/wars</directory>
             <outputDirectory>deployments</outputDirectory>
+            <fileMode>0777</fileMode>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/classes/driver</directory>
