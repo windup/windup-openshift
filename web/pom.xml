@@ -55,6 +55,7 @@
                                 <assembly>
                                     <targetDir>/</targetDir>
                                     <descriptor>assembly/assembly.xml</descriptor>
+                                    <user>jboss:jboss:jboss</user>
                                 </assembly>
                             </build>
                         </image>
