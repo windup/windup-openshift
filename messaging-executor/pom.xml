@@ -10,7 +10,6 @@
     <artifactId>windup-web-openshift-messaging-executor</artifactId>
 
     <properties>
-        <version.jkube>1.8.0</version.jkube>
         <docker.name.windup.web.executor>%a:%v</docker.name.windup.web.executor>
     </properties>
 

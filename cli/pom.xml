@@ -10,7 +10,6 @@
     <artifactId>windup-cli-openshift</artifactId>
 
     <properties>
-        <version.jkube>1.8.0</version.jkube>
         <version.windup.cli>5.3.1-SNAPSHOT</version.windup.cli>
         <docker.name.windup.cli>%a:%v</docker.name.windup.cli>
     </properties>

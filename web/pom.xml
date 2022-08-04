@@ -10,7 +10,6 @@
     <artifactId>windup-web-openshift</artifactId>
 
     <properties>
-        <version.jkube>1.8.0</version.jkube>
         <docker.name.windup.web>%a:%v</docker.name.windup.web>
 
         <jboss.base.image>quay.io/wildfly/wildfly-centos7:23.0</jboss.base.image>
