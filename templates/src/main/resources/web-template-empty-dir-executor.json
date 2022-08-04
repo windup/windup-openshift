@@ -520,7 +520,7 @@
                                 },
                                 "volumeMounts": [
                                     {
-                                        "mountPath": "/opt/${APPLICATION_SERVER_NAME}/standalone/data",
+                                        "mountPath": "/opt/wildfly/standalone/data",
                                         "name": "${APPLICATION_NAME}-windup-web-executor-volume",
                                         "readOnly": false
                                     }

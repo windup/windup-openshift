@@ -456,7 +456,7 @@
                                     },
                                     {
                                         "name": "GRAPH_BASE_OUTPUT_PATH",
-                                        "value": "/opt/${APPLICATION_SERVER_NAME}/standalone/data/windup-graphs"
+                                        "value": "/opt/wildfly/standalone/data/windup-graphs"
                                     },
                                     {
                                         "name": "MESSAGING_SERIALIZER",
@@ -528,12 +528,12 @@
                                 },
                                 "volumeMounts": [
                                     {
-                                        "mountPath": "/opt/${APPLICATION_SERVER_NAME}/standalone/data/windup",
+                                        "mountPath": "/opt/wildfly/standalone/data/windup",
                                         "name": "${APPLICATION_NAME}-windup-web-pvol",
                                         "readOnly": false
                                     },
                                     {
-                                        "mountPath": "/opt/${APPLICATION_SERVER_NAME}/standalone/data",
+                                        "mountPath": "/opt/wildfly/standalone/data",
                                         "name": "${APPLICATION_NAME}-windup-web-executor-volume",
                                         "readOnly": false
                                     }
