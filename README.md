@@ -62,17 +62,17 @@ The table below summarizes the different use cases for each template
 1. login to Openshift: `$ oc login`
 1. create the template: `$ oc create -f ./templates/src/main/resources/web-template-empty-dir-executor.json -n openshift`
 
-Now, if you go to OpenShift Web Console home page, you'll see the Migration Toolkit for Applications (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
+Now, if you go to OpenShift Web Console home page, you'll see  Windup (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
 
-![screenshot-0](https://user-images.githubusercontent.com/7288588/38804671-80e5af28-4173-11e8-979c-58dc84e2371f.png)
-*screenshot-0: in OpenShift Web Console (v3.7) `Browse Catalog` page you can see the `Migration Toolkit for Applications 4.1` icon (4th row, 2nd column)*
+![screenshot-0](docs/catalog_templates.png)
+*screenshot-0: in OpenShift Web Console (v4.10) `Browse Catalog` page you can see the `Windup` icon (bottom row, 3rd column)*
 ### Import template in Openshift Web Console
 1. copy the raw content of file [web-template-empty-dir-executor.json](templates/src/main/resources/web-template-empty-dir-executor.json)
 1. paste it in the "Import YAML / JSON" wizard in Openshift Web Console (ref. *screenshot-1*)
 1. save and wait for the deployment to end
 
-![screenshot-1](https://user-images.githubusercontent.com/7288588/38807819-273b0f1c-417e-11e8-96d2-c82b41ee59bf.png)
-*screenshot-1: in OpenShift Web Console (v3.7) `Import YAML / JSON` wizard you can paste template raw content*
+![screenshot-1](docs/import_yaml.png)
+*screenshot-1: in OpenShift Web Console (v4.10) `Import YAML / JSON` wizard you can paste template raw content*
 ## Working with Red Hat Container Development Kit
 If you want to build locally your own images without the need to push them to the Docker repository, you can use Red Hat Container Development Kit (CDK).  
 "Red Hat Container Development Kit provides a pre-built Container Development Environment based on Red Hat Enterprise Linux to help you develop container-based applications quickly." (ref.  [Red Hat Container Development Kit documentation](https://developers.redhat.com/products/cdk/overview/)).  
