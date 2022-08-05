@@ -10,7 +10,7 @@
     <artifactId>windup-cli-openshift</artifactId>
 
     <properties>
-        <version.windup.cli>6.0.0.Alpha1</version.windup.cli>
+        <version.windup.cli>6.0.0-SNAPSHOT</version.windup.cli>
         <docker.name.windup.cli>%a:%v</docker.name.windup.cli>
     </properties>
 
