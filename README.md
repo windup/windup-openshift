@@ -73,32 +73,3 @@ Now, if you go to OpenShift Web Console home page, you'll see  Windup (ref. *scr
 
 ![screenshot-1](docs/import_yaml.png)
 *screenshot-1: in OpenShift Web Console (v4.10) `Import YAML / JSON` wizard you can paste template raw content*
-## Working with Red Hat Container Development Kit
-If you want to build locally your own images without the need to push them to the Docker repository, you can use Red Hat Container Development Kit (CDK).  
-"Red Hat Container Development Kit provides a pre-built Container Development Environment based on Red Hat Enterprise Linux to help you develop container-based applications quickly." (ref.  [Red Hat Container Development Kit documentation](https://developers.redhat.com/products/cdk/overview/)).  
-For installing CDK, please refer to the https://developers.redhat.com web site where you can find the [Hello World!](https://developers.redhat.com/products/cdk/hello-world/) guide.  
-Once you have a fully working CDK instance, you can follow the next steps:
-
-1. [_optional_]`$ systemctl stop docker` (do this only if you have Docker running on your machine)
-1. `$ minishift docker-env` to display the command you need to type into your shell in order to configure your Docker client since the command output will differ depending on OS and shell type
-1. execute the command from the step before
-1. `$ docker ps` to test that it's working fine and you can see in output a list of running containers
-1. `$ oc login -u developer -p whatever` to login to CDK OpenShift (the `-p` password parameter can really be whatever value you want for the `developer` pre-built user in the CDK)
-1. `$ docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)` to log into the CDK OpenShift Docker registry
-1. `$ mvn clean install -Ddocker.name.windup.web=$(minishift openshift registry)/$(oc project -q)/windup-web-openshift:latest -Ddocker.name.windup.web.executor=$(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor:latest` to build the Docker images for this project with the right tags to push them to CDK OpenShift Docker registry
-1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift` to push the image to the registry to create an image stream 
-1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor` to push the image to the registry to create an image stream 
-1. now, before proceeding, you have to follow the above instructions about [OpenShift template deployment](#openshift-template-deployment)
-1. once you have successufully deployed, you can change the deployments to point to your local images.  
-Go to `Deployments` web page and:
-   1. choose `windup-web-console` deployment page
-   1. select `Actions` => `Edit` from the top right button (ref.)
-   ![screenshot_action_edit](https://user-images.githubusercontent.com/7288588/39518963-2cfb1030-4e05-11e8-9c6b-a8d071d4fc3b.png)
-   1. check the `Deploy images from an image stream tag` box and select the values for the `Image Stream Tag` comboboxes selecting your project's name as `Namespace`, `windup-web-openshift` for `Image Stream` and `latest` for `Tag`
-   ![screenshot_imagestream](https://user-images.githubusercontent.com/7288588/39518990-49f385fa-4e05-11e8-9a80-d04992f90f0c.png)
-   1. push the `Save` button at the bottom of the page
-   1. repeat these steps for `windup-web-console-executor` deployment using `windup-web-openshift-messaging-executor` as `Image Stream` combox value
-   
-Now your deployments are using the Docker images you have built locally on your machine and, whenever you update these images, new deployments will be triggered automatically when `docker push` command executes.
-
-If you need more informations about how to interact with the CDK OpenShift Docker registry, please refer to the [Accessing the OpenShift Docker Registry](https://docs.openshift.org/latest/minishift/openshift/openshift-docker-registry.html) guide.
