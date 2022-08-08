@@ -64,7 +64,7 @@ The table below summarizes the different use cases for each template
 Now, if you go to OpenShift Web Console home page, you'll see  Windup (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
 
 ![screenshot-0](docs/catalog_templates.png)
-*screenshot-0: in OpenShift Web Console (v4.10) `Browse Catalog` page you can see the `Windup` icon (bottom row, 3rd column)*
+*screenshot-0: in OpenShift Web Console (v4.10) `Browse Catalog` page you can see the `Windup` icon*
 ### Import template in Openshift Web Console
 1. copy the raw content of file [web-template-empty-dir-executor.json](templates/src/main/resources/web-template-empty-dir-executor.json)
 1. paste it in the "Import YAML / JSON" wizard in Openshift Web Console (ref. *screenshot-1*)
