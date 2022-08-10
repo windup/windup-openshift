@@ -125,7 +125,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-web-keycloak-theme</artifactId>
-                                    <version>5.6.0.Final</version>
+                                    <version>5.7.0-SNAPSHOT</version>
                                     <outputDirectory>${project.build.directory}/tools/keycloak-theme</outputDirectory>
                                     <destFileName>keycloak-theme.jar</destFileName>
                                     <overWrite>true</overWrite>
