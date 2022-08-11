@@ -5,7 +5,7 @@
         "annotations": {
             "description": "WINDUP Web Console template",
             "iconClass": "icon-jboss",
-            "tags": "eap,postgresql,javaee,java,database,jboss,xpaas",
+            "tags": "wildfly,postgresql,javaee,java,database,jboss,xpaas",
             "version": "1.3.2",
             "openshift.io/display-name": "Migration Toolkit for Applications"
         },
@@ -170,7 +170,7 @@
             "displayName": "JGroups Secret Name",
             "description": "The name of the secret containing the keystore file",
             "name": "JGROUPS_ENCRYPT_SECRET",
-            "value": "eap-app-secret",
+            "value": "wildfly-app-secret",
             "required": false
         },
         {
@@ -262,7 +262,7 @@
             "displayName": "SSO SAML Keystore Secret",
             "description": "The name of the secret containing the keystore file",
             "name": "SSO_SAML_KEYSTORE_SECRET",
-            "value": "eap7-app-secret",
+            "value": "wildfly-app-secret",
             "required": false
         },
         {
@@ -309,8 +309,8 @@
             "required": false
         },
         {
-            "displayName": "Disable SSL Validation in EAP->SSO communication",
-            "description": "If true SSL communication between EAP and the SSO Server will be insecure (i.e. certificate validation is disabled with curl)",
+            "displayName": "Disable SSL Validation in Wildfly->SSO communication",
+            "description": "If true SSL communication between Wildfly and the SSO Server will be insecure (i.e. certificate validation is disabled with curl)",
             "name": "SSO_DISABLE_SSL_CERTIFICATE_VALIDATION",
             "value": "true",
             "required": false
@@ -333,7 +333,7 @@
             "displayName": "SSO Trust Store Secret",
             "description": "The name of the secret containing the truststore file (e.g. truststore-secret). Used for volume secretName",
             "name": "SSO_TRUSTSTORE_SECRET",
-            "value": "eap7-app-secret",
+            "value": "wildfly-app-secret",
             "required": false
         },
         {
@@ -478,7 +478,7 @@
                                 "volumeMounts": [
                                     {
                                         "name": "${APPLICATION_NAME}-windup-web-pvol",
-                                        "mountPath": "/opt/eap/standalone/data",
+                                        "mountPath": "/opt/wildfly/standalone/data",
                                         "readOnly": false
                                     }
                                 ],
@@ -486,7 +486,7 @@
                                     "preStop": {
                                         "exec": {
                                             "command": [
-                                                "/opt/eap/bin/jboss-cli.sh",
+                                                "${JBOSS_HOME}/bin/jboss-cli.sh",
                                                 "-c",
                                                 ":shutdown(timeout=60)"
                                             ]
@@ -498,7 +498,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/eap/bin/livenessProbe.sh"
+                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands=ls | grep 'server-state=running'"
                                         ]
                                     }
                                 },
@@ -507,7 +507,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "/opt/eap/bin/readinessProbe.sh"
+                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='ls deployment' | grep 'api.war'"
                                         ]
                                     }
                                 },
@@ -587,7 +587,7 @@
                                     },
                                     {
                                         "name": "HTTPS_KEYSTORE_DIR",
-                                        "value": "/etc/eap-secret-volume"
+                                        "value": "/etc/wildfly-secret-volume"
                                     },
                                     {
                                         "name": "MQ_CLUSTER_PASSWORD",
@@ -790,7 +790,7 @@
                                 "volumeMounts": [
                                     {
                                         "name": "${APPLICATION_NAME}-windup-web-pvol",
-                                        "mountPath": "/opt/eap/standalone/data",
+                                        "mountPath": "/opt/wildfly/standalone/data",
                                         "readOnly": false
                                     }
                                 ],

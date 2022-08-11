@@ -2,7 +2,6 @@
 This project is useful if you want to try WINDUP on an OpenShift instance.  
 If you just want to test WINDUP using the [images](https://quay.io/organization/windupeng) we have made available in the quay.io repository, go straight to the [OpenShift template deployment](#openshift-template-deployment) section.  
 If you have made some changes to WINDUP and you want to test them on an OpenShift instance, in the next paragraph you'll find all the information for building your own container images so that you're free to test your code.  
-There's also the case that you don't have an OpenShift instance available and, in this scenario, Red Hat Container Development Kit can help you working locally on your machine with any need for an OpenShift instance to test your changes to the code. In this case please follow the instructions in the [Working with Red Hat Container Development Kit](#working-with-red-hat-container-development-kit) section.
 
 ## OpenShift image construction
 ### Install Docker
@@ -62,43 +61,14 @@ The table below summarizes the different use cases for each template
 1. login to Openshift: `$ oc login`
 1. create the template: `$ oc create -f ./templates/src/main/resources/web-template-empty-dir-executor.json -n openshift`
 
-Now, if you go to OpenShift Web Console home page, you'll see the Migration Toolkit for Applications (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
+Now, if you go to OpenShift Web Console home page, you'll see  Windup (ref. *screenshot-0*) in the list of the available templates and so you can deploy it to a project just like any other template.
 
-![screenshot-0](https://user-images.githubusercontent.com/7288588/38804671-80e5af28-4173-11e8-979c-58dc84e2371f.png)
-*screenshot-0: in OpenShift Web Console (v3.7) `Browse Catalog` page you can see the `Migration Toolkit for Applications 4.1` icon (4th row, 2nd column)*
+![screenshot-0](docs/catalog_templates.png)
+*screenshot-0: in OpenShift Web Console (v4.10) `Browse Catalog` page you can see the `Windup` icon*
 ### Import template in Openshift Web Console
 1. copy the raw content of file [web-template-empty-dir-executor.json](templates/src/main/resources/web-template-empty-dir-executor.json)
 1. paste it in the "Import YAML / JSON" wizard in Openshift Web Console (ref. *screenshot-1*)
 1. save and wait for the deployment to end
 
-![screenshot-1](https://user-images.githubusercontent.com/7288588/38807819-273b0f1c-417e-11e8-96d2-c82b41ee59bf.png)
-*screenshot-1: in OpenShift Web Console (v3.7) `Import YAML / JSON` wizard you can paste template raw content*
-## Working with Red Hat Container Development Kit
-If you want to build locally your own images without the need to push them to the Docker repository, you can use Red Hat Container Development Kit (CDK).  
-"Red Hat Container Development Kit provides a pre-built Container Development Environment based on Red Hat Enterprise Linux to help you develop container-based applications quickly." (ref.  [Red Hat Container Development Kit documentation](https://developers.redhat.com/products/cdk/overview/)).  
-For installing CDK, please refer to the https://developers.redhat.com web site where you can find the [Hello World!](https://developers.redhat.com/products/cdk/hello-world/) guide.  
-Once you have a fully working CDK instance, you can follow the next steps:
-
-1. [_optional_]`$ systemctl stop docker` (do this only if you have Docker running on your machine)
-1. `$ minishift docker-env` to display the command you need to type into your shell in order to configure your Docker client since the command output will differ depending on OS and shell type
-1. execute the command from the step before
-1. `$ docker ps` to test that it's working fine and you can see in output a list of running containers
-1. `$ oc login -u developer -p whatever` to login to CDK OpenShift (the `-p` password parameter can really be whatever value you want for the `developer` pre-built user in the CDK)
-1. `$ docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)` to log into the CDK OpenShift Docker registry
-1. `$ mvn clean install -Ddocker.name.windup.web=$(minishift openshift registry)/$(oc project -q)/windup-web-openshift:latest -Ddocker.name.windup.web.executor=$(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor:latest` to build the Docker images for this project with the right tags to push them to CDK OpenShift Docker registry
-1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift` to push the image to the registry to create an image stream 
-1. `$ docker push $(minishift openshift registry)/$(oc project -q)/windup-web-openshift-messaging-executor` to push the image to the registry to create an image stream 
-1. now, before proceeding, you have to follow the above instructions about [OpenShift template deployment](#openshift-template-deployment)
-1. once you have successufully deployed, you can change the deployments to point to your local images.  
-Go to `Deployments` web page and:
-   1. choose `windup-web-console` deployment page
-   1. select `Actions` => `Edit` from the top right button (ref.)
-   ![screenshot_action_edit](https://user-images.githubusercontent.com/7288588/39518963-2cfb1030-4e05-11e8-9c6b-a8d071d4fc3b.png)
-   1. check the `Deploy images from an image stream tag` box and select the values for the `Image Stream Tag` comboboxes selecting your project's name as `Namespace`, `windup-web-openshift` for `Image Stream` and `latest` for `Tag`
-   ![screenshot_imagestream](https://user-images.githubusercontent.com/7288588/39518990-49f385fa-4e05-11e8-9a80-d04992f90f0c.png)
-   1. push the `Save` button at the bottom of the page
-   1. repeat these steps for `windup-web-console-executor` deployment using `windup-web-openshift-messaging-executor` as `Image Stream` combox value
-   
-Now your deployments are using the Docker images you have built locally on your machine and, whenever you update these images, new deployments will be triggered automatically when `docker push` command executes.
-
-If you need more informations about how to interact with the CDK OpenShift Docker registry, please refer to the [Accessing the OpenShift Docker Registry](https://docs.openshift.org/latest/minishift/openshift/openshift-docker-registry.html) guide.
+![screenshot-1](docs/import_yaml.png)
+*screenshot-1: in OpenShift Web Console (v4.10) `Import YAML / JSON` wizard you can paste template raw content*
