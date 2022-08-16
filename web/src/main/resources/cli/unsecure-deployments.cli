@@ -1,0 +1,6 @@
+embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
+
+# Windup
+/system-property=windup.secured.url:add(value="none")
+
+stop-embedded-server

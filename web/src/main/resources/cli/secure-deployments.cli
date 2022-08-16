@@ -1,6 +1,18 @@
 embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
 
-/subsystem=keycloak/secure-deployment=windup-ui.war:add(realm=windup, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=windup-web, public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
-/subsystem=keycloak/secure-deployment=api.war:add(realm=windup, realm-public-key="${keycloak.realm.public.key}", auth-server-url="${keycloak.server.url}", ssl-required="NONE", resource=windup-web, public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
+# Windup
+/system-property=windup.secured.url:add(value="/*")
+
+# Keycloak
+/system-property=keycloak.server.url:add(value="${env.SSO_AUTH_SERVER_URL}")
+/system-property=keycloak.realm:add(value="${env.SSO_REALM}")
+/system-property=keycloak.sslRequired:add(value="${env.SSO_SSL_REQUIRED}")
+/system-property=keycloak.clientId:add(value="${env.SSO_CLIENT_ID}")
+#/system-property=keycloak.token.verify.host:add(value="${env.WINDUP_WEB_CONSOLE_SERVICE_HOST}")
+#/system-property=keycloak.token.verify.port:add(value="${env.WINDUP_WEB_CONSOLE_SERVICE_PORT}")
+/system-property=keycloak.trust.all.ssl:add(value="true")
+
+/subsystem=keycloak/secure-deployment="api.war":add(realm="${keycloak.realm}", auth-server-url="${keycloak.server.url}", ssl-required="${keycloak.sslRequired}", resource="${keycloak.clientId}", public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
+/subsystem=keycloak/secure-deployment="windup-ui.war":add(realm="${keycloak.realm}", auth-server-url="${keycloak.server.url}", ssl-required="${keycloak.sslRequired}", resource="${keycloak.clientId}", public-client=true, disable-trust-manager="${env.SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}")
 
 stop-embedded-server

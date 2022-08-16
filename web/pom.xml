@@ -17,16 +17,6 @@
     </properties>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/filtered-resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.eclipse.jkube</groupId>
@@ -114,30 +104,6 @@
                         </goals>
                         <configuration>
                             <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.jboss.windup.web</groupId>
-                                    <artifactId>windup-keycloak-tool</artifactId>
-                                    <version>5.9.0.Final</version>
-                                    <outputDirectory>${project.build.directory}/tools/keycloak-tool</outputDirectory>
-                                    <destFileName>keycloak-tool.jar</destFileName>
-                                    <overWrite>true</overWrite>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.jboss.windup.web</groupId>
-                                    <artifactId>windup-web-keycloak-theme</artifactId>
-                                    <version>5.7.0.Final</version>
-                                    <outputDirectory>${project.build.directory}/tools/keycloak-theme</outputDirectory>
-                                    <destFileName>keycloak-theme.jar</destFileName>
-                                    <overWrite>true</overWrite>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.keycloak</groupId>
-                                    <artifactId>keycloak-server-overlay</artifactId>
-                                    <version>${version.keycloak}</version>
-                                    <type>zip</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/tools/keycloak-server-overlay/</outputDirectory>
-                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.keycloak</groupId>
                                     <artifactId>keycloak-wildfly-adapter-dist</artifactId>

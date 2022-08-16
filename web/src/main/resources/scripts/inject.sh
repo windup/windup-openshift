@@ -13,24 +13,15 @@ sed -i 's#embed-server --server-config=${server.config:standalone.xml}#embed-ser
 ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/bin/adapter-install-offline.cli
 
 echo "Running local CLI script for configuring logging, queues, and keycloak client realm"
-# Run our CLI script (logging and keycloak configuration)
 ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/utils/configuration/setup.cli
 
-echo "Running secure-deployments : secure-deployments.cli "
-${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/utils/configuration/secure-deployments.cli
-
-echo "Unzipping keycloak theme"
-unzip -o -d ${JBOSS_HOME} ${JBOSS_HOME}/tools/keycloak-theme/keycloak-theme.jar
-for theme in $(ls ${JBOSS_HOME}/themes)
-do
-  cp ${JBOSS_HOME}/themes/$theme/login/login_required.theme.properties ${JBOSS_HOME}/themes/$theme/login/theme.properties
-done
-
-echo "Setting up keycloak server admin username/password"
-${JBOSS_HOME}/bin/add-user-keycloak.sh --realm master --user admin --password password
-
-echo "Setting up keycloak server windup default username/password"
-${JBOSS_HOME}/bin/add-user-keycloak.sh --realm windup --user migration --password password --roles user
+if [[ -z "${SSO_AUTH_SERVER_URL}" ]]; then
+  echo "Running unsecure-deployments : unsecure-deployments.cli"
+  ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/configuration/unsecure-deployments.cli
+else
+  echo "Running secure-deployments : secure-deployments.cli"
+  ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/configuration/secure-deployments.cli
+fi
 
 echo "Setting up JMS Password"
 ${JBOSS_HOME}/bin/add-user.sh -r ApplicationRealm -u jms-user -p gthudfal -g guest \
@@ -46,8 +37,3 @@ fi
 
 echo "Setting up as a master node"
 ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/utils/configuration/master.cli
-
-if [ -d "${JBOSS_HOME}/modules/system/layers/openshift/" ]; then
-  echo "Configuring keycloak and openshift layers"
-  sed -i -e 's#layers=keycloak#layers=keycloak,openshift#g' ${JBOSS_HOME}/modules/layers.conf
-fi

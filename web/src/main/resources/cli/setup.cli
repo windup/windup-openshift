@@ -6,18 +6,15 @@ embed-server --std-out=echo --admin-only=true --server-config=standalone-openshi
 /subsystem=ejb3/mdb-delivery-group=dg_executors:add()
 /subsystem=ejb3/mdb-delivery-group=dg_services:add()
 
-/system-property=keycloak.realm.public.key:add(value="${env.SSO_PUBLIC_KEY}")
-/system-property=keycloak.server.url:add(value="${env.SSO_URL}")
-#/system-property=keycloak.token.verify.host:add(value="${env.WINDUP_WEB_CONSOLE_SERVICE_HOST}")
-#/system-property=keycloak.token.verify.port:add(value="${env.WINDUP_WEB_CONSOLE_SERVICE_PORT}")
 /system-property=messaging.serializer:add(value="${env.MESSAGING_SERIALIZER}")
-
-/system-property=keycloak.trust.all.ssl:add(value="true")
 
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-post-size, value="${env.MAX_POST_SIZE}")
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding, value="true")
 
 /subsystem=undertow/configuration=handler/file=root-redirect:add(path=${jboss.home.dir}/root-redirect)
 /subsystem=undertow/server=default-server/host=default-host/location=\//:write-attribute(name=handler,value=root-redirect)
+
+## Property replacement
+/subsystem=ee:write-attribute(name="spec-descriptor-property-replacement", value=true)
 
 stop-embedded-server
