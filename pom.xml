@@ -157,5 +157,17 @@
                 <product-name>tackle</product-name>
             </properties>
         </profile>
+        <profile>
+            <id>mtr</id>
+            <activation>
+                <property>
+                    <name>downstream</name>
+                    <value>mtr</value>
+                </property>
+            </activation>
+            <properties>
+                <product-name>mtr</product-name>
+            </properties>
+        </profile>
     </profiles>
 </project>
