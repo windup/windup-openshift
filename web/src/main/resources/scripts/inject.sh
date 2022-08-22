@@ -17,10 +17,10 @@ ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/utils/configu
 
 if [[ -z "${SSO_AUTH_SERVER_URL}" ]]; then
   echo "Running unsecure-deployments : unsecure-deployments.cli"
-  ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/configuration/unsecure-deployments.cli
+  ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/utils/configuration/unsecure-deployments.cli
 else
   echo "Running secure-deployments : secure-deployments.cli"
-  ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/standalone/configuration/secure-deployments.cli
+  ${JBOSS_HOME}/bin/jboss-cli.sh --echo-command --file=${JBOSS_HOME}/utils/configuration/secure-deployments.cli
 fi
 
 echo "Setting up JMS Password"
