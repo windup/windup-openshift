@@ -4,40 +4,37 @@
     <parent>
         <groupId>org.jboss.windup</groupId>
         <artifactId>windup-openshift-parent</artifactId>
-        <version>5.3.1-SNAPSHOT</version>
+        <version>6.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>windup-cli-openshift</artifactId>
 
     <properties>
-        <version.fabric8>3.5.28</version.fabric8>
-        <version.windup.cli>5.3.1-SNAPSHOT</version.windup.cli>
+        <version.windup.cli>6.0.1-SNAPSHOT</version.windup.cli>
         <docker.name.windup.cli>%a:%v</docker.name.windup.cli>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <!-- Dependency declared just to let the building infrastructure to properly
-            reconcile the right value for the 'version.windup.cli' that otherwise won't be
-            identified if declared only in the 'maven-dependency-plugin' below -->
-            <groupId>org.jboss.windup</groupId>
-            <artifactId>${product-name}-cli</artifactId>
-            <classifier>offline</classifier>
-            <type>zip</type>
-            <version>${version.windup.cli}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Placeholder dependency for letting PNC manage the 'version' value properly -->
+            <dependency>
+                <groupId>org.jboss.windup</groupId>
+                <artifactId>windup-cli-parent</artifactId>
+                <version>${version.windup.cli}</version>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-maven-plugin</artifactId>
-                <version>${version.fabric8}</version>
+                <groupId>org.eclipse.jkube</groupId>
+                <artifactId>kubernetes-maven-plugin</artifactId>
+                <version>${version.jkube}</version>
                 <executions>
                     <execution>
-                        <id>fabric8</id>
+                        <id>jkube</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
@@ -45,7 +42,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mode>kubernetes</mode>
                     <buildStrategy>docker</buildStrategy>
                     <autoPull>always</autoPull>
                     <images>
@@ -55,8 +51,21 @@
                                 <from>registry.access.redhat.com/ubi8/openjdk-11:latest</from>
                                 <cmd>/opt/migrationtoolkit/bin/windup-cli</cmd>
                                 <assembly>
-                                    <targetDir>/</targetDir>
-                                    <descriptor>assembly/assembly.xml</descriptor>
+                                    <targetDir>/opt</targetDir>
+                                    <exportTargetDir>false</exportTargetDir>
+                                    <excludeFinalOutputArtifact>true</excludeFinalOutputArtifact>
+                                    <permissions>keep</permissions>
+                                    <mode>tgz</mode>
+                                    <layers>
+                                        <layer>
+                                            <fileSets>
+                                                <fileSet>
+                                                    <directory>${project.build.directory}/windup-cli/${product-name}-cli-${version.windup.cli}/</directory>
+                                                    <outputDirectory>migrationtoolkit/</outputDirectory>
+                                                </fileSet>
+                                            </fileSets>
+                                        </layer>
+                                    </layers>
                                 </assembly>
                             </build>
                         </image>

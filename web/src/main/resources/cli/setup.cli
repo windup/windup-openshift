@@ -1,11 +1,16 @@
 embed-server --std-out=echo --admin-only=true --server-config=standalone-openshift.xml
 
+/subsystem=ejb3:write-attribute(name="default-mdb-instance-pool", value="mdb-strict-max-pool")
+/subsystem=ejb3:write-attribute(name="default-resource-adapter-name", value="${ejb.resource-adapter-name:activemq-ra.rar}")
+
 /subsystem=ejb3/mdb-delivery-group=dg_executors:add()
 /subsystem=ejb3/mdb-delivery-group=dg_services:add()
 
 /system-property=messaging.serializer:add(value="${env.MESSAGING_SERIALIZER}")
 
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-post-size, value="${env.MAX_POST_SIZE}")
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding, value="true")
+
 /subsystem=undertow/configuration=handler/file=root-redirect:add(path=${jboss.home.dir}/root-redirect)
 /subsystem=undertow/server=default-server/host=default-host/location=\//:write-attribute(name=handler,value=root-redirect)
 

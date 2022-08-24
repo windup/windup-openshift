@@ -4,25 +4,24 @@
     <parent>
         <groupId>org.jboss.windup</groupId>
         <artifactId>windup-openshift-parent</artifactId>
-        <version>5.3.1-SNAPSHOT</version>
+        <version>6.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>windup-web-openshift-messaging-executor</artifactId>
 
     <properties>
-        <version.fabric8>3.5.28</version.fabric8>
         <docker.name.windup.web.executor>%a:%v</docker.name.windup.web.executor>
     </properties>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-maven-plugin</artifactId>
-                <version>${version.fabric8}</version>
+                <groupId>org.eclipse.jkube</groupId>
+                <artifactId>kubernetes-maven-plugin</artifactId>
+                <version>${version.jkube}</version>
                 <executions>
                     <execution>
-                        <id>fabric8</id>
+                        <id>jkube</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
@@ -30,7 +29,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mode>kubernetes</mode>
                     <buildStrategy>docker</buildStrategy>
                     <autoPull>always</autoPull>
                     <images>
@@ -40,8 +38,35 @@
                                 <from>registry.access.redhat.com/ubi8/openjdk-11:latest</from>
                                 <cmd>/opt/windup-cli/bin/openshift-launch.sh</cmd>
                                 <assembly>
-                                    <targetDir>/</targetDir>
-                                    <descriptor>assembly/assembly.xml</descriptor>
+                                    <targetDir>/opt</targetDir>
+                                    <exportTargetDir>false</exportTargetDir>
+                                    <excludeFinalOutputArtifact>true</excludeFinalOutputArtifact>
+                                    <permissions>keep</permissions>
+                                    <mode>tgz</mode>
+                                    <layers>
+                                        <layer>
+                                            <fileSets>
+                                                <fileSet>
+                                                    <directory>${project.build.directory}/windup-cli/</directory>
+                                                    <outputDirectory>windup-cli</outputDirectory>
+                                                    <directoryMode>0777</directoryMode>
+                                                    <fileMode>0777</fileMode>
+                                                </fileSet>
+                                                <fileSet>
+                                                    <directory>${project.build.directory}/classes/root/</directory>
+                                                    <outputDirectory>windup-cli</outputDirectory>
+                                                    <directoryMode>0777</directoryMode>
+                                                    <fileMode>0777</fileMode>
+                                                </fileSet>
+                                                <fileSet>
+                                                    <directory>${project.build.directory}/classes/bin/</directory>
+                                                    <outputDirectory>windup-cli/bin/</outputDirectory>
+                                                    <directoryMode>0777</directoryMode>
+                                                    <fileMode>0777</fileMode>
+                                                </fileSet>
+                                            </fileSets>
+                                        </layer>
+                                    </layers>
                                 </assembly>
                             </build>
                         </image>
