@@ -16,8 +16,8 @@ embed-server --std-out=echo --admin-only=true --server-config=standalone-openshi
 
 ## Property replacement
 /subsystem=ee:write-attribute(name="spec-descriptor-property-replacement", value=true)
-/system-property=windup.data.dir:add(value="/opt/wildfly/standalone/data")
 
 ## Windup data
+/system-property=windup.data.dir:add(value="/opt/wildfly/standalone/data")
 
 stop-embedded-server
