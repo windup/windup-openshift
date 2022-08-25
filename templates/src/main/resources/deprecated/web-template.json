@@ -478,7 +478,7 @@
                                 "volumeMounts": [
                                     {
                                         "name": "${APPLICATION_NAME}-windup-web-pvol",
-                                        "mountPath": "/opt/wildfly/standalone/data",
+                                        "mountPath": "/opt/windup/data",
                                         "readOnly": false
                                     }
                                 ],
@@ -790,7 +790,7 @@
                                 "volumeMounts": [
                                     {
                                         "name": "${APPLICATION_NAME}-windup-web-pvol",
-                                        "mountPath": "/opt/wildfly/standalone/data",
+                                        "mountPath": "/opt/windup/data",
                                         "readOnly": false
                                     }
                                 ],

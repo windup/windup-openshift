@@ -9,7 +9,7 @@ JMS_HOST=${JMS_HOST//-/_}
 JMS_HOST=${!JMS_HOST}
 
 SERIALIZER=${MESSAGING_SERIALIZER}
-DATA_DIR=/opt/wildfly/standalone/data
+DATA_DIR=/opt/windup/data
 PING_DIR=/opt/windup-cli/ping
 
 echo "Starting executor with messaging server $JMS_HOST as user $JMS_USER"
