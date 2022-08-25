@@ -375,12 +375,12 @@
                                 },
                                 "volumeMounts": [
                                     {
-                                        "mountPath": "/opt/${APPLICATION_SERVER_NAME}/standalone/data/windup",
+                                        "mountPath": "/opt/windup/data/windup",
                                         "name": "${APPLICATION_NAME}-windup-web-pvol",
                                         "readOnly": false
                                     },
                                     {
-                                        "mountPath": "/opt/${APPLICATION_SERVER_NAME}/standalone/data",
+                                        "mountPath": "/opt/windup/data",
                                         "name": "${APPLICATION_NAME}-windup-web-pvol-data",
                                         "readOnly": false
                                     }
@@ -514,7 +514,7 @@
                                 },
                                 "volumeMounts": [
                                     {
-                                        "mountPath": "/opt/wildfly/standalone/data",
+                                        "mountPath": "/opt/windup/data",
                                         "name": "${APPLICATION_NAME}-windup-web-executor-volume",
                                         "readOnly": false
                                     }
@@ -1077,13 +1077,6 @@
             "name": "MAX_POST_SIZE",
             "required": true,
             "value": "4294967296"
-        },
-        {
-            "description": "The name, in lowercase, of the application server. E.g. wildfly, eap",
-            "displayName": "Application Server Name",
-            "name": "APPLICATION_SERVER_NAME",
-            "required": true,
-            "value": "wildfly"
         }
     ]
 }
