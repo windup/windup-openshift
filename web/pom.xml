@@ -23,6 +23,7 @@
                 <groupId>org.keycloak</groupId>
                 <artifactId>keycloak-wildfly-adapter-dist</artifactId>
                 <version>${version.keycloak}</version>
+                <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.jboss.windup.web</groupId>
