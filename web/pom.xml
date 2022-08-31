@@ -16,6 +16,30 @@
         <jboss.home>/opt/wildfly</jboss.home>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Placeholder dependencies for letting PNC manage the 'version' value properly -->
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-wildfly-adapter-dist</artifactId>
+                <version>${version.keycloak}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.windup.web</groupId>
+                <artifactId>windup-web-services</artifactId>
+                <version>${version.windup.web}</version>
+                <type>war</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.windup.web</groupId>
+                <artifactId>windup-web-ui-pf4</artifactId>
+                <version>${version.windup.web}</version>
+                <type>war</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -115,7 +139,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-web-services</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${version.windup.web}</version>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <destFileName>api.war</destFileName>
@@ -124,7 +148,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.windup.web</groupId>
                                     <artifactId>windup-web-ui-pf4</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${version.windup.web}</version>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <destFileName>windup-ui.war</destFileName>

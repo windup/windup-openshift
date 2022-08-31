@@ -21,6 +21,8 @@
     <properties>
         <version.jkube>1.8.0</version.jkube>
         <version.keycloak>18.0.2</version.keycloak>
+        <version.windup.cli>6.0.1-SNAPSHOT</version.windup.cli>
+        <version.windup.web>6.0.1-SNAPSHOT</version.windup.web>
 
         <windup.web.scm.connection>scm:git:https://github.com/windup/windup-openshift.git</windup.web.scm.connection>
         <windup.web.developer.connection>scm:git:git@github.com:windup/windup-openshift.git</windup.web.developer.connection>
