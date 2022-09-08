@@ -324,7 +324,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands=ls | grep 'server-state=running'"
+                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='/core-service=management:read-boot-errors()' | grep '\"result\" => \\[]' && ${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands=ls | grep 'server-state=running'"
                                         ]
                                     },
                                     "failureThreshold": 3,
@@ -355,7 +355,7 @@
                                         "command": [
                                             "/bin/bash",
                                             "-c",
-                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='ls deployment' | grep 'api.war'"
+                                            "${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='/core-service=management:read-boot-errors()' | grep '\"result\" => \\[]' && ${JBOSS_HOME}/bin/jboss-cli.sh --connect --commands='ls deployment' | grep 'api.war'"
                                         ]
                                     },
                                     "failureThreshold": 3,
