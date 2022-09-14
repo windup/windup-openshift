@@ -29,7 +29,7 @@
             "displayName": "Requested CPU",
             "description": "The number of CPU cores to request.",
             "name": "REQUESTED_CPU",
-            "value": "2",
+            "value": "4",
             "required": true
         },
         {

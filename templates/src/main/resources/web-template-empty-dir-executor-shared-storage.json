@@ -763,7 +763,7 @@
             "displayName": "Web Console Requested CPU",
             "name": "WEB_CONSOLE_REQUESTED_CPU",
             "required": true,
-            "value": "2"
+            "value": "4"
         },
         {
             "description": "The amount of memory to request (eg, 4Gi) for the Web Console.",
@@ -777,7 +777,7 @@
             "displayName": "Executor Requested CPU",
             "name": "EXECUTOR_REQUESTED_CPU",
             "required": true,
-            "value": "2"
+            "value": "4"
         },
         {
             "description": "The amount of memory to request (eg, 4Gi) for the Executor.",
