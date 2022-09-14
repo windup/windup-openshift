@@ -78,10 +78,6 @@
                                                     <outputDirectory>tools</outputDirectory>
                                                 </fileSet>
                                                 <fileSet>
-                                                    <directory>${project.build.directory}/classes/sso/</directory>
-                                                    <outputDirectory>kc-configuration/</outputDirectory>
-                                                </fileSet>
-                                                <fileSet>
                                                     <directory>${project.build.directory}/classes/root-redirect</directory>
                                                     <outputDirectory>root-redirect/</outputDirectory>
                                                 </fileSet>
