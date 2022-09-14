@@ -6,7 +6,6 @@ cd $DIR
 export JAVA_OPTS="$JAVA_OPTS -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m"
 export JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
 export JAVA_OPTS="$JAVA_OPTS -Djboss.modules.settings.xml.url=file://$GALLEON_MAVEN_SETTINGS_XML"
-export JAVA_OPTS="$JAVA_OPTS -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=${JBOSS_HOME}/kc-configuration/import-realm.json -Dkeycloak.migration.strategy=IGNORE_EXISTING"
 
 export MAVEN_SETTINGS_PATH="$GALLEON_MAVEN_SETTINGS_XML"
 
