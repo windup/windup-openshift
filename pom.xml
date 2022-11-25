@@ -93,7 +93,7 @@
                 <artifactId>kubernetes-maven-plugin</artifactId>
                 <version>${version.jkube}</version>
                 <configuration>
-                    <dockerHost>unix:///run/user/1000/podman/podman.sock</dockerHost>
+                    <dockerHost>unix://${env.XDG_RUNTIME_DIR}/podman/podman.sock</dockerHost>
                 </configuration>
               </plugin>
               <plugin>
