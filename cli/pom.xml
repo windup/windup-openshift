@@ -61,6 +61,8 @@
                                                 <fileSet>
                                                     <directory>${project.build.directory}/windup-cli/${product-name}-cli-${version.windup.cli}/</directory>
                                                     <outputDirectory>migrationtoolkit/</outputDirectory>
+                                                    <directoryMode>0774</directoryMode>
+                                                    <fileMode>0774</fileMode>
                                                 </fileSet>
                                             </fileSets>
                                         </layer>
