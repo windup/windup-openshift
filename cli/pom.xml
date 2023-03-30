@@ -92,7 +92,9 @@
                                     <name>${docker.name.windup.cli}</name>
                                     <build>
                                         <from>${from.image}</from>
-                                        <cmd>${entrypoint}</cmd>
+                                        <entryPoint>
+                                            <shell>${entrypoint}</shell>
+                                        </entryPoint>
                                         <assembly>
                                             <targetDir>${targetDir}</targetDir>
                                             <exportTargetDir>false</exportTargetDir>
