@@ -31,7 +31,7 @@ So sign up yourself to Quay.io at https://quay.io/signin/ taking care that the Q
 6. Paste that command in a shell window on your local machine and execute it
 7. Now your local Docker installation will have the credentials in ~/.docker/config.json
 
-### Create Docker images
+### Create Container images
 1. Build this project: `$ mvn clean install -Ddocker.name.windup.web=<your_quay_id>/windup-web-openshift -Ddocker.name.windup.web.executor=<your_quay_id>/windup-web-openshift-messaging-executor`
 1. Push images to docker hub:
    1. `$ docker login`
@@ -39,6 +39,13 @@ So sign up yourself to Quay.io at https://quay.io/signin/ taking care that the Q
    1. `$ docker push <your_quay_id>/windup-web-openshift-messaging-executor`
 
 If you want you can also set the tag for the built images (e.g. if you are working on a specific branch and you want to create images tagged with the branch name), you just have to add the tag name to the `docker.name.windup.web` and `docker.name.windup.web.executor` system properties' values (i.e. from the above example `-Ddocker.name.windup.web=<your_quay_id>/windup-web-openshift:tag_value -Ddocker.name.windup.web.executor=<your_quay_id>/windup-web-openshift-messaging-executor:tag_value`)
+
+### Create CLI multi-arch container image
+1. Login to Quay.io container repository executing  
+`$ docker login quay.io`
+1. Build the CLI multi-arch container and push it to Quay repository  
+`$ mvn clean install -DskipTests -f cli/ -Dmulti-arch -Ddocker.name.windup.cli=quay.io/<your_quay_id>/windup-cli-openshift`
+
 
 ### Point to your images
 Now that your images are available on Quay.io repository, you have to reference them in WINDUP template in order to use these images in the deployments.
