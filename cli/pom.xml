@@ -11,6 +11,11 @@
 
     <properties>
         <docker.name.windup.cli>%a:%v</docker.name.windup.cli>
+        <from.image>registry.access.redhat.com/ubi8/openjdk-11:latest</from.image>
+        <entrypoint>/opt/migrationtoolkit/bin/windup-cli</entrypoint>
+        <targetDir>/opt</targetDir>
+        <outputDirectory>migrationtoolkit/</outputDirectory>
+        <permission>774</permission>
     </properties>
 
     <dependencyManagement>
@@ -27,52 +32,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.eclipse.jkube</groupId>
-                <artifactId>kubernetes-maven-plugin</artifactId>
-                <version>${version.jkube}</version>
-                <executions>
-                    <execution>
-                        <id>jkube</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <buildStrategy>docker</buildStrategy>
-                    <autoPull>always</autoPull>
-                    <images>
-                        <image>
-                            <name>${docker.name.windup.cli}</name>
-                            <build>
-                                <from>registry.access.redhat.com/ubi8/openjdk-11:latest</from>
-                                <cmd>/opt/migrationtoolkit/bin/windup-cli</cmd>
-                                <assembly>
-                                    <targetDir>/opt</targetDir>
-                                    <exportTargetDir>false</exportTargetDir>
-                                    <excludeFinalOutputArtifact>true</excludeFinalOutputArtifact>
-                                    <permissions>keep</permissions>
-                                    <mode>tgz</mode>
-                                    <layers>
-                                        <layer>
-                                            <fileSets>
-                                                <fileSet>
-                                                    <directory>${project.build.directory}/windup-cli/${product-name}-cli-${version.windup.cli}/</directory>
-                                                    <outputDirectory>migrationtoolkit/</outputDirectory>
-                                                    <directoryMode>0774</directoryMode>
-                                                    <fileMode>0774</fileMode>
-                                                </fileSet>
-                                            </fileSets>
-                                        </layer>
-                                    </layers>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -100,4 +59,162 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>!multi-arch</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.jkube</groupId>
+                        <artifactId>kubernetes-maven-plugin</artifactId>
+                        <version>${version.jkube}</version>
+                        <executions>
+                            <execution>
+                                <id>jkube</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <buildStrategy>docker</buildStrategy>
+                            <autoPull>always</autoPull>
+                            <images>
+                                <image>
+                                    <name>${docker.name.windup.cli}</name>
+                                    <build>
+                                        <from>${from.image}</from>
+                                        <entryPoint>
+                                            <shell>${entrypoint}</shell>
+                                        </entryPoint>
+                                        <assembly>
+                                            <targetDir>${targetDir}</targetDir>
+                                            <exportTargetDir>false</exportTargetDir>
+                                            <excludeFinalOutputArtifact>true</excludeFinalOutputArtifact>
+                                            <permissions>keep</permissions>
+                                            <mode>tgz</mode>
+                                            <layers>
+                                                <layer>
+                                                    <fileSets>
+                                                        <fileSet>
+                                                            <directory>${project.build.directory}/windup-cli/${product-name}-cli-${version.windup.cli}/</directory>
+                                                            <outputDirectory>${outputDirectory}</outputDirectory>
+                                                            <directoryMode>0${permission}</directoryMode>
+                                                            <fileMode>0${permission}</fileMode>
+                                                        </fileSet>
+                                                    </fileSets>
+                                                </layer>
+                                            </layers>
+                                        </assembly>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>multi-arch</id>
+            <activation>
+                <property>
+                    <name>multi-arch</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>create-empty-directory</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <!--
+                                        The project has no 'src' folder so no 'target/classes' folder
+                                        will be created along the build process BUT the above jib-maven-plugin
+                                        always searches for classes in the 'target/classes' folder and
+                                        when not found it blocks with an error.
+                                        That's why there's this task for creating such empty folder.
+                                         -->
+                                        <mkdir dir="${project.build.outputDirectory}"/>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <configuration>
+                                    <containerizingMode>packaged</containerizingMode>
+                                    <from>
+                                        <image>${from.image}</image>
+                                    <platforms>
+                                        <platform>
+                                            <architecture>amd64</architecture>
+                                            <os>linux</os>
+                                        </platform>
+                                        <platform>
+                                            <architecture>arm64</architecture>
+                                            <os>linux</os>
+                                        </platform>
+                                        <platform>
+                                            <architecture>ppc64le</architecture>
+                                            <os>linux</os>
+                                        </platform>
+                                            <platform>
+                                            <architecture>s390x</architecture>
+                                        <os>linux</os>
+                                        </platform>
+                                    </platforms>
+                                    </from>
+                                        <to>
+                                            <image>${docker.name.windup.cli}</image>
+                                        </to>
+                                    <container>
+                                        <entrypoint>${entrypoint}</entrypoint>
+                                    </container>
+                                    <extraDirectories>
+                                        <paths>
+                                            <path>
+                                                <from>${project.build.directory}/windup-cli/${product-name}-cli-${version.windup.cli}/</from>
+                                                <into>${targetDir}/${outputDirectory}</into>
+                                            </path>
+                                        </paths>
+                                        <permissions>
+                                            <permission>
+                                                <file>${targetDir}/${outputDirectory}**</file>
+                                                <mode>${permission}</mode>
+                                            </permission>
+                                        </permissions>
+                                    </extraDirectories>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
