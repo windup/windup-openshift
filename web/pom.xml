@@ -162,7 +162,7 @@
         <profile>
             <id>eap</id>
             <properties>
-                <jboss.base.image>registry.redhat.io/jboss-eap-7/eap74-openjdk11-openshift-rhel8:7.4.4</jboss.base.image>
+                <jboss.base.image>registry.redhat.io/jboss-eap-7/eap74-openjdk11-openshift-rhel8:7.4.10</jboss.base.image>
                 <jboss.home>/opt/eap</jboss.home>
             </properties>
         </profile>
