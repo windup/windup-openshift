@@ -20,4 +20,7 @@ embed-server --std-out=echo --admin-only=true --server-config=standalone-openshi
 ## Windup data
 /system-property=windup.data.dir:add(value="/opt/windup/data")
 
+# Properties
+/system-property=org.apache.james.mime4j.defaultStorageProvider:add(value="org.apache.james.mime4j.storage.TempFileStorageProvider")
+
 stop-embedded-server
