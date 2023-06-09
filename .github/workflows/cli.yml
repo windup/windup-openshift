@@ -28,12 +28,21 @@ jobs:
           podman machine init
           podman machine start
 
-      - name: Container runtime info
+      - name: Windup analysis
         run: |
           ${{ matrix.runtime }} run --name windup-cli --pull always quay.io/windupeng/windup-cli-openshift:latest --input /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear --output /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report --target discovery --exportZipReport
           
           # Extract report
           ${{ matrix.runtime }} cp windup-cli:/opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report/reports.zip .
 
-          # 
+          # Extract reports
           unzip reports.zip -d reports
+      - name: Verify reports
+        run: |
+          if [ -e reports/index.html ]
+          then
+            echo "index.html exists"
+          else
+            echo "could not find index.html"
+            exit 1
+          fi
