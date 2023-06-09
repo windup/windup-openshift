@@ -20,9 +20,12 @@ jobs:
         if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
         run: |
           brew install docker
+          colima start
       - name: Setup podman (missing on MacOS)
         if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'podman' }}
         run: |
           brew install podman
+          podman machine init
+          podman machine start
       - name: Maven
         run: ${{ matrix.runtime }} version
