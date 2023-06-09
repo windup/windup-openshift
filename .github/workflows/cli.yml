@@ -16,16 +16,31 @@ jobs:
         runtime: [ docker, podman ]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Setup docker (missing on MacOS)
-        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
-        run: |
-          brew install docker
-          colima start
-      - name: Setup podman (missing on MacOS)
-        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'podman' }}
-        run: |
-          brew install podman
-          podman machine init
-          podman machine start
+      - name: Login to ghcr.io (Docker)
+        if: ${{ matrix.runtime == 'docker' }}
+        uses: docker/login-action@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+      - name: Log in to ghcr.io (Podman)
+        if: ${{ matrix.runtime == 'podman' }}
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+
+#      - name: Setup docker (missing on MacOS)
+#        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
+#        run: |
+#          brew install docker
+#          colima start
+#      - name: Setup podman (missing on MacOS)
+#        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'podman' }}
+#        run: |
+#          brew install podman
+#          podman machine init
+#          podman machine start
       - name: Maven
         run: ${{ matrix.runtime }} version
