@@ -16,6 +16,7 @@ jobs:
         runtime: [ docker, podman ]
     runs-on: ${{ matrix.os }}
     steps:
+      - run: exit 1
       - name: Setup docker (missing on MacOS)
         if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
         run: |
@@ -38,7 +39,7 @@ jobs:
           # Extract reports
           unzip reports.zip -d reports
       - name: Verify reports
-        run: |
+        run: |          
           if [ -e reports/index.html ]
           then
             echo "index.html exists"
