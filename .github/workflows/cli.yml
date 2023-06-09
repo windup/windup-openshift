@@ -33,7 +33,7 @@ jobs:
 #          podman machine init --now
       - name: Container runtime info
         run: |
-          ${{ matrix.runtime }} run --name windup-cli --pull newer \
+          ${{ matrix.runtime }} run --name windup-cli --pull always \
           quay.io/windupeng/windup-cli-openshift:latest \
           --input /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear \
           --output /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report \
