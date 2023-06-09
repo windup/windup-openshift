@@ -16,6 +16,9 @@ jobs:
         runtime: [ docker, podman ]
     runs-on: ${{ matrix.os }}
     steps:
+      - run: uname -m
+      - run: uname -p
+      - run: uname -m
       - name: Setup docker (missing on MacOS)
         if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
         run: |
