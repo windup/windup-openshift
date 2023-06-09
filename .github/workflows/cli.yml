@@ -27,7 +27,7 @@ jobs:
           brew install podman
           podman machine init --now
       - name: Setup podman (missing on Windows)
-        if: ${{ matrix.os == 'window-latest' && matrix.runtime == 'podman' }}
+        if: ${{ matrix.os == 'windows-latest' && matrix.runtime == 'podman' }}
         run: |
           brew install podman
           podman machine init --now
