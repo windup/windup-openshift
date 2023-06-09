@@ -1,4 +1,4 @@
-name: Snapshots
+name: CLI Container image check
 
 on:
   schedule:
@@ -21,16 +21,7 @@ jobs:
         run: |
           brew install docker
           colima start
-#      - name: Setup podman (missing on MacOS)
-#        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'podman' }}
-#        run: |
-#          brew install podman
-#          podman machine init --now
-#      - name: Setup podman (missing on Windows)
-#        if: ${{ matrix.os == 'windows-latest' && matrix.runtime == 'podman' }}
-#        run: |
-#          brew install podman
-#          podman machine init --now
+
       - name: Container runtime info
         run: |
           ${{ matrix.runtime }} run --name windup-cli --pull always quay.io/windupeng/windup-cli-openshift:latest --input /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear --output /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report --target discovery --exportZipReport
