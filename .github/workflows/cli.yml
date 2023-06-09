@@ -12,9 +12,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runtime: [ docker, podman ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
+        runtime: [ docker, podman ]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Setup docker (missing on MacOS)
+        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
+        run: |
+          brew install docker
+      - name: Setup podman (missing on MacOS)
+        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
+        run: |
+          brew install podman
       - name: Maven
         run: ${{ matrix.runtime }} version
