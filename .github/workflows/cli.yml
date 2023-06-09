@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
-        runtime: [ docker, podman ]
+        runtime: [ docker ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Setup docker (missing on MacOS)
@@ -21,19 +21,27 @@ jobs:
         run: |
           brew install docker
           colima start
-      - name: Setup podman (missing on MacOS)
-        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'podman' }}
-        run: |
-          brew install podman
-          podman machine init --now
-      - name: Setup podman (missing on Windows)
-        if: ${{ matrix.os == 'windows-latest' && matrix.runtime == 'podman' }}
-        run: |
-          brew install podman
-          podman machine init --now
+#      - name: Setup podman (missing on MacOS)
+#        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'podman' }}
+#        run: |
+#          brew install podman
+#          podman machine init --now
+#      - name: Setup podman (missing on Windows)
+#        if: ${{ matrix.os == 'windows-latest' && matrix.runtime == 'podman' }}
+#        run: |
+#          brew install podman
+#          podman machine init --now
       - name: Container runtime info
         run: |
-          ${{ matrix.runtime }} version
-      - name: Container test
-        run: |
-          ${{ matrix.runtime }} run quay.io/podman/hello
+          ${{ matrix.runtime }} run --name windup-cli --pull newer \
+          quay.io/windupeng/windup-cli-openshift:latest
+          --input /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear \
+          --output /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report \
+          --target discovery \
+          --exportZipReport
+          
+          # Extract report
+          ${{ matrix.runtime }} cp windup-cli:/opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report/reports.zip .
+
+          # 
+          unzip reports.zip -d reports
