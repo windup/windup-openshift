@@ -1,0 +1,49 @@
+name: Windup CLI Container Cron Check
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs: { }
+
+jobs:
+  tests:
+    name: Test
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        runtime: [ docker, podman ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup docker (missing on MacOS)
+        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'docker' }}
+        run: |
+          brew install docker
+          colima start
+      - name: Setup podman (missing on MacOS)
+        if: ${{ matrix.os == 'macos-latest' && matrix.runtime == 'podman' }}
+        run: |
+          brew install podman
+          podman machine init
+          podman machine start
+
+      - name: Windup analysis
+        run: |
+          # Execute analysis
+          ${{ matrix.runtime }} run --name windup-cli --pull always quay.io/windupeng/windup-cli-openshift:latest --input /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear --output /opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report --target discovery --exportZipReport
+          
+          # Extract report from container
+          ${{ matrix.runtime }} cp windup-cli:/opt/migrationtoolkit/samples/jee-example-app-1.0.0.ear.report/reports.zip .
+
+          # Unzip reports
+          unzip reports.zip -d reports
+      - name: Verify reports
+        run: |
+          if [ -e reports/index.html ]
+          then
+            echo "index.html exists"
+          else
+            echo "could not find index.html"
+            exit 1
+          fi
