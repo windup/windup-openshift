@@ -63,12 +63,12 @@
     <profiles>
         <profile>
             <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>!multi-arch</name>
-                </property>
-            </activation>
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--                <property>-->
+<!--                    <name>!multi-arch</name>-->
+<!--                </property>-->
+<!--            </activation>-->
             <build>
                 <plugins>
                     <plugin>
