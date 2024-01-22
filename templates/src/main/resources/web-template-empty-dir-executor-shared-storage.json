@@ -1088,7 +1088,7 @@
             "displayName": "Quay Images Tag",
             "name": "DOCKER_IMAGES_TAG",
             "required": true,
-            "value": "6.3.5.Final"
+            "value": "latest"
         },
         {
             "description": "The maximum value of the size the an HTTP post request",
