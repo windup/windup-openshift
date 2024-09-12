@@ -126,14 +126,6 @@
                                         "value": "${MESSAGING_SERIALIZER}"
                                     },
                                     {
-                                        "name": "DB_SERVICE_PREFIX_MAPPING",
-                                        "value": "${APPLICATION_NAME}-postgresql=DB"
-                                    },
-                                    {
-                                        "name": "DB_JNDI",
-                                        "value": "${DB_JNDI}"
-                                    },
-                                    {
                                         "name": "DB_USERNAME",
                                         "value": "${DB_USERNAME}"
                                     },
@@ -144,22 +136,6 @@
                                     {
                                         "name": "DB_DATABASE",
                                         "value": "${DB_DATABASE}"
-                                    },
-                                    {
-                                        "name": "TX_DATABASE_PREFIX_MAPPING",
-                                        "value": "${APPLICATION_NAME}-postgresql=DB"
-                                    },
-                                    {
-                                        "name": "DB_MIN_POOL_SIZE",
-                                        "value": "${DB_MIN_POOL_SIZE}"
-                                    },
-                                    {
-                                        "name": "DB_MAX_POOL_SIZE",
-                                        "value": "${DB_MAX_POOL_SIZE}"
-                                    },
-                                    {
-                                        "name": "DB_TX_ISOLATION",
-                                        "value": "${DB_TX_ISOLATION}"
                                     },
                                     {
                                         "name": "OPENSHIFT_KUBE_PING_LABELS",
@@ -176,18 +152,6 @@
                                     {
                                         "name": "HTTPS_KEYSTORE_DIR",
                                         "value": "/etc/wildfly-secret-volume"
-                                    },
-                                    {
-                                        "name": "MQ_CLUSTER_PASSWORD",
-                                        "value": "${MQ_CLUSTER_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "MQ_QUEUES",
-                                        "value": "${MQ_QUEUES}"
-                                    },
-                                    {
-                                        "name": "MQ_TOPICS",
-                                        "value": "${MQ_TOPICS}"
                                     },
                                     {
                                         "name": "JGROUPS_ENCRYPT_SECRET",
@@ -218,14 +182,6 @@
                                         "value": "${AUTO_DEPLOY_EXPLODED}"
                                     },
                                     {
-                                        "name": "DEFAULT_JOB_REPOSITORY",
-                                        "value": "${APPLICATION_NAME}-postgresql"
-                                    },
-                                    {
-                                        "name": "TIMER_SERVICE_DATA_STORE",
-                                        "value": "${APPLICATION_NAME}-postgresql"
-                                    },
-                                    {
                                         "name": "SSO_AUTH_SERVER_URL",
                                         "value": "${SSO_AUTH_SERVER_URL}"
                                     },
@@ -240,58 +196,6 @@
                                     {
                                         "name": "SSO_CLIENT_ID",
                                         "value": "${SSO_CLIENT_ID}"
-                                    },
-                                    {
-                                        "name": "SSO_BEARER_ONLY",
-                                        "value": "${SSO_BEARER_ONLY}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE_SECRET",
-                                        "value": "${SSO_SAML_KEYSTORE_SECRET}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE",
-                                        "value": "${SSO_SAML_KEYSTORE}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE_DIR",
-                                        "value": "/etc/sso-saml-secret-volume"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_CERTIFICATE_NAME",
-                                        "value": "${SSO_SAML_CERTIFICATE_NAME}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_KEYSTORE_PASSWORD",
-                                        "value": "${SSO_SAML_KEYSTORE_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "SSO_SECRET",
-                                        "value": "${SSO_SECRET}"
-                                    },
-                                    {
-                                        "name": "SSO_ENABLE_CORS",
-                                        "value": "${SSO_ENABLE_CORS}"
-                                    },
-                                    {
-                                        "name": "SSO_SAML_LOGOUT_PAGE",
-                                        "value": "${SSO_SAML_LOGOUT_PAGE}"
-                                    },
-                                    {
-                                        "name": "SSO_DISABLE_SSL_CERTIFICATE_VALIDATION",
-                                        "value": "${SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}"
-                                    },
-                                    {
-                                        "name": "SSO_TRUSTSTORE",
-                                        "value": "${SSO_TRUSTSTORE}"
-                                    },
-                                    {
-                                        "name": "SSO_TRUSTSTORE_DIR",
-                                        "value": "/etc/sso-secret-volume"
-                                    },
-                                    {
-                                        "name": "SSO_TRUSTSTORE_PASSWORD",
-                                        "value": "${SSO_TRUSTSTORE_PASSWORD}"
                                     },
                                     {
                                         "name": "GC_MAX_METASPACE_SIZE",
@@ -789,13 +693,6 @@
             "value": ""
         },
         {
-            "description": "Database JNDI name used by application to resolve the datasource, e.g. java:/jboss/datasources/postgresql",
-            "displayName": "Database JNDI Name",
-            "name": "DB_JNDI",
-            "required": false,
-            "value": "java:jboss/datasources/WindupServicesDS"
-        },
-        {
             "description": "Database name",
             "displayName": "Database Name",
             "name": "DB_DATABASE",
@@ -810,38 +707,6 @@
             "value": "20G"
         },
         {
-            "description": "Queue names",
-            "displayName": "Queues",
-            "name": "MQ_QUEUES",
-            "required": false,
-            "value": ""
-        },
-        {
-            "description": "Topic names",
-            "displayName": "Topics",
-            "name": "MQ_TOPICS",
-            "required": false,
-            "value": ""
-        },
-        {
-            "description": "Sets xa-pool/min-pool-size for the configured datasource.",
-            "displayName": "Datasource Minimum Pool Size",
-            "name": "DB_MIN_POOL_SIZE",
-            "required": false
-        },
-        {
-            "description": "Sets xa-pool/max-pool-size for the configured datasource.",
-            "displayName": "Datasource Maximum Pool Size",
-            "name": "DB_MAX_POOL_SIZE",
-            "required": false
-        },
-        {
-            "description": "Sets transaction-isolation for the configured datasource.",
-            "displayName": "Datasource Transaction Isolation",
-            "name": "DB_TX_ISOLATION",
-            "required": false
-        },
-        {
             "description": "The maximum number of client connections allowed. This also sets the maximum number of prepared transactions.",
             "displayName": "PostgreSQL Maximum number of connections",
             "name": "POSTGRESQL_MAX_CONNECTIONS",
@@ -853,14 +718,6 @@
             "displayName": "PostgreSQL Shared Buffers",
             "name": "POSTGRESQL_SHARED_BUFFERS",
             "required": false
-        },
-        {
-            "description": "A-MQ cluster admin password",
-            "displayName": "A-MQ cluster password",
-            "from": "[a-zA-Z0-9]{8}",
-            "generate": "expression",
-            "name": "MQ_CLUSTER_PASSWORD",
-            "required": true
         },
         {
             "description": "Database user name",
@@ -971,91 +828,6 @@
             "name": "SSO_CLIENT_ID",
             "required": false,
             "value": ""
-        },
-        {
-            "description": "SSO Client Access Type",
-            "displayName": "SSO Bearer Only?",
-            "name": "SSO_BEARER_ONLY",
-            "required": false,
-            "value": ""
-        },
-        {
-            "description": "The name of the secret containing the keystore file",
-            "displayName": "SSO SAML Keystore Secret",
-            "name": "SSO_SAML_KEYSTORE_SECRET",
-            "required": false,
-            "value": "wildfly-app-secret"
-        },
-        {
-            "description": "The name of the keystore file within the secret",
-            "displayName": "SSO SAML Keystore",
-            "name": "SSO_SAML_KEYSTORE",
-            "required": false,
-            "value": "keystore.jks"
-        },
-        {
-            "description": "The name associated with the server certificate",
-            "displayName": "SSO SAML Certificate Name",
-            "name": "SSO_SAML_CERTIFICATE_NAME",
-            "required": false,
-            "value": "jboss"
-        },
-        {
-            "description": "The password for the keystore and certificate",
-            "displayName": "SSO SAML Keystore Password",
-            "name": "SSO_SAML_KEYSTORE_PASSWORD",
-            "required": false,
-            "value": "mykeystorepass"
-        },
-        {
-            "description": "The SSO Client Secret for Confidential Access",
-            "displayName": "SSO Client Secret",
-            "from": "[a-zA-Z0-9]{8}",
-            "generate": "expression",
-            "name": "SSO_SECRET",
-            "required": true
-        },
-        {
-            "description": "Enable CORS for SSO applications",
-            "displayName": "Enable CORS for SSO?",
-            "name": "SSO_ENABLE_CORS",
-            "required": false,
-            "value": "false"
-        },
-        {
-            "description": "SSO logout page for SAML applications",
-            "displayName": "SSO SAML Logout Page",
-            "name": "SSO_SAML_LOGOUT_PAGE",
-            "required": false,
-            "value": "/"
-        },
-        {
-            "description": "If true SSL communication between Wildfly and the SSO Server will be insecure (i.e. certificate validation is disabled with curl)",
-            "displayName": "Disable SSL Validation in Wildfly->SSO communication",
-            "name": "SSO_DISABLE_SSL_CERTIFICATE_VALIDATION",
-            "required": false,
-            "value": "true"
-        },
-        {
-            "description": "The name of the truststore file within the secret (e.g. truststore.jks)",
-            "displayName": "SSO Trust Store",
-            "name": "SSO_TRUSTSTORE",
-            "required": false,
-            "value": ""
-        },
-        {
-            "description": "The password for the truststore and certificate (e.g. mykeystorepass)",
-            "displayName": "SSO Trust Store Password",
-            "name": "SSO_TRUSTSTORE_PASSWORD",
-            "required": false,
-            "value": ""
-        },
-        {
-            "description": "The name of the secret containing the truststore file (e.g. truststore-secret). Used for volume secretName",
-            "displayName": "SSO Trust Store Secret",
-            "name": "SSO_TRUSTSTORE_SECRET",
-            "required": false,
-            "value": "wildfly-app-secret"
         },
         {
             "description": "The value of the user name for the images from Quay to be used",
